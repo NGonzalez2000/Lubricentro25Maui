@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Lubricentro25.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:billing="clr-namespace:Lubricentro25.Pages.Billing"
+    xmlns:chat="clr-namespace:Lubricentro25.Views"
+    xmlns:configurations="clr-namespace:Lubricentro25.Pages.Configuration"
+    xmlns:customers="clr-namespace:Lubricentro25.Pages.Customers"
+    xmlns:home="clr-namespace:Lubricentro25.Pages.Home"
+    xmlns:items="clr-namespace:Lubricentro25.Pages.Items"
+    xmlns:local="clr-namespace:Lubricentro25"
+    xmlns:messages="clr-namespace:Lubricentro25.Pages.Messages"
+    xmlns:providers="clr-namespace:Lubricentro25.Pages.Providers"
+    Title="Lubricentro25"
+    Shell.NavBarIsVisible="False">
+
+    <TabBar>
+        <Tab Title="Inicio">
+            <ShellContent ContentTemplate="{DataTemplate home:HomePage}" />
+        </Tab>
+
+        <Tab Title="Clientes">
+            <ShellContent Title="Clientes" ContentTemplate="{DataTemplate customers:CustomersPage}" />
+            <ShellContent Title="Cond. Fiscal" ContentTemplate="{DataTemplate customers:TaxStatusPage}" />
+            <ShellContent Title="Desc. Clientes" ContentTemplate="{DataTemplate customers:CustomersDiscounts}" />
+            <ShellContent Title="Cheques" ContentTemplate="{DataTemplate customers:CustomersChecks}" />
+        </Tab>
+
+        <Tab Title="Facturación">
+            <ShellContent Title="Facturación" ContentTemplate="{DataTemplate billing:BillingPage}" />
+            <ShellContent Title="Cta. Cte." ContentTemplate="{DataTemplate billing:BillingCurrentAccountPage}" />
+            <ShellContent Title="Consignacion" ContentTemplate="{DataTemplate billing:BillingConsignmentPage}" />
+            <ShellContent Title="Presupuestos" ContentTemplate="{DataTemplate billing:BillingBudgetsPage}" />
+            <ShellContent Title="Caja Diaria" ContentTemplate="{DataTemplate billing:BillingDailyBoxPage}" />
+            <ShellContent Title="Mant. Facturas" ContentTemplate="{DataTemplate billing:BillingInvoiceMaintenancePage}" />
+            <ShellContent Title="Libro de Iva" ContentTemplate="{DataTemplate billing:BillingVATBookPage}" />
+        </Tab>
+
+        <Tab Title="Proveedores">
+            <ShellContent Title="Proveedores" ContentTemplate="{DataTemplate providers:ProvidersPage}" />
+            <ShellContent Title="Facturas" ContentTemplate="{DataTemplate providers:ProvidersBillingsPage}" />
+            <ShellContent Title="Pagos" ContentTemplate="{DataTemplate providers:ProvidersPaymentsPage}" />
+            <ShellContent Title="Cheques" ContentTemplate="{DataTemplate providers:ProvidersChecksPage}" />
+            <ShellContent Title="Consultas" ContentTemplate="{DataTemplate providers:ProvidersQueriesPage}" />
+            <ShellContent Title="Libro de IVA" ContentTemplate="{DataTemplate providers:ProvidersVatBookPage}" />
+        </Tab>
+
+        <Tab Title="Articulos">
+            <ShellContent Title="Articulos" ContentTemplate="{DataTemplate items:ItemsPage}" />
+            <ShellContent Title="Descuentos" ContentTemplate="{DataTemplate items:ItemsDiscountsPage}" />
+            <ShellContent Title="Marcas" ContentTemplate="{DataTemplate items:ItemsBrandsPage}" />
+            <ShellContent Title="Precios" ContentTemplate="{DataTemplate items:ItemsPricingPage}" />
+            <ShellContent Title="Listas" ContentTemplate="{DataTemplate items:ItemsListsPage}" />
+        </Tab>
+
+        <Tab x:Name="ConfigurationTab" Title="Configuración">
+            <ShellContent Title="Configuración" ContentTemplate="{DataTemplate configurations:ConfigurationPage}" />
+        </Tab>
+    </TabBar>
+
+    <Shell.FlyoutFooter>
+        <messages:MessagesPage />
+    </Shell.FlyoutFooter>
+
+</Shell>

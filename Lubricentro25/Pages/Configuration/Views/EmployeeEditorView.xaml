@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Lubricentro25.Pages.Configuration.Views.EmployeeEditorView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Lubricentro25.Pages.Configuration.Views"
+    x:DataType="local:EmployeeEditorViewModel">
+    <Border
+        Grid.Row="1"
+        Grid.Column="0"
+        Margin="30,0"
+        StrokeShape="RoundRectangle 20"
+        StrokeThickness="2">
+        <Border.Stroke>
+            <RadialGradientBrush Center="1,1" Radius="1">
+                <GradientStop Offset="1" Color="White" />
+                <GradientStop Offset="0" Color="Orange" />
+            </RadialGradientBrush>
+        </Border.Stroke>
+        <Border.Shadow>
+            <Shadow Brush="black" Offset="10,10" />
+        </Border.Shadow>
+
+        <Grid RowDefinitions="*,2*,0.5*">
+            <Border
+                Margin="10"
+                HorizontalOptions="CenterAndExpand"
+                StrokeShape="RoundRectangle 20"
+                StrokeThickness="2">
+                <Border.Stroke>
+                    <RadialGradientBrush Center="1,1" Radius="1">
+                        <GradientStop Offset="1" Color="White" />
+                        <GradientStop Offset="0" Color="Orange" />
+                    </RadialGradientBrush>
+                </Border.Stroke>
+                <Image Aspect="Fill" Source="{Binding Employee.ImagePath}" />
+            </Border>
+
+            <VerticalStackLayout
+                Grid.Row="1"
+                Padding="10"
+                HorizontalOptions="FillAndExpand"
+                Spacing="10">
+
+                <Button Command="{Binding ChangeImageCommand}" Text="Seleccionar Imágen" />
+                <Label Text="Nombre:" />
+                <Entry Placeholder="Nombre" Text="{Binding Employee.FirstName}" />
+                <Label Text="Apellido:" />
+                <Entry Placeholder="Apellido" Text="{Binding Employee.LastName}" />
+                <Label Text="Email" />
+                <Entry Placeholder="Email" Text="{Binding Employee.Email}" />
+                <Picker
+                    Title="Rol"
+                    ItemsSource="{Binding Rols}"
+                    SelectedItem="{Binding Employee.Rol}" />
+            </VerticalStackLayout>
+            <HorizontalStackLayout
+                Grid.Row="2"
+                HorizontalOptions="Center"
+                Spacing="30"
+                VerticalOptions="Center">
+                <Button Command="{Binding AceptCommand}" Text="Aceptar" />
+                <Button Command="{Binding CancelCommand}" Text="Cancelar" />
+            </HorizontalStackLayout>
+        </Grid>
+
+
+    </Border>
+</ContentView>

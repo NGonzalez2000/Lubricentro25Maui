@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Lubricentro25.Pages.Configuration.EmployeeConfigurationPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:c="clr-namespace:Lubricentro25.Converters"
+    xmlns:models="clr-namespace:Lubricentro25.Models"
+    xmlns:v="clr-namespace:Lubricentro25.Pages.Configuration.Views"
+    xmlns:vmconfiguration="clr-namespace:Lubricentro25.ViewModels.Configurations"
+    Title="EmployeeConfigurationPage"
+    x:DataType="vmconfiguration:EmployeeConfigurationViewModel">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <c:InvertBoolConverter x:Key="InvertBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid
+        Padding="30"
+        ColumnDefinitions="6*,1.5*"
+        RowDefinitions="70,*">
+        <Border
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="30,0"
+            Padding="30,0"
+            StrokeShape="RoundRectangle 20"
+            StrokeThickness="2"
+            VerticalOptions="Center">
+            <Border.Stroke>
+                <RadialGradientBrush Center="1,1" Radius="1">
+                    <GradientStop Offset="1" Color="White" />
+                    <GradientStop Offset="0" Color="Orange" />
+                </RadialGradientBrush>
+            </Border.Stroke>
+            <Border.Shadow>
+                <Shadow Brush="black" Offset="10,10" />
+            </Border.Shadow>
+            <Grid RowDefinitions="*,auto">
+
+                <HorizontalStackLayout
+                    Padding="5"
+                    HeightRequest="44"
+                    HorizontalOptions="Fill"
+                    Spacing="20">
+                    <Button
+                        Command="{Binding NewEmployeeCommand}"
+                        IsEnabled="{Binding IsEnable}"
+                        Text="Nuevo" />
+                    <Button
+                        Command="{Binding EditEmployeeCommand}"
+                        IsEnabled="{Binding IsEnable}"
+                        Text="Editar" />
+                    <Button
+                        Command="{Binding DeleteEmployeeCommand}"
+                        IsEnabled="{Binding IsEnable}"
+                        Text="Eliminar" />
+                </HorizontalStackLayout>
+                <SearchBar
+                    x:Name="searchBar"
+                    Margin="5"
+                    HorizontalOptions="End"
+                    Placeholder="Nombre"
+                    SearchCommand="{Binding SearchCommand}"
+                    SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
+                    WidthRequest="200" />
+            </Grid>
+        </Border>
+        <Border
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="30,0"
+            StrokeShape="RoundRectangle 20"
+            StrokeThickness="2">
+            <Border.Stroke>
+                <RadialGradientBrush Center="1,1" Radius="1">
+                    <GradientStop Offset="1" Color="White" />
+                    <GradientStop Offset="0" Color="Orange" />
+                </RadialGradientBrush>
+            </Border.Stroke>
+            <Border.Shadow>
+                <Shadow Brush="black" Offset="10,10" />
+            </Border.Shadow>
+            <ScrollView
+                HorizontalOptions="FillAndExpand"
+                IsEnabled="{Binding IsEnable}"
+                Orientation="Vertical"
+                VerticalOptions="FillAndExpand">
+                <CollectionView
+                    x:Name="EmployeesCollection"
+                    IsEnabled="{Binding IsEnable}"
+                    ItemSizingStrategy="MeasureFirstItem"
+                    ItemsSource="{Binding Employees}"
+                    SelectedItem="{Binding SelectedEmployee}"
+                    SelectionMode="Single">
+                    <CollectionView.ItemsLayout>
+
+                        <GridItemsLayout
+                            Orientation="Vertical"
+                            Span="4"
+                            VerticalItemSpacing="5" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Employee">
+                            <Border
+                                BackgroundColor="{AppThemeBinding Light={StaticResource CardBackgroundLight},
+                                                                  Dark={StaticResource CardBackgroundDark}}"
+                                HeightRequest="270"
+                                Stroke="{AppThemeBinding Light={StaticResource Black},
+                                                         Dark={StaticResource White}}"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="2"
+                                VerticalOptions="Center"
+                                WidthRequest="240">
+                                <Grid RowDefinitions="200,*" RowSpacing="10">
+                                    <Image
+                                        Aspect="AspectFill"
+                                        HeightRequest="180"
+                                        Source="{Binding ImagePath}"
+                                        VerticalOptions="Center"
+                                        WidthRequest="180" />
+                                    <VerticalStackLayout Grid.Row="1" VerticalOptions="Start">
+                                        <Label HorizontalOptions="Center" Text="{Binding FullName, StringFormat='Nombre: {0}'}" />
+                                        <Label
+                                            HorizontalOptions="Center"
+                                            LineBreakMode="TailTruncation"
+                                            Text="{Binding Rol, StringFormat='Rol: {0}'}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+        </Border>
+
+        <v:EmployeeEditorView
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            BindingContext="{Binding EmployeeEditorViewModel}"
+            IsEnabled="{Binding IsEnable}" />
+    </Grid>
+</ContentPage>
