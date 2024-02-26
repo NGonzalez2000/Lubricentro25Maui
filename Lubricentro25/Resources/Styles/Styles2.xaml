@@ -1,30 +1,27 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
-<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:c="clr-namespace:Lubricentro25.Controls">
 
     <Style ApplyToDerivedTypes="True" TargetType="Shell">
-        <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={StaticResource PrimaryDarkHue}, Dark={StaticResource PrimaryLightHue}}" />
-        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Light={StaticResource FontColorLight}, Dark={StaticResource FontColorDark}}" />
-        <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Light={StaticResource FontColorLight}, Dark={StaticResource FontColorDark}}" />
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={StaticResource PrimaryHueLight}}" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Light={StaticResource BackgroundLight}}" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Light={StaticResource BackgroundLight}}" />
     </Style>
+
 
     <Style ApplyToDerivedTypes="True" TargetType="ContentPage">
-        <Setter Property="Background">
-            <Setter.Value>
-                <LinearGradientBrush EndPoint="0,1">
-                    <GradientStop Offset="0" Color="{AppThemeBinding Light={StaticResource NeutralLighter}, Dark={StaticResource DarkBg1}}" />
-                    <GradientStop Offset="1" Color="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}" />
-                </LinearGradientBrush>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource BackgroundLight}}" />
     </Style>
     <Style TargetType="Border">
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BackgroundLight}}" />
     </Style>
 
-    <Style TargetType="Button">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Text_Light}}" />
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource PrimaryDarkHue}, Dark={StaticResource SecondaryLightHue}}" />
+    <Style x:Key="PrimaryButton" TargetType="Button">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource BackgroundLight}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource PrimaryHueLight}}" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="BorderWidth" Value="0" />
@@ -36,13 +33,18 @@
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource NeutralDarker}, Dark={StaticResource NeutralLighter}}" />
-                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource NeutralLighter}, Dark={StaticResource Neutral}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource ForegroundLight}}" />
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SecondaryForegroundLight}}" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="PointerOver" />
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
+    </Style>
+
+    <Style TargetType="c:HyperLink">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryHueLight}}" />
+        <Setter Property="TextDecorations" Value="Underline" />
     </Style>
 </ResourceDictionary>

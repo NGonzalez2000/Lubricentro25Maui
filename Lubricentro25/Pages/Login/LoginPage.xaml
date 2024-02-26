@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Lubricentro25.Pages.Login.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:c="clr-namespace:Lubricentro25.Controls"
+    xmlns:login="clr-namespace:Lubricentro25.ViewModels.Login"
+    Title="LoginPage"
+    x:DataType="login:LoginViewModel">
+    <Border
+        Margin="0,20"
+        Padding="30,30,30,60"
+        Background="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}}"
+        HorizontalOptions="Center"
+        StrokeShape="RoundRectangle 50">
+        <Grid RowDefinitions="auto, *,*,auto" VerticalOptions="Center">
+            <Label
+                Margin="0,0,0,100"
+                FontSize="Header"
+                HorizontalOptions="Center"
+                Text="Iniciar Sesion" />
+            <VerticalStackLayout Grid.Row="1" Spacing="30">
+                <Entry
+                    Placeholder="Usuario"
+                    ReturnType="Next"
+                    Text="{Binding UserName}" />
+                <Entry
+                    IsPassword="True"
+                    Placeholder="Contraseña"
+                    ReturnCommand="{Binding LoginCommand}"
+                    Text="{Binding Password}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Row="2" Spacing="30">
+                <c:HyperLink
+                    Command="{Binding PasswordRecoveryCommand}"
+                    HorizontalOptions="End"
+                    Text="Recuperar Contraseña" />
+
+                <Button
+                    x:Name="loginButton"
+                    Command="{Binding LoginCommand}"
+                    Text="Login" />
+            </VerticalStackLayout>
+            <Label
+                Grid.Row="3"
+                Margin="0,20"
+                LineBreakMode="WordWrap"
+                Text="{Binding Error}"
+                TextColor="{StaticResource Warning}" />
+        </Grid>
+    </Border>
+</ContentPage>

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using Lubricentro25.Api;
 
 namespace Lubricentro25.Pages.Configuration.Views;
 
@@ -17,15 +18,18 @@ public partial class EmployeeEditorViewModel : ObservableObject
     bool isEnable;
 
     [ObservableProperty]
-    List<string> rols;
+    List<Role> roles;
 
     TaskCompletionSource<Employee?>? employeeTaskCompletionSource;
-    public EmployeeEditorViewModel()
+    private readonly ILubricentroApiClient _clientApi;
+
+    public EmployeeEditorViewModel(ILubricentroApiClient clientApi)
     {
         IsEnable = false;
         Employee = new();
         Image = ImageSource.FromFile(Employee.ImagePath);
-        rols = ["Admin", "Master", "Empleado"];
+        Roles = [];
+        _clientApi = clientApi;
     }
 
     [RelayCommand]
@@ -56,7 +60,19 @@ public partial class EmployeeEditorViewModel : ObservableObject
         employeeTaskCompletionSource?.SetResult(Employee);
         Employee = new();
         IsEnable = false;
+    }
 
+    private async Task LoadRoles()
+    {
+        var response = await _clientApi.GetAllRoles();
+        if (response is null)
+        {
+            Roles = [];
+            await Shell.Current.DisplayAlert("Error", "No se pudieron cargar los roles.", "Ok");
+            return;
+        }
+
+        Roles = new(response);
     }
     public async Task<FileResult?> PickAndShow(PickOptions options)
     {
@@ -83,18 +99,20 @@ public partial class EmployeeEditorViewModel : ObservableObject
     }
 
     //esta funcion deberia ser esperada por la pagina
-    public Task<Employee?> CreateEmployee()
+    public async Task<Employee?> CreateEmployee()
     {
+        await LoadRoles();
         IsEnable = true;
         employeeTaskCompletionSource = new();
-        return employeeTaskCompletionSource.Task;
+        return await employeeTaskCompletionSource.Task;
     }
 
-    public Task<Employee?> UpdateEmployee(Employee employee)
+    public async Task<Employee?> UpdateEmployee(Employee employee)
     {
+        await LoadRoles();
         IsEnable = true;
         Employee = new(employee); 
         employeeTaskCompletionSource = new();
-        return employeeTaskCompletionSource.Task;
+        return await employeeTaskCompletionSource.Task;
     }
 }

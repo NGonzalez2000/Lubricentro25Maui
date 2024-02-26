@@ -8,7 +8,7 @@ public partial class Employee: ObservableObject
         LastName = employee.LastName;
         Cuil = employee.Cuil;
         Email = employee.Email;
-        Rol = employee.Rol;
+        Role = employee.Role;
         imagePath = employee.imagePath;
     }
     public Employee()
@@ -17,11 +17,11 @@ public partial class Employee: ObservableObject
         LastName = string.Empty;
         Cuil = string.Empty;
         Email = string.Empty;
-        Rol = string.Empty;
+        Role = new();
         imagePath = "person.png";
     }
     
-    public readonly Guid Id;
+    public string Id { get; set; } = string.Empty;
     [ObservableProperty]
     string firstName;
     [ObservableProperty]
@@ -33,7 +33,7 @@ public partial class Employee: ObservableObject
     [ObservableProperty]
     string? imagePath;
     [ObservableProperty]
-    string rol;
+    Role role;
     public string FullName => $"{FirstName} {LastName}";
 
 }

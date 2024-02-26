@@ -17,26 +17,18 @@
     </ContentPage.Resources>
 
     <Grid
-        Padding="30"
+        Padding="20,0"
+        BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}}"
         ColumnDefinitions="6*,1.5*"
         RowDefinitions="70,*">
         <Border
             Grid.Row="0"
             Grid.Column="0"
-            Margin="30,0"
-            Padding="30,0"
-            StrokeShape="RoundRectangle 20"
+            Background="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}}"
             StrokeThickness="2"
             VerticalOptions="Center">
-            <Border.Stroke>
-                <RadialGradientBrush Center="1,1" Radius="1">
-                    <GradientStop Offset="1" Color="White" />
-                    <GradientStop Offset="0" Color="Orange" />
-                </RadialGradientBrush>
-            </Border.Stroke>
-            <Border.Shadow>
-                <Shadow Brush="black" Offset="10,10" />
-            </Border.Shadow>
+
+
             <Grid RowDefinitions="*,auto">
 
                 <HorizontalStackLayout
@@ -70,18 +62,7 @@
         <Border
             Grid.Row="1"
             Grid.Column="0"
-            Margin="30,0"
-            StrokeShape="RoundRectangle 20"
             StrokeThickness="2">
-            <Border.Stroke>
-                <RadialGradientBrush Center="1,1" Radius="1">
-                    <GradientStop Offset="1" Color="White" />
-                    <GradientStop Offset="0" Color="Orange" />
-                </RadialGradientBrush>
-            </Border.Stroke>
-            <Border.Shadow>
-                <Shadow Brush="black" Offset="10,10" />
-            </Border.Shadow>
             <ScrollView
                 HorizontalOptions="FillAndExpand"
                 IsEnabled="{Binding IsEnable}"
@@ -125,7 +106,7 @@
                                         <Label
                                             HorizontalOptions="Center"
                                             LineBreakMode="TailTruncation"
-                                            Text="{Binding Rol, StringFormat='Rol: {0}'}" />
+                                            Text="{Binding Role.Name, StringFormat='Role: {0}'}" />
                                     </VerticalStackLayout>
                                 </Grid>
                             </Border>
@@ -134,7 +115,6 @@
                 </CollectionView>
             </ScrollView>
         </Border>
-
         <v:EmployeeEditorView
             Grid.RowSpan="2"
             Grid.Column="1"

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using Lubricentro25.Api;
 using Lubricentro25.Pages.Configuration.Views;
 using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
@@ -19,12 +20,15 @@ public partial class EmployeeConfigurationViewModel : ObservableObject
 
     [ObservableProperty]
     EmployeeEditorViewModel employeeEditorViewModel;
-    public EmployeeConfigurationViewModel()
+    private readonly ILubricentroApiClient _apiClient;
+
+    public EmployeeConfigurationViewModel(ILubricentroApiClient apiClient, EmployeeEditorViewModel employeeEditorViewModel)
     {
+        EmployeeEditorViewModel = employeeEditorViewModel;
         IsEnable = true;
-        employeeEditorViewModel = new();
         employees = [];
         employeesList = [];
+        _apiClient = apiClient;
     }
     
     [RelayCommand]
@@ -34,6 +38,7 @@ public partial class EmployeeConfigurationViewModel : ObservableObject
         var employee = await EmployeeEditorViewModel.CreateEmployee();
         if (employee != null)
         {
+            await _apiClient.CreateEmployee(employee);
             Employees.Add(employee);
             employeesList.Add(employee);
         }

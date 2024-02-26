@@ -5,7 +5,7 @@
     <!--  Note: For Android please see also Platforms\Android\Resources\values\colors.xml  -->
 
     <!--  Backgrounds  -->
-    <Color x:Key="BackgroundLight">whitesmoke</Color>
+    <Color x:Key="BackgroundLight">#F5F5F5</Color>
     <Color x:Key="BackgroundDark">#212121</Color>
 
     <!--  Hues  -->

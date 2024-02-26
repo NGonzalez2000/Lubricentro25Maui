@@ -4,9 +4,9 @@ namespace Lubricentro25.Pages.Configuration;
 
 public partial class EmployeeConfigurationPage : ContentPage
 {
-	public EmployeeConfigurationPage()
+	public EmployeeConfigurationPage(EmployeeConfigurationViewModel vm)
 	{
 		InitializeComponent();
-		BindingContext = new EmployeeConfigurationViewModel();
+		BindingContext = vm;
 	}
 }
