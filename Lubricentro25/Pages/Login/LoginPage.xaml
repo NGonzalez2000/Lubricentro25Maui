@@ -18,7 +18,8 @@
                 Margin="0,0,0,100"
                 FontSize="Header"
                 HorizontalOptions="Center"
-                Text="Iniciar Sesion" />
+                Text="Iniciar Sesion"
+                TextColor="{AppThemeBinding Light={StaticResource PrimaryHueLight}}" />
             <VerticalStackLayout Grid.Row="1" Spacing="30">
                 <Entry
                     Placeholder="Usuario"
@@ -38,8 +39,10 @@
 
                 <Button
                     x:Name="loginButton"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryHueLight}}"
                     Command="{Binding LoginCommand}"
-                    Text="Login" />
+                    Text="Login"
+                    TextColor="{AppThemeBinding Light=White}" />
             </VerticalStackLayout>
             <Label
                 Grid.Row="3"

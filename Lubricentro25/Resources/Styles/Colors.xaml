@@ -5,15 +5,19 @@
     <!--  Note: For Android please see also Platforms\Android\Resources\values\colors.xml  -->
 
     <Color x:Key="BackgroundLight">#fff</Color>
-    <Color x:Key="SecondaryBackgroundLight">#c3cde4</Color>
+    <Color x:Key="SecondaryBackgroundLight">#f3f7ff</Color>
+    <Color x:Key="TertiaryBackgoundLight">#c3cde4</Color>
     <Color x:Key="PrimaryHueLight">#604be8</Color>
-    <Color x:Key="SecondaryHueLight">#06d6a0</Color>
-    <Color x:Key="TertiaryHueLight">#ff9f04</Color>
+    <Color x:Key="SecondaryHueLight">#06D7A0</Color>
+    <Color x:Key="TertiaryHueLight">#FF9A01</Color>
     <Color x:Key="MarkerLight">#4b76e6</Color>
 
-    <Color x:Key="ForegroundLight">#302d3d</Color>
-    <Color x:Key="SecondaryForegroundLight">#969db6</Color>
-    <Color x:Key="Warning">#ff595e</Color>
+    <Color x:Key="ForegroundLight">#323232</Color>
+    <Color x:Key="SecondaryForegroundLight">#eaeef7</Color>
+    <Color x:Key="Warning">#F83940</Color>
+
+
+    <Color x:Key="ForegroundDark">#F8F8F6</Color>
 
     <!--<SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}" />
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}" />

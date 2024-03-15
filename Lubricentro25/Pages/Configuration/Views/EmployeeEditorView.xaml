@@ -3,41 +3,71 @@
     x:Class="Lubricentro25.Pages.Configuration.Views.EmployeeEditorView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Lubricentro25.Controls"
     xmlns:local="clr-namespace:Lubricentro25.Pages.Configuration.Views"
     x:DataType="local:EmployeeEditorViewModel">
 
 
-    <Grid RowDefinitions="*,2*,0.5*">
-        <Border Margin="10" HorizontalOptions="CenterAndExpand">
-            <Image Aspect="Fill" Source="{Binding Employee.ImagePath}" />
+    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}}" RowDefinitions="auto,*,2*,0.5*">
+        <Border
+            Margin="10"
+            Padding="10,5"
+            Background="{AppThemeBinding Light={StaticResource PrimaryHueLight}}"
+            StrokeShape="RoundRectangle, 5">
+
+            <Label
+                FontAttributes="Bold"
+                Text="Editor De Empleado"
+                TextColor="{AppThemeBinding Light=White}"
+                VerticalOptions="Center" />
+        </Border>
+
+        <Border
+            Grid.Row="1"
+            Margin="10"
+            HorizontalOptions="Fill">
+            <Image Aspect="AspectFit" Source="{Binding Employee.ImagePath, FallbackValue=person.png}" />
         </Border>
 
         <VerticalStackLayout
-            Grid.Row="1"
+            Grid.Row="2"
             Padding="10"
             HorizontalOptions="FillAndExpand"
             Spacing="10">
-
-            <Button Command="{Binding ChangeImageCommand}" Text="Seleccionar Imágen" />
+            <Button
+                BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryHueLight}}"
+                Command="{Binding ChangeImageCommand}"
+                FontAttributes="Bold"
+                Text="Seleccionar Imágen"
+                TextColor="{AppThemeBinding Light=White}" />
             <Label Text="Nombre:" />
             <Entry Placeholder="Nombre" Text="{Binding Employee.FirstName}" />
             <Label Text="Apellido:" />
             <Entry Placeholder="Apellido" Text="{Binding Employee.LastName}" />
             <Label Text="Email" />
-            <Entry Placeholder="Email" Text="{Binding Employee.Email}" />
+            <Entry
+                IsEnabled="{Binding IsCreating}"
+                Placeholder="Email"
+                Text="{Binding Employee.Email}" />
             <Picker
                 Title="Rol"
                 ItemDisplayBinding="{Binding Name}"
                 ItemsSource="{Binding Roles}"
-                SelectedItem="{Binding Employee.Role}" />
+                SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+                SelectedItem="{Binding Employee.Role, Mode=TwoWay}" />
         </VerticalStackLayout>
-        <HorizontalStackLayout
-            Grid.Row="2"
-            HorizontalOptions="Center"
-            Spacing="30"
-            VerticalOptions="Center">
-            <Button Command="{Binding AceptCommand}" Text="Aceptar" />
-            <Button Command="{Binding CancelCommand}" Text="Cancelar" />
-        </HorizontalStackLayout>
+        <Border
+            Grid.Row="3"
+            BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgoundLight}}"
+            StrokeThickness="0">
+            <HorizontalStackLayout
+                HorizontalOptions="Center"
+                Spacing="30"
+                VerticalOptions="Center">
+                <Button Command="{Binding AceptCommand}" Text="Aceptar" />
+                <Button Command="{Binding CancelCommand}" Text="Cancelar" />
+            </HorizontalStackLayout>
+
+        </Border>
     </Grid>
 </ContentView>

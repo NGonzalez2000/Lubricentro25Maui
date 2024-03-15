@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:c="clr-namespace:Lubricentro25.Converters"
+    xmlns:cards="clr-namespace:Lubricentro25.Controls.Cards"
     xmlns:models="clr-namespace:Lubricentro25.Models"
     xmlns:v="clr-namespace:Lubricentro25.Pages.Configuration.Views"
     xmlns:vmconfiguration="clr-namespace:Lubricentro25.ViewModels.Configurations"
@@ -17,52 +18,60 @@
     </ContentPage.Resources>
 
     <Grid
-        Padding="20,0"
-        BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}}"
+        Margin="0,20,0,0"
+        Padding="20,0,0,0"
+        BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}}"
         ColumnDefinitions="6*,1.5*"
         RowDefinitions="70,*">
         <Border
             Grid.Row="0"
             Grid.Column="0"
-            Background="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}}"
-            StrokeThickness="2"
+            Background="{AppThemeBinding Light={StaticResource BackgroundLight}}"
             VerticalOptions="Center">
 
 
             <Grid RowDefinitions="*,auto">
 
                 <HorizontalStackLayout
-                    Padding="5"
+                    Padding="5,5,5,0"
                     HeightRequest="44"
                     HorizontalOptions="Fill"
                     Spacing="20">
                     <Button
+                        BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryHueLight}}"
                         Command="{Binding NewEmployeeCommand}"
                         IsEnabled="{Binding IsEnable}"
-                        Text="Nuevo" />
+                        Text="Nuevo"
+                        TextColor="White" />
                     <Button
+                        BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryHueLight}}"
                         Command="{Binding EditEmployeeCommand}"
                         IsEnabled="{Binding IsEnable}"
-                        Text="Editar" />
+                        Text="Editar"
+                        TextColor="White" />
                     <Button
                         Command="{Binding DeleteEmployeeCommand}"
                         IsEnabled="{Binding IsEnable}"
-                        Text="Eliminar" />
+                        Style="{StaticResource WarningButton}"
+                        Text="Eliminar"
+                        TextColor="White" />
                 </HorizontalStackLayout>
                 <SearchBar
                     x:Name="searchBar"
                     Margin="5"
                     HorizontalOptions="End"
+                    IsEnabled="{Binding IsEnable}"
                     Placeholder="Nombre"
                     SearchCommand="{Binding SearchCommand}"
                     SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
                     WidthRequest="200" />
             </Grid>
+
         </Border>
         <Border
             Grid.Row="1"
             Grid.Column="0"
-            StrokeThickness="2">
+            StrokeThickness="0">
             <ScrollView
                 HorizontalOptions="FillAndExpand"
                 IsEnabled="{Binding IsEnable}"
@@ -70,11 +79,32 @@
                 VerticalOptions="FillAndExpand">
                 <CollectionView
                     x:Name="EmployeesCollection"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}}"
                     IsEnabled="{Binding IsEnable}"
                     ItemSizingStrategy="MeasureFirstItem"
                     ItemsSource="{Binding Employees}"
                     SelectedItem="{Binding SelectedEmployee}"
                     SelectionMode="Single">
+                    <CollectionView.Header>
+                        <Grid
+                            Padding="0,5"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}}"
+                            ColumnDefinitions="*,3*"
+                            RowDefinitions="*,*">
+
+                            <BoxView
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                Margin="0,5"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgoundLight}}"
+                                HeightRequest="2" />
+                            <Label
+                                FontAttributes="Bold"
+                                HorizontalOptions="Center"
+                                Text="Empleados" />
+
+                        </Grid>
+                    </CollectionView.Header>
                     <CollectionView.ItemsLayout>
 
                         <GridItemsLayout
@@ -84,32 +114,7 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:Employee">
-                            <Border
-                                BackgroundColor="{AppThemeBinding Light={StaticResource CardBackgroundLight},
-                                                                  Dark={StaticResource CardBackgroundDark}}"
-                                HeightRequest="270"
-                                Stroke="{AppThemeBinding Light={StaticResource Black},
-                                                         Dark={StaticResource White}}"
-                                StrokeShape="RoundRectangle 10"
-                                StrokeThickness="2"
-                                VerticalOptions="Center"
-                                WidthRequest="240">
-                                <Grid RowDefinitions="200,*" RowSpacing="10">
-                                    <Image
-                                        Aspect="AspectFill"
-                                        HeightRequest="180"
-                                        Source="{Binding ImagePath}"
-                                        VerticalOptions="Center"
-                                        WidthRequest="180" />
-                                    <VerticalStackLayout Grid.Row="1" VerticalOptions="Start">
-                                        <Label HorizontalOptions="Center" Text="{Binding FullName, StringFormat='Nombre: {0}'}" />
-                                        <Label
-                                            HorizontalOptions="Center"
-                                            LineBreakMode="TailTruncation"
-                                            Text="{Binding Role.Name, StringFormat='Role: {0}'}" />
-                                    </VerticalStackLayout>
-                                </Grid>
-                            </Border>
+                            <cards:EmployeeCard />
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

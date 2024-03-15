@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Lubricentro25.Api;
+using Lubricentro25.Api.Interface;
 using Lubricentro25.Pages.Configuration.Views;
-using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
 
 namespace Lubricentro25.ViewModels.Configurations;
@@ -20,29 +19,47 @@ public partial class EmployeeConfigurationViewModel : ObservableObject
 
     [ObservableProperty]
     EmployeeEditorViewModel employeeEditorViewModel;
-    private readonly ILubricentroApiClient _apiClient;
+    private readonly IEmployeeEndpoint _employeeClient;
 
-    public EmployeeConfigurationViewModel(ILubricentroApiClient apiClient, EmployeeEditorViewModel employeeEditorViewModel)
+    public EmployeeConfigurationViewModel(IEmployeeEndpoint employeeEndpoint, EmployeeEditorViewModel employeeEditorViewModel)
     {
         EmployeeEditorViewModel = employeeEditorViewModel;
         IsEnable = true;
         employees = [];
         employeesList = [];
-        _apiClient = apiClient;
+        _employeeClient = employeeEndpoint;
     }
     
+    [RelayCommand]
+    private async Task Load()
+    {
+        var apiResponse = await _employeeClient.GetAllEmployees();
+        if(!apiResponse.IsSuccess)
+        {
+            await Shell.Current.DisplayAlert("Error", apiResponse.ErrorMessage, "Ok");
+            return;
+        }
+        employeesList = new(apiResponse.ResponseContent);
+        Employees = new(employeesList);
+    }
+
     [RelayCommand]
     async Task NewEmployee()
     {
         IsEnable = false;
-        var employee = await EmployeeEditorViewModel.CreateEmployee();
+        var employee = await EmployeeEditorViewModel.NewEmployee();
+        IsEnable = true;
         if (employee != null)
         {
-            await _apiClient.CreateEmployee(employee);
-            Employees.Add(employee);
-            employeesList.Add(employee);
+            var response = await _employeeClient.CreateEmployee(employee);
+            if (!response.IsSuccess)
+            {
+                await Shell.Current.DisplayAlert("Error", response.ErrorMessage, "Ok");
+                return;
+            }
+            employeesList.Add(response.ResponseContent.First());
+            Search("");
         }
-        IsEnable = true;
     }
     [RelayCommand]
     async Task EditEmployee()
@@ -51,24 +68,49 @@ public partial class EmployeeConfigurationViewModel : ObservableObject
         
         IsEnable = false;
         
-        var employee = await EmployeeEditorViewModel.UpdateEmployee(SelectedEmployee!);
+        var employee = await EmployeeEditorViewModel.EditEmployee(SelectedEmployee!);
+        IsEnable = true;
         if (employee != null)
         {
-            int indx = Employees.IndexOf(SelectedEmployee!);
+            var response = await _employeeClient.UpdateEmployee(employee);
+            
+            if(!response.IsSuccess)
+            {
+                await Shell.Current.DisplayAlert("Error", response.ErrorMessage,"Ok");
+                return;
+            }
+         
+            int indx = employeesList.IndexOf(SelectedEmployee!);
             if(indx >= 0)
             {
-                Employees[indx] = employee;
-                SelectedEmployee = employee;
+                employeesList[indx] = new(response.ResponseContent.First());
+                Search("");
             }
         }
         
-        IsEnable = true;
     }
     [RelayCommand]
     async Task DeleteEmployee()
     {
         if (!await CheckIfSelected()) return;
 
+        ;
+
+        if (!await Shell.Current.DisplayAlert("Eliminar Empleado", $"Seguro desea eliminar al empleado: {SelectedEmployee!.FullName} ?", "Aceptar", "Cancelar")) return;
+        var response = await _employeeClient.DeleteEmployee(SelectedEmployee.Id);
+
+        if(!response.IsSuccess)
+        {
+            await Shell.Current.DisplayAlert("Error", response.ErrorMessage, "Ok");
+            return;
+        }
+
+        int indx = employeesList.IndexOf(SelectedEmployee);
+        if (indx >= 0)
+        {
+            employeesList.Remove(employeesList[indx]);
+            Search("");
+        }
         Employees.Remove(SelectedEmployee!);
     }
     [RelayCommand]

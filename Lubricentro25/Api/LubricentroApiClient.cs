@@ -1,6 +1,7 @@
-﻿using Lubricentro25.Api.Contracts.Employee;
-using Lubricentro25.Api.Contracts.Error;
+﻿using Lubricentro25.Api.Contracts.Error;
 using Lubricentro25.Api.Contracts.Login;
+using Lubricentro25.Api.Contracts.Roles;
+using MapsterMapper;
 using System.Text;
 using System.Text.Json;
 
@@ -10,8 +11,10 @@ public class LubricentroApiClient : ILubricentroApiClient
 {
     private readonly HttpClient _httpClient;
     private readonly JsonSerializerOptions _jsonOptions;
-    public LubricentroApiClient(LubricentroClientOptions lubricentroClientOptions)
+    private readonly IMapper _mapper;
+    public LubricentroApiClient(IMapper mapper, LubricentroClientOptions lubricentroClientOptions)
     {
+        _mapper = mapper;
         _httpClient = new()
         {
             BaseAddress = new Uri(lubricentroClientOptions.ApiBaseAddress)
@@ -22,13 +25,11 @@ public class LubricentroApiClient : ILubricentroApiClient
         };
     }
 
-    private static string Serialize(object request)
+    
+    private static StringContent CreateContent(object request)
     {
-        return JsonSerializer.Serialize(request);
-    }
-    private static StringContent CreateContent(string jsonString)
-    {
-        return new(jsonString, Encoding.UTF8, "application/json");
+        string json = JsonSerializer.Serialize(request);
+        return new(json, Encoding.UTF8, "application/json");
     }
 
     private T? Deserialize<T>(string responseContent)
@@ -36,12 +37,23 @@ public class LubricentroApiClient : ILubricentroApiClient
         return JsonSerializer.Deserialize<T>(responseContent, _jsonOptions);
     }
 
-    private async Task<HttpResponseMessage> Post(string url, StringContent content)
+    
+    
+    private async Task<HttpResponseMessage> DeleteAsync(string endpoint, object request)
+    {
+        HttpRequestMessage requestMessage = new(HttpMethod.Delete, endpoint)
+        {
+            Content = CreateContent(request)
+        };
+        return await _httpClient.SendAsync(requestMessage);
+    }
+
+    public async Task<ApiResponse> Delete(string endPoint, object request)
     {
         HttpResponseMessage response;
         try
         {
-            response = await _httpClient.PostAsync(url, content);
+            response = await DeleteAsync(endPoint, request);
         }
         catch (Exception)
         {
@@ -50,107 +62,155 @@ public class LubricentroApiClient : ILubricentroApiClient
             response = new()
             {
                 StatusCode = System.Net.HttpStatusCode.RequestTimeout,
-                Content = CreateContent(Serialize(er))
+                Content = CreateContent(er)
             };
-            
-            return response;
         }
-        return response;
-    }
-
-    public async Task<LoginResponse> Login(LoginRequest request)
-    {
-        var response = await Post("auth/login", CreateContent(Serialize(request)));
 
         if (response.IsSuccessStatusCode)
         {
-            var auth = Deserialize<AuthenticationResponse>(await response.Content.ReadAsStringAsync());
+            return new();
+        }
+        var error = Deserialize<ErrorResponse>(await response.Content.ReadAsStringAsync());
+
+        if (error is not null)
+        {
+            var key = error.Errors.Keys.First();
+            return new(error.Errors[key].First());
+        }
+        return new("Error al conectarse con el servidor\nCompruebe su coneccion a internet");
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"> output type</typeparam>
+    /// <typeparam name="U"> api request response type</typeparam>
+    /// <param name="endPoint"></param>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    public async Task<ApiResponse<T>> Post<T,U>(string endPoint, object request)
+    {
+        HttpResponseMessage response;
+        try
+        {
+            var content = CreateContent(request);
+            response = await _httpClient.PostAsync(endPoint, content);
+        }
+        catch (Exception)
+        {
+            ErrorResponse er = new("Exception", []);
+            er.Errors.Add("Unexpected", ["No se pudo establecer coneccion con el servidor."]);
+            response = new()
+            {
+                StatusCode = System.Net.HttpStatusCode.RequestTimeout,
+                Content = CreateContent(er)
+            };
+        }
+
+        if(response.IsSuccessStatusCode)
+        {
+            U? item = Deserialize<U>(await response.Content.ReadAsStringAsync());
+            if(item is null)
+            {
+                return new("Error al descomprimir la respuesta del servidor");
+            }
+            T temp = _mapper.Map<T>(item);
+            return new([temp]);
+        }
+        var error = Deserialize<ErrorResponse>(await response.Content.ReadAsStringAsync());
+
+        if (error is not null)
+        {
+            var key = error.Errors.Keys.First();
+            return new(error.Errors[key].First());
+        }
+        return new("Error al conectarse con el servidor\nCompruebe su coneccion a internet");
+    }
+    public async Task<ApiResponse<T>> Get<T,U>(string endPoint)
+    {
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.GetAsync(endPoint);
+        }
+        catch (Exception)
+        {
+            ErrorResponse er = new("Exception", []);
+            er.Errors.Add("Unexpected", ["No se pudo establecer coneccion con el servidor."]);
+            response = new()
+            {
+                StatusCode = System.Net.HttpStatusCode.RequestTimeout,
+                Content = CreateContent(er)
+            };
+        }
+        if (response.IsSuccessStatusCode)
+        {
+            IEnumerable<U>? list = Deserialize<IEnumerable<U>>(await response.Content.ReadAsStringAsync());
+            if (list is null)
+            {
+                return new("Error al descomprimir la respuesta del servidor");
+            }
+
+            return new(_mapper.Map<IEnumerable<T>>(list));
+        }
+        var error = Deserialize<ErrorResponse>(await response.Content.ReadAsStringAsync());
+
+        if (error is not null)
+        {
+            var key = error.Errors.Keys.First();
+            return new(error.Errors[key].First());
+        }
+        return new("Error al conectarse con el servidor\nCompruebe su coneccion a internet");
+    }
+    public async Task<ApiResponse> Login(LoginRequest request)
+    {
+        var response = await Post<AuthenticationResponse, AuthenticationResponse>("auth/login", request);
+        if(response is null)
+        {
+            return new("Error al conectarse con el servidor\nCompruebe su coneccion a internet");
+        }
+
+        if (response.IsSuccess)
+        {
+            var auth = response.ResponseContent.First();
 
             if (auth is null)
             {
-                return new(false, "Comuniquese con el desarrollador, Error de login");
+                return new ("Comuniquese con el desarrollador, Error de login");
             }
-
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {auth.Token}");
-            return new(true, string.Empty);
+            return new();
         }
-        var str = await response.Content.ReadAsStringAsync();
-        var error = Deserialize<ErrorResponse>(await response.Content.ReadAsStringAsync());
-
-        if(error is not null)
-        {
-            var key = error.Errors.Keys.First();
-            var value = error.Errors[key].First();
-            return new(false, value);
-        }
-        return new(false, "Error al iniciar sesion\nCompruebe su coneccion a internet");
-
+        return new(response.ErrorMessage);
     }
 
-    public async Task<List<Role>?> GetAllRoles()
-    {
-        var response = await _httpClient.GetAsync("/role/getall");
-        var responseContent = await response.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<List<Role>>(responseContent, _jsonOptions);
-    }
+    //public async Task<ApiResponse<Role>> GetAllRoles()
+    //{
+    //    
+    //}
 
-    public Task<Role> CreateRole(Role role)
-    {
-        throw new NotImplementedException();
-    }
+    //public async Task<Role?> CreateRole(Role role)
+    //{
+    //    
 
-    public Task<Role> UpdateRole(Role role)
-    {
-        throw new NotImplementedException();
-    }
+    //}
 
-    public Task<Role> DeleteRole(string Id)
-    {
-        throw new NotImplementedException();
-    }
+    //public Task<Role> UpdateRole(Role role)
+    //{
+    //    throw new NotImplementedException();
+    //}
 
+    //public Task<Role> DeleteRole(string Id)
+    //{
+    //    throw new NotImplementedException();
+    //}
 
-    // EMPLOYEES //
-    public Task<List<Employee>> GetAllEmployees()
-    {
-        throw new NotImplementedException();
-    }
+   
 
-    public async Task<Employee?> CreateEmployee(Employee employee)
-    {
-        var request = new CreateEmployeeRequest(employee.Role.Id, employee.FirstName, employee.LastName, employee.Email);
+    //public async Task<ApiResponse<Employee>> CreateEmployee(Employee employee)
+    //{
+        
 
-        var response = await Post("/employee/create",CreateContent(Serialize(request)));
+    //}
 
-        if (response.IsSuccessStatusCode)
-        {
-            var responseContent = Deserialize<EmployeeResponse>(await response.Content.ReadAsStringAsync());
-            if(responseContent is not null)
-            {
-                return new()
-                {
-                    Id = responseContent.Id,
-                    FirstName = responseContent.FirstName,
-                    LastName = responseContent.LastName,
-                    Email = responseContent.Email,
-                    Role = new() { Id = responseContent.Id, Name = responseContent.RoleName }
-                };
-            }
-            
-
-        }
-
-        return null;
-
-    }
-
-    public Task<Employee> UpdateEmployee(Employee employee)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Employee> DeleteEmployee(string id)
-    {
-        throw new NotImplementedException();
-    }
 }

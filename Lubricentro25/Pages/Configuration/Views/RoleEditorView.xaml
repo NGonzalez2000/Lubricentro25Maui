@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Lubricentro25.Pages.Configuration.Views.RoleEditorView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:Lubricentro25.Models"
+    Title="RoleEditorView"
+    x:DataType="models:Role">
+    <Grid RowDefinitions="2*,0.5*">
+
+        <VerticalStackLayout
+            Grid.Row="1"
+            Padding="10"
+            HorizontalOptions="FillAndExpand"
+            Spacing="10">
+
+            <!--<Button Command="{Binding ChangeImageCommand}" Text="Seleccionar Imágen" />
+            <Label Text="Nombre:" />
+            <Entry Placeholder="Nombre" Text="{Binding Employee.FirstName}" />
+            <Label Text="Apellido:" />
+            <Entry Placeholder="Apellido" Text="{Binding Employee.LastName}" />
+            <Label Text="Email" />
+            <Entry Placeholder="Email" Text="{Binding Employee.Email}" />
+            <Picker
+                Title="Rol"
+                ItemDisplayBinding="{Binding Name}"
+                ItemsSource="{Binding Roles}"
+                SelectedItem="{Binding Employee.Role}" />-->
+        </VerticalStackLayout>
+        <HorizontalStackLayout
+            Grid.Row="2"
+            HorizontalOptions="Center"
+            Spacing="30"
+            VerticalOptions="Center">
+            <!--<Button Command="{Binding AceptCommand}" Text="Aceptar" />
+            <Button Command="{Binding CancelCommand}" Text="Cancelar" />-->
+        </HorizontalStackLayout>
+    </Grid>
+</ContentPage>

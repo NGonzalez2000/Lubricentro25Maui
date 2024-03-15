@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Lubricentro25.Api;
+using Lubricentro25.Api.Interface;
 
 namespace Lubricentro25.Pages.Configuration.Views;
 
@@ -18,18 +19,24 @@ public partial class EmployeeEditorViewModel : ObservableObject
     bool isEnable;
 
     [ObservableProperty]
+    bool isCreating;
+
+    [ObservableProperty]
+    int selectedIndex;
+
+    [ObservableProperty]
     List<Role> roles;
 
     TaskCompletionSource<Employee?>? employeeTaskCompletionSource;
-    private readonly ILubricentroApiClient _clientApi;
+    private readonly IRoleEndpoint _rolesApi;
 
-    public EmployeeEditorViewModel(ILubricentroApiClient clientApi)
+    public EmployeeEditorViewModel(IRoleEndpoint rolesApi)
     {
         IsEnable = false;
         Employee = new();
         Image = ImageSource.FromFile(Employee.ImagePath);
         Roles = [];
-        _clientApi = clientApi;
+        _rolesApi = rolesApi;
     }
 
     [RelayCommand]
@@ -58,21 +65,22 @@ public partial class EmployeeEditorViewModel : ObservableObject
     void Acept()
     {
         employeeTaskCompletionSource?.SetResult(Employee);
+        SelectedIndex = -1;
         Employee = new();
         IsEnable = false;
     }
 
     private async Task LoadRoles()
     {
-        var response = await _clientApi.GetAllRoles();
-        if (response is null)
+        var response = await _rolesApi.GetAllRoles();
+        if (!response.IsSuccess)
         {
             Roles = [];
-            await Shell.Current.DisplayAlert("Error", "No se pudieron cargar los roles.", "Ok");
+            await Shell.Current.DisplayAlert("Error", response.ErrorMessage, "Ok");
             return;
         }
 
-        Roles = new(response);
+        Roles = new(response.ResponseContent);
     }
     public async Task<FileResult?> PickAndShow(PickOptions options)
     {
@@ -99,19 +107,36 @@ public partial class EmployeeEditorViewModel : ObservableObject
     }
 
     //esta funcion deberia ser esperada por la pagina
-    public async Task<Employee?> CreateEmployee()
+    public async Task<Employee?> NewEmployee()
     {
         await LoadRoles();
         IsEnable = true;
+        IsCreating = true;
+        Employee = new();
+        if (Roles.Count > 0)
+        {
+            Employee.Role = Roles[0];
+            Employee = new(Employee);
+            SelectedIndex = 0;
+        }
         employeeTaskCompletionSource = new();
         return await employeeTaskCompletionSource.Task;
     }
 
-    public async Task<Employee?> UpdateEmployee(Employee employee)
+    public async Task<Employee?> EditEmployee(Employee employee)
     {
         await LoadRoles();
         IsEnable = true;
+        IsCreating = false;
         Employee = new(employee); 
+        for(int i = 0; i < Roles.Count; i++)
+        {
+            if (Roles[i].Id == Employee.Role.Id)
+            {
+                SelectedIndex = i; 
+                break;
+            }
+        }
         employeeTaskCompletionSource = new();
         return await employeeTaskCompletionSource.Task;
     }

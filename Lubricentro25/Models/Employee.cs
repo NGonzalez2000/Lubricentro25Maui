@@ -4,11 +4,12 @@ public partial class Employee: ObservableObject
 {
     public Employee(Employee employee)
     {
+        Id = employee.Id;
         FirstName = employee.FirstName;
         LastName = employee.LastName;
         Cuil = employee.Cuil;
         Email = employee.Email;
-        Role = employee.Role;
+        Role = new(employee.Role);
         imagePath = employee.imagePath;
     }
     public Employee()
