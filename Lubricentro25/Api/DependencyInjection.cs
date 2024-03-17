@@ -1,4 +1,6 @@
-﻿using Mapster;
+﻿using Lubricentro25.Models.Helpers;
+using Lubricentro25.Models.Helpers.Interface;
+using Mapster;
 using MapsterMapper;
 using Microsoft.Extensions.Options;
 using System.Reflection;
@@ -15,12 +17,15 @@ public static class DependencyInjection
         services.AddSingleton(config);
         services.AddScoped<IMapper, ServiceMapper>();
 
+        services.AddSingleton<IChatConnectionHelper, ChatConnectionHelper>();
+
         services.Configure(options);
         services.AddSingleton<ILubricentroApiClient, LubricentroApiClient>(
             provider => {
                 var option = provider.GetRequiredService<IOptions<LubricentroClientOptions>>().Value;
                 var mapper = provider.GetRequiredService<IMapper>();
-                return new LubricentroApiClient(mapper, option);
+                var chatHelper = provider.GetRequiredService<IChatConnectionHelper>();
+                return new LubricentroApiClient(mapper, option, chatHelper);
                 });
 
         return services;

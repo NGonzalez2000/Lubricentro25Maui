@@ -16,62 +16,87 @@
     </ContentPage.Resources>
 
     <Grid
-        Padding="20"
-        Background="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}}"
-        ColumnDefinitions="*,auto"
-        RowDefinitions="auto,*">
+        Margin="0,20,0,0"
+        Padding="20,0,0,0"
+        ColumnDefinitions="6*,1.5*"
+        RowDefinitions="70,*">
+        <Border
+            Grid.Row="0"
+            Grid.Column="0"
+            VerticalOptions="Center">
+            <Grid RowDefinitions="*,auto">
 
-        <HorizontalStackLayout
-            Padding="5"
-            HeightRequest="44"
-            HorizontalOptions="Fill"
-            Spacing="20">
-            <Button
-                Command="{Binding CreateRoleCommand}"
-                IsEnabled="{Binding IsEditing, Converter={StaticResource InvertBoolConverter}}"
-                Text="Nuevo" />
-            <Button
-                Command="{Binding UpdateRoleCommand}"
-                IsEnabled="{Binding IsEditing, Converter={StaticResource InvertBoolConverter}}"
-                Text="Editar" />
-            <Button
-                Command="{Binding DeleteRoleCommand}"
-                IsEnabled="{Binding IsEditing, Converter={StaticResource InvertBoolConverter}}"
-                Style="{StaticResource WarningButton}"
-                Text="Eliminar" />
-            <SearchBar
-                x:Name="searchBar"
-                Margin="5"
-                HorizontalOptions="End"
-                Placeholder="Nombre"
-                SearchCommand="{Binding SearchCommand}"
-                SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
-                WidthRequest="200" />
-
-        </HorizontalStackLayout>
-        <CollectionView
+                <HorizontalStackLayout
+                    Padding="5,5,5,0"
+                    HeightRequest="44"
+                    HorizontalOptions="Fill"
+                    Spacing="20">
+                    <Button
+                        BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryHueLight}}"
+                        Command="{Binding CreateRoleCommand}"
+                        IsEnabled="{Binding IsEnable}"
+                        Text="Nuevo"
+                        TextColor="White" />
+                    <Button
+                        BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryHueLight}}"
+                        Command="{Binding UpdateRoleCommand}"
+                        IsEnabled="{Binding IsEnable}"
+                        Text="Editar"
+                        TextColor="White" />
+                    <Button
+                        Command="{Binding DeleteRoleCommand}"
+                        IsEnabled="{Binding IsEnable}"
+                        Style="{StaticResource WarningButton}"
+                        Text="Eliminar"
+                        TextColor="White" />
+                </HorizontalStackLayout>
+                <SearchBar
+                    x:Name="searchBar"
+                    Margin="5"
+                    HorizontalOptions="End"
+                    IsEnabled="{Binding IsEnable}"
+                    Placeholder="Nombre"
+                    SearchCommand="{Binding SearchCommand}"
+                    SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
+                    WidthRequest="200" />
+            </Grid>
+        </Border>
+        <Border
             Grid.Row="1"
-            BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}}"
-            ItemsSource="{Binding Roles}"
-            SelectionMode="Single">
-            <CollectionView.Header>
-                <StackLayout Padding="30,10" BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryHueLight}}">
-                    <Label
-                        Margin="10,0,0,0"
-                        FontAttributes="Bold"
-                        FontSize="12"
-                        Text="Nombre" />
-                </StackLayout>
-            </CollectionView.Header>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:Role">
-                    <Label Padding="10" Text="{Binding Name}" />
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-        <v:EmployeeEditorView
+            Grid.Column="0"
+            StrokeThickness="0">
+            <ScrollView
+                HorizontalOptions="FillAndExpand"
+                IsEnabled="{Binding IsEnable}"
+                Orientation="Vertical"
+                VerticalOptions="FillAndExpand">
+                <CollectionView
+                    Grid.Row="1"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}}"
+                    ItemsSource="{Binding Roles}"
+                    SelectedItem="{Binding SelectedRole}"
+                    SelectionMode="Single">
+                    <CollectionView.Header>
+                        <StackLayout Padding="30,10" BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryHueLight}}">
+                            <Label
+                                Margin="10,0,0,0"
+                                FontAttributes="Bold"
+                                FontSize="12"
+                                Text="Nombre" />
+                        </StackLayout>
+                    </CollectionView.Header>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Role">
+                            <Label Padding="10" Text="{Binding Name}" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+        </Border>
+        <v:RoleEditorView
             Grid.RowSpan="2"
             Grid.Column="1"
-            IsEnabled="{Binding IsEditing}" />
+            BindingContext="{Binding RoleEditorViewModel}"
+            IsEnabled="{Binding IsEnable}" />
     </Grid>
 </ContentPage>

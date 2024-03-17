@@ -9,6 +9,7 @@ public static class DependencyInjection
         services.AddSingleton<IEmployeeEndpoint, EmployeeEndpoint>();
         services.AddSingleton<IRoleEndpoint, RoleEndpoint>();
         services.AddSingleton<IAuthenticationEndpoint, AuthenticationEndpoint>();
+        services.AddSingleton<IChatEndpoint, ChatEndpoint>();
 
         return services;
     }

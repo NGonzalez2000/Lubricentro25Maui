@@ -10,7 +10,7 @@
     <Color x:Key="PrimaryHueLight">#604be8</Color>
     <Color x:Key="SecondaryHueLight">#06D7A0</Color>
     <Color x:Key="TertiaryHueLight">#FF9A01</Color>
-    <Color x:Key="MarkerLight">#4b76e6</Color>
+    <Color x:Key="MarkerLight">#4295E3</Color>
 
     <Color x:Key="ForegroundLight">#323232</Color>
     <Color x:Key="SecondaryForegroundLight">#eaeef7</Color>

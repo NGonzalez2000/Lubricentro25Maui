@@ -1,7 +1,26 @@
-﻿namespace Lubricentro25.Models;
+﻿using Lubricentro25.Services;
+
+namespace Lubricentro25.Models;
 
 public partial class Employee: ObservableObject
 {
+    private byte[]? data;
+    public byte[]? Data
+    {
+        get => data;
+        set
+        {
+            data = value;
+            if(data != null)
+            {
+                ImageSource = ImageParser.BytesToImageSource(data);
+            }
+            else
+            {
+                ImageSource = ImageSource.FromFile("person.png");
+            }
+        }
+    }
     public Employee(Employee employee)
     {
         Id = employee.Id;
@@ -10,7 +29,7 @@ public partial class Employee: ObservableObject
         Cuil = employee.Cuil;
         Email = employee.Email;
         Role = new(employee.Role);
-        imagePath = employee.imagePath;
+        ImageSource = employee.ImageSource;
     }
     public Employee()
     {
@@ -19,7 +38,7 @@ public partial class Employee: ObservableObject
         Cuil = string.Empty;
         Email = string.Empty;
         Role = new();
-        imagePath = "person.png";
+        ImageSource = ImageSource.FromFile("person.png");
     }
     
     public string Id { get; set; } = string.Empty;
@@ -32,9 +51,10 @@ public partial class Employee: ObservableObject
     [ObservableProperty]
     string email;
     [ObservableProperty]
-    string? imagePath;
+    ImageSource imageSource;
     [ObservableProperty]
     Role role;
     public string FullName => $"{FirstName} {LastName}";
+    
 
 }

@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:billing="clr-namespace:Lubricentro25.Pages.Billing"
+    xmlns:chat="clr-namespace:Lubricentro25.Pages.Chats"
     xmlns:configurations="clr-namespace:Lubricentro25.Pages.Configuration"
     xmlns:customers="clr-namespace:Lubricentro25.Pages.Customers"
     xmlns:home="clr-namespace:Lubricentro25.Pages.Home"
@@ -62,6 +63,10 @@
 
         <Tab x:Name="ConfigurationTab" Title="Configuración">
             <ShellContent Title="Configuración" ContentTemplate="{DataTemplate configurations:ConfigurationPage}" />
+        </Tab>
+
+        <Tab x:Name="ChatTab" Title="Chat">
+            <ShellContent Title="Chat" ContentTemplate="{DataTemplate chat:ChatPage}" />
         </Tab>
     </TabBar>
 

@@ -1,39 +1,57 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<ContentView
     x:Class="Lubricentro25.Pages.Configuration.Views.RoleEditorView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:models="clr-namespace:Lubricentro25.Models"
-    Title="RoleEditorView"
-    x:DataType="models:Role">
-    <Grid RowDefinitions="2*,0.5*">
+    xmlns:vm="clr-namespace:Lubricentro25.Pages.Configuration.Views"
+    x:DataType="vm:RoleEditorViewModel">
+    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}}" RowDefinitions="auto,2*,0.5*">
+        <Border
+            Margin="10"
+            Padding="10,5"
+            Background="{AppThemeBinding Light={StaticResource PrimaryHueLight}}"
+            StrokeShape="RoundRectangle, 5">
+
+            <Label
+                FontAttributes="Bold"
+                Text="Editor De Roles"
+                TextColor="{AppThemeBinding Light=White}"
+                VerticalOptions="Center" />
+        </Border>
+
+
 
         <VerticalStackLayout
             Grid.Row="1"
             Padding="10"
-            HorizontalOptions="FillAndExpand"
-            Spacing="10">
-
-            <!--<Button Command="{Binding ChangeImageCommand}" Text="Seleccionar Imágen" />
-            <Label Text="Nombre:" />
-            <Entry Placeholder="Nombre" Text="{Binding Employee.FirstName}" />
-            <Label Text="Apellido:" />
-            <Entry Placeholder="Apellido" Text="{Binding Employee.LastName}" />
-            <Label Text="Email" />
-            <Entry Placeholder="Email" Text="{Binding Employee.Email}" />
-            <Picker
-                Title="Rol"
-                ItemDisplayBinding="{Binding Name}"
-                ItemsSource="{Binding Roles}"
-                SelectedItem="{Binding Employee.Role}" />-->
+            Spacing="20">
+            <Entry Placeholder="Ingrese un nombre..." Text="{Binding Role.Name}" />
+            <CollectionView ItemsSource="{Binding Policies}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:PolicyModel">
+                        <Grid ColumnDefinitions="2*,*">
+                            <Label Text="{Binding Name}" VerticalOptions="Center" />
+                            <Switch
+                                Grid.Column="1"
+                                IsToggled="{Binding IsSelected}"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </VerticalStackLayout>
-        <HorizontalStackLayout
+        <Border
             Grid.Row="2"
-            HorizontalOptions="Center"
-            Spacing="30"
-            VerticalOptions="Center">
-            <!--<Button Command="{Binding AceptCommand}" Text="Aceptar" />
-            <Button Command="{Binding CancelCommand}" Text="Cancelar" />-->
-        </HorizontalStackLayout>
+            BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgoundLight}}"
+            StrokeThickness="0">
+            <HorizontalStackLayout
+                HorizontalOptions="Center"
+                Spacing="30"
+                VerticalOptions="Center">
+                <Button Command="{Binding AcceptCommand}" Text="Aceptar" />
+                <Button Command="{Binding CancelCommand}" Text="Cancelar" />
+            </HorizontalStackLayout>
+
+        </Border>
     </Grid>
-</ContentPage>
+</ContentView>

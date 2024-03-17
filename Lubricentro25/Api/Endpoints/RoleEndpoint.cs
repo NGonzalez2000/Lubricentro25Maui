@@ -15,13 +15,14 @@ public class RoleEndpoint(ILubricentroApiClient apiClient) : IRoleEndpoint
         }
         var request = new CreateRoleRequest(role.Name, policiesId);
 
-        return await _apiClient.Post<Role,RoleResponse>("role/create", request);   
+        return await _apiClient.Post<Role,RoleResponse>("/role/create", request);   
 
     }
 
-    public Task<ApiResponse<Role>> DeleteRole(string Id)
+    public async Task<ApiResponse> DeleteRole(string Id)
     {
-        throw new NotImplementedException();
+        var request = new DeleteRoleRequest(Id);
+        return await _apiClient.Delete("/role",request);
     }
 
     public async Task<ApiResponse<Role>> GetAllRoles()
@@ -31,6 +32,17 @@ public class RoleEndpoint(ILubricentroApiClient apiClient) : IRoleEndpoint
 
     public Task<ApiResponse<Role>> UpdateRole(Role role)
     {
-        throw new NotImplementedException();
+        List<string> policiesId = [];
+        foreach (var policy in role.Policies)
+        {
+            policiesId.Add(policy.Id);
+        }
+        var request = new UpdateRoleRequest(role.Id, role.Name, policiesId);
+        return _apiClient.Post<Role, RoleResponse>("/role/update", request);
+    }
+
+    public async Task<ApiResponse<Policy>> GetAllPolicies()
+    {
+        return await _apiClient.Get<Policy, PolicyResponse>("role/getallpolicies");
     }
 }

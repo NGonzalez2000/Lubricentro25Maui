@@ -1,5 +1,6 @@
 ﻿using Lubricentro25.Api.Contracts.Employee;
 using Lubricentro25.Api.Interface;
+using Lubricentro25.Services;
 
 namespace Lubricentro25.Api.Endpoints;
 
@@ -12,7 +13,7 @@ public class EmployeeEndpoint(ILubricentroApiClient apiClient) : IEmployeeEndpoi
     }
     public async Task<ApiResponse<Employee>> CreateEmployee(Employee employee)
     {
-        var request = new CreateEmployeeRequest(employee.Role.Id, employee.FirstName, employee.LastName, employee.Email);
+        var request = new CreateEmployeeRequest(await ImageParser.ImageSourceToBytes(employee.ImageSource),employee.Role.Id, employee.FirstName, employee.LastName, employee.Email);
         return await _apiClient.Post<Employee,EmployeeResponse>("/employee/create", request);
     }
 
@@ -25,7 +26,7 @@ public class EmployeeEndpoint(ILubricentroApiClient apiClient) : IEmployeeEndpoi
 
     public async Task<ApiResponse<Employee>> UpdateEmployee(Employee employee)
     {
-        var request = new UpdateEmployeeRequest(employee.Id, employee.Role.Id, employee.FirstName, employee.LastName);
+        var request = new UpdateEmployeeRequest(await ImageParser.ImageSourceToBytes(employee.ImageSource), employee.Id, employee.Role.Id, employee.FirstName, employee.LastName);
         return await _apiClient.Post<Employee, EmployeeResponse>("/employee/update", request);
     }
 }

@@ -9,6 +9,5 @@
             HorizontalOptions="Center"
             Text="Welcome to Home!"
             VerticalOptions="Center" />
-        <Button Text="Alert" />
     </VerticalStackLayout>
 </ContentPage>

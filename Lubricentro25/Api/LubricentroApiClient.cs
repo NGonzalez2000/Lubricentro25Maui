@@ -1,6 +1,7 @@
 ﻿using Lubricentro25.Api.Contracts.Error;
 using Lubricentro25.Api.Contracts.Login;
-using Lubricentro25.Api.Contracts.Roles;
+using Lubricentro25.Models.Helpers;
+using Lubricentro25.Models.Helpers.Interface;
 using MapsterMapper;
 using System.Text;
 using System.Text.Json;
@@ -12,8 +13,10 @@ public class LubricentroApiClient : ILubricentroApiClient
     private readonly HttpClient _httpClient;
     private readonly JsonSerializerOptions _jsonOptions;
     private readonly IMapper _mapper;
-    public LubricentroApiClient(IMapper mapper, LubricentroClientOptions lubricentroClientOptions)
+    private readonly IChatConnectionHelper _chatConnectionHelper;
+    public LubricentroApiClient(IMapper mapper, LubricentroClientOptions lubricentroClientOptions, IChatConnectionHelper chatConnectionHelper)
     {
+        _chatConnectionHelper = chatConnectionHelper;
         _mapper = mapper;
         _httpClient = new()
         {
@@ -94,7 +97,9 @@ public class LubricentroApiClient : ILubricentroApiClient
         try
         {
             var content = CreateContent(request);
-            response = await _httpClient.PostAsync(endPoint, content);
+            var cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(30));
+            response = await _httpClient.PostAsync(endPoint, content,cancellationTokenSource.Token);
         }
         catch (Exception)
         {
@@ -179,38 +184,11 @@ public class LubricentroApiClient : ILubricentroApiClient
                 return new ("Comuniquese con el desarrollador, Error de login");
             }
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {auth.Token}");
+            await _chatConnectionHelper.Connect(auth.Token);
+            _chatConnectionHelper.SetUserId(auth.Id);
             return new();
         }
         return new(response.ErrorMessage);
     }
-
-    //public async Task<ApiResponse<Role>> GetAllRoles()
-    //{
-    //    
-    //}
-
-    //public async Task<Role?> CreateRole(Role role)
-    //{
-    //    
-
-    //}
-
-    //public Task<Role> UpdateRole(Role role)
-    //{
-    //    throw new NotImplementedException();
-    //}
-
-    //public Task<Role> DeleteRole(string Id)
-    //{
-    //    throw new NotImplementedException();
-    //}
-
-   
-
-    //public async Task<ApiResponse<Employee>> CreateEmployee(Employee employee)
-    //{
-        
-
-    //}
 
 }

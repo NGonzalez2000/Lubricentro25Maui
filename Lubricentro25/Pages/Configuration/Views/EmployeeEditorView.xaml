@@ -26,7 +26,7 @@
             Grid.Row="1"
             Margin="10"
             HorizontalOptions="Fill">
-            <Image Aspect="AspectFit" Source="{Binding Employee.ImagePath, FallbackValue=person.png}" />
+            <Image Aspect="AspectFit" Source="{Binding Employee.ImageSource, FallbackValue=person.png}" />
         </Border>
 
         <VerticalStackLayout
@@ -53,8 +53,7 @@
                 Title="Rol"
                 ItemDisplayBinding="{Binding Name}"
                 ItemsSource="{Binding Roles}"
-                SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
-                SelectedItem="{Binding Employee.Role, Mode=TwoWay}" />
+                SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" />
         </VerticalStackLayout>
         <Border
             Grid.Row="3"

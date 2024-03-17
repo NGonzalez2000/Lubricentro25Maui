@@ -1,10 +1,9 @@
 ﻿using Lubricentro25.Api;
-using Lubricentro25.Pages.Configuration;
-using Lubricentro25.Pages.Login;
-using Lubricentro25.ViewModels.Login;
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
 using Lubricentro25.Api.Endpoints;
+using Lubricentro25.ViewModels;
+using Lubricentro25.Pages;
 
 namespace Lubricentro25
 {
@@ -20,13 +19,12 @@ namespace Lubricentro25
             }).UseMauiCommunityToolkit();
 
             //Api
-            builder.Services.AddLubricentroApi(x => x.ApiBaseAddress = "https://localhost:7279/");
+            builder.Services.AddLubricentroApi(x => x.ApiBaseAddress = "https://www.lubricentroapi.com/");
             builder.Services.AddEndpoints();
             //ViewModels
-            builder.Services.AddSingleton<LoginViewModel>();
+            builder.Services.AddViewModels();
             //Pages
-            builder.Services.AddSingleton<LoginPage>();
-            builder.Services.AddConfigurationPages();
+            builder.Services.AddPages();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Lubricentro25.Api;
 using Lubricentro25.Api.Interface;
 
 namespace Lubricentro25.Pages.Configuration.Views;
@@ -34,7 +33,7 @@ public partial class EmployeeEditorViewModel : ObservableObject
     {
         IsEnable = false;
         Employee = new();
-        Image = ImageSource.FromFile(Employee.ImagePath);
+        Image = Employee.ImageSource;
         Roles = [];
         _rolesApi = rolesApi;
     }
@@ -51,7 +50,7 @@ public partial class EmployeeEditorViewModel : ObservableObject
         var file = await PickAndShow(options);
         if (file is null) return;
 
-        Employee.ImagePath = file.FullPath;
+        Employee.ImageSource = ImageSource.FromFile(file.FullPath);
         IsBusy = false;
     }
     [RelayCommand]
@@ -65,7 +64,6 @@ public partial class EmployeeEditorViewModel : ObservableObject
     void Acept()
     {
         employeeTaskCompletionSource?.SetResult(Employee);
-        SelectedIndex = -1;
         Employee = new();
         IsEnable = false;
     }
@@ -81,6 +79,13 @@ public partial class EmployeeEditorViewModel : ObservableObject
         }
 
         Roles = new(response.ResponseContent);
+    }
+    partial void OnSelectedIndexChanged(int value)
+    {
+        if(value >= 0 && value < Roles.Count)
+        {
+            Employee.Role = new(Roles[value]);
+        }
     }
     public async Task<FileResult?> PickAndShow(PickOptions options)
     {

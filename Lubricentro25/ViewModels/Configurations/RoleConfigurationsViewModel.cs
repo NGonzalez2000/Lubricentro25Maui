@@ -1,17 +1,33 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Lubricentro25.Api;
 using Lubricentro25.Api.Interface;
+using Lubricentro25.Pages.Configuration.Views;
+using System;
+using System.Collections.ObjectModel;
 
 namespace Lubricentro25.ViewModels.Configurations;
 
-public partial class RoleConfigurationsViewModel(IRoleEndpoint rolesClient) : ObservableObject
+public partial class RoleConfigurationsViewModel(IRoleEndpoint rolesClient, RoleEditorViewModel roleEditorViewModel) : ObservableObject
 {
     private readonly IRoleEndpoint _rolesClient = rolesClient;
+
     [ObservableProperty]
-    private List<Role> roles = [];
+    ObservableCollection<Role> roles = [];
     List<Role> rolesList = [];
+
     [ObservableProperty]
-    private bool isEditing = false;
+    private bool isEnable = true;
+
+    [ObservableProperty]
+    RoleEditorViewModel roleEditorViewModel = roleEditorViewModel;
+
+    [ObservableProperty]
+    string searchText = string.Empty;
+
+    [ObservableProperty]
+    Role? selectedRole;
+
+
 
     [RelayCommand]
     private async Task LoadViewModel()
@@ -30,17 +46,81 @@ public partial class RoleConfigurationsViewModel(IRoleEndpoint rolesClient) : Ob
     [RelayCommand]
     private async Task CreateRole()
     {
-        await Task.CompletedTask;
+        IsEnable = false;
+        await RoleEditorViewModel.Load();
+        var role = await RoleEditorViewModel.CreateRole();
+        IsEnable = true;
+
+        if (role is null) return;
+
+
+        var response = await _rolesClient.CreateRole(role);
+
+        if(!response.IsSuccess)
+        {
+            await Shell.Current.DisplayAlert("Error", response.ErrorMessage, "Aceptar");
+            return;
+        }
+        rolesList.Add(role);
+        Search("");
+
     }
     [RelayCommand]
     private async Task UpdateRole()
     {
-        await Task.CompletedTask;
+        if(SelectedRole is null)
+        {
+            return;
+        }
+        if(SelectedRole.Name == "Sin Permisos" || SelectedRole.Name == "Master")
+        {
+            await Shell.Current.DisplayAlert("Error", "No se pueden editar/borrar estos Roles.", "Aceptar");
+            return;
+        }
+        IsEnable = false;
+        await RoleEditorViewModel.Load();
+        var role = await RoleEditorViewModel.EditRole(SelectedRole);
+        IsEnable = true;
+
+        if (role is null) return;
+
+        var response = await _rolesClient.UpdateRole(role);
+        if (!response.IsSuccess)
+        {
+            await Shell.Current.DisplayAlert("Error", response.ErrorMessage, "Aceptar");
+            return;
+        }
+
+        int indx = rolesList.IndexOf(SelectedRole!);
+        if (indx >= 0)
+        {
+            rolesList[indx] = new(response.ResponseContent.First());
+            Search("");
+        }
     }
     [RelayCommand]
     private async Task DeleteRole()
     {
-        await Task.CompletedTask;
+        if (SelectedRole is null)
+        {
+            return;
+        }
+        if (SelectedRole.Name == "Sin Permisos" || SelectedRole.Name == "Master")
+        {
+            await Shell.Current.DisplayAlert("Error", "No se pueden editar/borrar estos Roles.", "Aceptar");
+            return;
+        }
+
+        var response = await _rolesClient.DeleteRole(SelectedRole.Id);
+
+        if (!response.IsSuccess)
+        {
+            await Shell.Current.DisplayAlert("Error", response.ErrorMessage, "Aceptar");
+            return;
+        }
+
+        rolesList.Remove(SelectedRole);
+        Search("");
     }
     [RelayCommand]
     void Search(string name)

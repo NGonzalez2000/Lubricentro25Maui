@@ -18,7 +18,7 @@
             <Image
                 Aspect="AspectFill"
                 HeightRequest="180"
-                Source="{Binding ImagePath}"
+                Source="{Binding ImageSource}"
                 VerticalOptions="Center"
                 WidthRequest="180" />
             <VerticalStackLayout Grid.Row="1" VerticalOptions="Start">
