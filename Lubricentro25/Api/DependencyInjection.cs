@@ -9,7 +9,7 @@ namespace Lubricentro25.Api;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddLubricentroApi(this IServiceCollection services, Action<LubricentroClientOptions> options)
+    public static IServiceCollection AddLubricentroApi(this IServiceCollection services)
     {
         var config = TypeAdapterConfig.GlobalSettings;
         config.Scan(Assembly.GetExecutingAssembly());
@@ -19,14 +19,7 @@ public static class DependencyInjection
 
         services.AddSingleton<IChatConnectionHelper, ChatConnectionHelper>();
 
-        services.Configure(options);
-        services.AddSingleton<ILubricentroApiClient, LubricentroApiClient>(
-            provider => {
-                var option = provider.GetRequiredService<IOptions<LubricentroClientOptions>>().Value;
-                var mapper = provider.GetRequiredService<IMapper>();
-                var chatHelper = provider.GetRequiredService<IChatConnectionHelper>();
-                return new LubricentroApiClient(mapper, option, chatHelper);
-                });
+        services.AddSingleton<ILubricentroApiClient, LubricentroApiClient>();
 
         return services;
     }

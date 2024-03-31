@@ -1,7 +1,5 @@
 ﻿using Lubricentro25.Api.Contracts.Error;
 using Lubricentro25.Api.Contracts.Login;
-using Lubricentro25.Models.Helpers;
-using Lubricentro25.Models.Helpers.Interface;
 using MapsterMapper;
 using System.Text;
 using System.Text.Json;
@@ -10,18 +8,14 @@ namespace Lubricentro25.Api;
 
 public class LubricentroApiClient : ILubricentroApiClient
 {
-    private readonly HttpClient _httpClient;
+    private HttpClient _httpClient;
     private readonly JsonSerializerOptions _jsonOptions;
+    private AuthenticationResponse? _authenticationResponse;
     private readonly IMapper _mapper;
-    private readonly IChatConnectionHelper _chatConnectionHelper;
-    public LubricentroApiClient(IMapper mapper, LubricentroClientOptions lubricentroClientOptions, IChatConnectionHelper chatConnectionHelper)
+    public LubricentroApiClient(IMapper mapper)
     {
-        _chatConnectionHelper = chatConnectionHelper;
         _mapper = mapper;
-        _httpClient = new()
-        {
-            BaseAddress = new Uri(lubricentroClientOptions.ApiBaseAddress)
-        };
+        _httpClient = new();
         _jsonOptions = new()
         {
             PropertyNameCaseInsensitive = true
@@ -169,6 +163,17 @@ public class LubricentroApiClient : ILubricentroApiClient
     }
     public async Task<ApiResponse> Login(LoginRequest request)
     {
+        string uri = Preferences.Get("ApiAddress", "");
+
+        if (string.IsNullOrEmpty(uri))
+        {
+            return new("Compruebe el string de conexión.");
+        }
+
+        _httpClient = new()
+        {
+            BaseAddress = new Uri(uri)
+        };
         var response = await Post<AuthenticationResponse, AuthenticationResponse>("auth/login", request);
         if(response is null)
         {
@@ -177,18 +182,21 @@ public class LubricentroApiClient : ILubricentroApiClient
 
         if (response.IsSuccess)
         {
-            var auth = response.ResponseContent.First();
+            _authenticationResponse = response.ResponseContent.First();
 
-            if (auth is null)
+            if (_authenticationResponse is null)
             {
                 return new ("Comuniquese con el desarrollador, Error de login");
             }
-            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {auth.Token}");
-            await _chatConnectionHelper.Connect(auth.Token);
-            _chatConnectionHelper.SetUserId(auth.Id);
+            
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authenticationResponse.Token}");
             return new();
         }
         return new(response.ErrorMessage);
     }
 
+    public AuthenticationResponse? GetAuthentication()
+    {
+        return _authenticationResponse;
+    }
 }

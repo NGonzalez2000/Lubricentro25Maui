@@ -10,6 +10,7 @@ public partial class ChatPage : ContentPage
 		InitializeComponent();
 		BindingContext = bindingContext;
         Behaviors.Add(new EventToCommandBehavior() { EventName = nameof(Loaded), Command = bindingContext.LoadCommand });
+        Behaviors.Add(new EventToCommandBehavior() { EventName = nameof(Unloaded), Command = bindingContext.UnloadCommand });
     }
 
 }

@@ -2,14 +2,16 @@
 using CommunityToolkit.Mvvm.Messaging;
 using Lubricentro25.Api;
 using Lubricentro25.Api.Interface;
+using Lubricentro25.Models.Helpers.Interface;
 using Lubricentro25.Models.Messages;
 
 namespace Lubricentro25.ViewModels.Login; 
 
-public partial class LoginViewModel(ILubricentroApiClient clientApi, IAuthenticationEndpoint authenticationEndpoint) : ObservableObject
+public partial class LoginViewModel(ILubricentroApiClient clientApi, IAuthenticationEndpoint authenticationEndpoint, IChatConnectionHelper chatConnectionHelper) : ObservableObject
 {
     private readonly ILubricentroApiClient _client = clientApi;
     private readonly IAuthenticationEndpoint _authenticationEndpoint = authenticationEndpoint;
+    private readonly IChatConnectionHelper _chatConnectionHelper = chatConnectionHelper;
     [ObservableProperty]
     private string _userName = string.Empty;
     [ObservableProperty]
@@ -38,6 +40,23 @@ public partial class LoginViewModel(ILubricentroApiClient clientApi, IAuthentica
         WeakReferenceMessenger.Default.Send(new AddConfigurationPagesMessage(authRepsone.ResponseContent.FirstOrDefault(defaultValue: new() { IsAllowed = false }).IsAllowed));
 
         await Shell.Current.GoToAsync("//main");
+
+        var response = await _authenticationEndpoint.PolicyValidation("ChatPolicy");
+        if (!response.IsSuccess)
+        {
+            await Shell.Current.DisplayAlert("Error", response.ErrorMessage, "Aceptar");
+        }
+        if (response.ResponseContent.First().IsAllowed)
+        {
+            var auth = _client.GetAuthentication();
+            if (auth != null)
+            {
+                await _chatConnectionHelper.Connect(auth.Token);
+                _chatConnectionHelper.SetUserId(auth.Id);
+            }
+        }
+
+        
 
     }
     [RelayCommand]

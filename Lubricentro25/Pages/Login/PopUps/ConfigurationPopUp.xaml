@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mct:Popup
+    x:Class="Lubricentro25.Pages.Login.PopUps.ConfigurationPopUp"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+    xmlns:popup="clr-namespace:Lubricentro25.Pages.Login.PopUps">
+
+    <mct:Popup.Resources>
+        <Style TargetType="{x:Type popup:ConfigurationPopUp}">
+            <Setter Property="Size" Value="400,200" />
+            <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="VerticalOptions" Value="Start" />
+            <Setter Property="CanBeDismissedByTappingOutsideOfPopup" Value="True" />
+        </Style>
+
+    </mct:Popup.Resources>
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <Label
+            Text="ApiAddress:"
+            TextColor="{AppThemeBinding Light={StaticResource PrimaryHueLight},
+                                        Dark={StaticResource PrimaryHueDark}}"
+            TextDecorations="Underline" />
+        <Entry x:Name="apiAddressEntry" Placeholder="DNS Name or IP" />
+        <Button Clicked="Button_Clicked" Text="Guardar" />
+    </VerticalStackLayout>
+</mct:Popup>

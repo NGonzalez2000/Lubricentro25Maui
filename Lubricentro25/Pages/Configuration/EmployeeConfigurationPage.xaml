@@ -20,13 +20,15 @@
     <Grid
         Margin="0,20,0,0"
         Padding="20,0,0,0"
-        BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}}"
+        BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight},
+                                          Dark={StaticResource BackgroundDark}}"
         ColumnDefinitions="6*,1.5*"
         RowDefinitions="70,*">
         <Border
             Grid.Row="0"
             Grid.Column="0"
-            Background="{AppThemeBinding Light={StaticResource BackgroundLight}}"
+            Background="{AppThemeBinding Light={StaticResource BackgroundLight},
+                                         Dark={StaticResource BackgroundDark}}"
             VerticalOptions="Center">
 
 
@@ -38,13 +40,15 @@
                     HorizontalOptions="Fill"
                     Spacing="20">
                     <Button
-                        BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryHueLight}}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryHueLight},
+                                                          Dark={StaticResource PrimaryHueDark}}"
                         Command="{Binding NewEmployeeCommand}"
                         IsEnabled="{Binding IsEnable}"
                         Text="Nuevo"
                         TextColor="White" />
                     <Button
-                        BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryHueLight}}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryHueLight},
+                                                          Dark={StaticResource PrimaryHueDark}}"
                         Command="{Binding EditEmployeeCommand}"
                         IsEnabled="{Binding IsEnable}"
                         Text="Editar"
@@ -79,7 +83,8 @@
                 VerticalOptions="FillAndExpand">
                 <CollectionView
                     x:Name="EmployeesCollection"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}}"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight},
+                                                      Dark={StaticResource SecondaryBackgroundDark}}"
                     IsEnabled="{Binding IsEnable}"
                     ItemSizingStrategy="MeasureFirstItem"
                     ItemsSource="{Binding Employees}"
@@ -88,7 +93,8 @@
                     <CollectionView.Header>
                         <Grid
                             Padding="0,5"
-                            BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight},
+                                                              Dark={StaticResource SecondaryBackgroundDark}}"
                             ColumnDefinitions="*,3*"
                             RowDefinitions="*,*">
 
@@ -96,7 +102,8 @@
                                 Grid.Row="1"
                                 Grid.ColumnSpan="2"
                                 Margin="0,5"
-                                BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgoundLight}}"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgoundLight},
+                                                                  Dark={StaticResource TertiaryBackgoundDark}}"
                                 HeightRequest="2" />
                             <Label
                                 FontAttributes="Bold"

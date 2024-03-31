@@ -8,4 +8,5 @@ public interface ILubricentroApiClient
     Task<ApiResponse<T>> Get<T,U>(string endPoint);
     Task<ApiResponse> Delete(string endPoint, object request);
     Task<ApiResponse> Login(LoginRequest request);
+    AuthenticationResponse? GetAuthentication();
 }

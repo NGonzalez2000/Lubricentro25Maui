@@ -1,16 +1,20 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using Lubricentro25.Api.Interface;
 using Lubricentro25.Models.Helpers.Interface;
 using Lubricentro25.Models.Messages;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Lubricentro25.Models.Helpers;
 
-public class ChatConnectionHelper : IChatConnectionHelper
+public class ChatConnectionHelper() : IChatConnectionHelper
 {
     private string _userId = string.Empty;
     private HubConnection? connection;
+
     public async Task Connect(string token)
     {
+        
+
         connection = new HubConnectionBuilder()
          .WithUrl(new Uri("https://www.lubricentroapi.com/chat"), options => { options.AccessTokenProvider = () => Task.FromResult(token)!; })
          .WithAutomaticReconnect()

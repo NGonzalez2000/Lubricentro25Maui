@@ -48,6 +48,12 @@ namespace Lubricentro25.ViewModels.Chats
         }
 
         [RelayCommand]
+        private void Unload()
+        {
+            WeakReferenceMessenger.Default.Unregister<ReciveChatMessageMessage>(this);
+        }
+
+        [RelayCommand]
         private void Search(string text)
         {
             Chats = _persistanceChats.Where(c => c.To.Contains(text, StringComparison.OrdinalIgnoreCase)).ToList();

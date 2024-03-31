@@ -26,8 +26,12 @@
             return null;
         }
 
-        public static ImageSource BytesToImageSource(byte[] bytes)
+        public static ImageSource BytesToImageSource(byte[]? bytes)
         {
+            if(bytes is null)
+            {
+                return ImageSource.FromFile("person.png");
+            }
             return ImageSource.FromStream(() => new MemoryStream(bytes));
         }
     }

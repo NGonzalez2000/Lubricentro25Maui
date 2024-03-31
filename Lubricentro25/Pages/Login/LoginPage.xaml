@@ -10,7 +10,8 @@
     <Border
         Margin="0,20"
         Padding="30,30,30,60"
-        Background="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}}"
+        Background="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight},
+                                     Dark={StaticResource SecondaryBackgroundDark}}"
         HorizontalOptions="Center"
         StrokeShape="RoundRectangle 50">
         <Grid RowDefinitions="auto, *,*,auto" VerticalOptions="Center">
@@ -19,7 +20,8 @@
                 FontSize="Header"
                 HorizontalOptions="Center"
                 Text="Iniciar Sesion"
-                TextColor="{AppThemeBinding Light={StaticResource PrimaryHueLight}}" />
+                TextColor="{AppThemeBinding Light={StaticResource PrimaryHueLight},
+                                            Dark={StaticResource PrimaryHueDark}}" />
             <VerticalStackLayout Grid.Row="1" Spacing="30">
                 <Entry
                     Placeholder="Usuario"
@@ -39,10 +41,16 @@
 
                 <Button
                     x:Name="loginButton"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryHueLight}}"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryHueLight},
+                                                      Dark={StaticResource PrimaryHueDark}}"
                     Command="{Binding LoginCommand}"
                     Text="Login"
                     TextColor="{AppThemeBinding Light=White}" />
+                <Label Text="Configuracion">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                    </Label.GestureRecognizers>
+                </Label>
             </VerticalStackLayout>
             <Label
                 Grid.Row="3"

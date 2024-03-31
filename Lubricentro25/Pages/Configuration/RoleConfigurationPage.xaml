@@ -32,13 +32,15 @@
                     HorizontalOptions="Fill"
                     Spacing="20">
                     <Button
-                        BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryHueLight}}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryHueLight},
+                                                          Dark={StaticResource PrimaryHueDark}}"
                         Command="{Binding CreateRoleCommand}"
                         IsEnabled="{Binding IsEnable}"
                         Text="Nuevo"
                         TextColor="White" />
                     <Button
-                        BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryHueLight}}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryHueLight},
+                                                          Dark={StaticResource PrimaryHueDark}}"
                         Command="{Binding UpdateRoleCommand}"
                         IsEnabled="{Binding IsEnable}"
                         Text="Editar"
@@ -72,12 +74,13 @@
                 VerticalOptions="FillAndExpand">
                 <CollectionView
                     Grid.Row="1"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}}"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight},
+                                                      Dark={StaticResource SecondaryBackgroundDark}}"
                     ItemsSource="{Binding Roles}"
                     SelectedItem="{Binding SelectedRole}"
                     SelectionMode="Single">
                     <CollectionView.Header>
-                        <StackLayout Padding="30,10" BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryHueLight}}">
+                        <StackLayout Padding="30,10" BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryHueLight}, Dark={StaticResource SecondaryHueDark}}">
                             <Label
                                 Margin="10,0,0,0"
                                 FontAttributes="Bold"

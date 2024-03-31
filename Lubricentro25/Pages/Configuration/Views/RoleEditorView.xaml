@@ -5,17 +5,19 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:Lubricentro25.Pages.Configuration.Views"
     x:DataType="vm:RoleEditorViewModel">
-    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}}" RowDefinitions="auto,2*,0.5*">
+    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}" RowDefinitions="auto,2*,0.5*">
         <Border
             Margin="10"
             Padding="10,5"
-            Background="{AppThemeBinding Light={StaticResource PrimaryHueLight}}"
+            Background="{AppThemeBinding Light={StaticResource PrimaryHueLight},
+                                         Dark={StaticResource PrimaryHueDark}}"
             StrokeShape="RoundRectangle, 5">
 
             <Label
                 FontAttributes="Bold"
                 Text="Editor De Roles"
-                TextColor="{AppThemeBinding Light=White}"
+                TextColor="{AppThemeBinding Light=White,
+                                            Dark=Black}"
                 VerticalOptions="Center" />
         </Border>
 
@@ -42,7 +44,8 @@
         </VerticalStackLayout>
         <Border
             Grid.Row="2"
-            BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgoundLight}}"
+            BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgoundLight},
+                                              Dark={StaticResource TertiaryBackgoundDark}}"
             StrokeThickness="0">
             <HorizontalStackLayout
                 HorizontalOptions="Center"

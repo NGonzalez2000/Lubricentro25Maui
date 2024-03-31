@@ -1,6 +1,9 @@
 ﻿namespace Lubricentro25.Api;
 
-public class LubricentroClientOptions()
+public static class LubricentroClientOptions
 {
-    public string ApiBaseAddress { get; set; } = string.Empty;
+    public static string GetGetApiAddress()
+    {
+        return Preferences.Get("DNS Name", "http://host.lubricentroapi.api");
+    }
 }
