@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Grid
+    x:Class="Lubricentro25.Controls.PagedCollectionView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:icons="clr-namespace:Lubricentro25.Icons"
+    BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgroundLight},
+                                      Dark={StaticResource TertiaryBackgroundDark}}"
+    RowDefinitions="auto,auto,*,auto">
+    <Grid x:Name="headerGrid" HeightRequest="50" />
+    <BoxView Grid.Row="1" Style="{StaticResource HeaderUnderline}" />
+    <CollectionView x:Name="contentCollectionView" Grid.Row="2" />
+    <HorizontalStackLayout Grid.Row="3">
+        <Button
+            Clicked="PrevButton_Clicked"
+            Style="{StaticResource IconButton}"
+            Text="{x:Static icons:IconFont.Navigate_before}" />
+        <Label x:Name="currentPageLabel" />
+        <Label Text="/" />
+        <Label x:Name="totalPagesLabel" />
+        <Button
+            Clicked="NextButton_Clicked"
+            Style="{StaticResource IconButton}"
+            Text="{x:Static icons:IconFont.Navigate_next}" />
+    </HorizontalStackLayout>
+</Grid>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Lubricentro25.Views.ProviderDetailsView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:Lubricentro25.Converters"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    x:DataType="data:Provider">
+    <VerticalStackLayout>
+        <Label Style="{StaticResource Subtitle}" Text="Nombre\Razón Social:" />
+        <Label Style="{StaticResource CardLabel}" Text="{Binding Name}" />
+        <Label Style="{StaticResource Subtitle}" Text="CUIL\CUIT:" />
+        <Label Style="{StaticResource CardLabel}" Text="{Binding Cuil}" />
+        <!--<Label Style="{StaticResource Subtitle}" Text="Teléfono:" />-->
+        <!--<Label Style="{StaticResource CardLabel}" Text="{Binding Phone}" />-->
+        <Label Style="{StaticResource Subtitle}" Text="Fax:" />
+        <Label Style="{StaticResource CardLabel}" Text="{Binding Fax}" />
+        <Label Style="{StaticResource Subtitle}" Text="Página Web:" />
+        <Label Style="{StaticResource CardLabel}" Text="{Binding Website}" />
+        <Label Style="{StaticResource Subtitle}" Text="Condición Fiscal:" />
+        <Label Style="{StaticResource CardLabel}" Text="{Binding TaxCondition.Description}" />
+        <Label Style="{StaticResource Subtitle}" Text="Observación:" />
+        <Label Style="{StaticResource CardLabel}" Text="{Binding Observation}" />
+        <Label Style="{StaticResource Subtitle}" Text="País:" />
+        <Label Style="{StaticResource CardLabel}" Text="{Binding Address.Country}" />
+        <Label Style="{StaticResource Subtitle}" Text="Provincia:" />
+        <Label Style="{StaticResource CardLabel}" Text="{Binding Address.State}" />
+        <Label Style="{StaticResource Subtitle}" Text="Ciudad:" />
+        <Label Style="{StaticResource CardLabel}" Text="{Binding Address.City}" />
+        <Label Style="{StaticResource Subtitle}" Text="Calle:" />
+        <Label Style="{StaticResource CardLabel}" Text="{Binding Address.Street}" />
+        <Label Style="{StaticResource Subtitle}" Text="Código Postal:" />
+        <Label Style="{StaticResource CardLabel}" Text="{Binding Address.PostalCode}" />
+    </VerticalStackLayout>
+</ContentView>

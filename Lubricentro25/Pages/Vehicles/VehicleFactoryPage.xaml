@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:BasePage
+    x:Class="Lubricentro25.Pages.Vehicles.VehicleFactoryPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cards="clr-namespace:Lubricentro25.Controls.Cards"
+    xmlns:controls="clr-namespace:Lubricentro25.Controls"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:pages="clr-namespace:Lubricentro25.Pages"
+    xmlns:vehicleData="clr-namespace:Lubricentro25.Models.Vehicles"
+    xmlns:views="clr-namespace:Lubricentro25.Views"
+    xmlns:vm="clr-namespace:Lubricentro25.ViewModels.Vehicles"
+    x:Name="VehicleFactoriesPage"
+    Title="ClientsPage"
+    x:DataType="vm:VehicleFactoryViewModel">
+    <pages:BasePage.MainContent>
+        <Grid ColumnDefinitions="*,*">
+
+            <VerticalStackLayout>
+                <Grid ColumnDefinitions="*,*">
+                    <HorizontalStackLayout Padding="10" Spacing="15">
+                        <Button Command="{Binding CreateCommand}" Text="Crear" />
+                        <Button
+                            Command="{Binding UpdateCommand}"
+                            CommandParameter="{Binding SelectedItem, Source={x:Reference FactoryCollection}}"
+                            Text="Editar" />
+                        <Button
+                            Command="{Binding DeleteCommand}"
+                            CommandParameter="{Binding SelectedItem, Source={x:Reference FactoryCollection}}"
+                            Style="{StaticResource WarningButton}"
+                            Text="Eliminar" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout
+                        Grid.Column="1"
+                        Padding="10"
+                        HorizontalOptions="End"
+                        Spacing="15">
+                        <!--<SearchBar
+                            Placeholder="Nombre"
+                            SearchCommand="{Binding SearchCommand}"
+                            Text="{Binding VehicleFactoryName}"
+                            TextTransform="Uppercase" />-->
+                    </HorizontalStackLayout>
+                </Grid>
+
+                <CollectionView
+                    x:Name="FactoryCollection"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgroundLight},
+                                                      Dark={StaticResource TertiaryBackgroundDark}}"
+                    ItemsSource="{Binding VehicleFactories}"
+                    MaximumHeightRequest="800"
+                    SelectedItem="{Binding SelecetedVehicleFactory}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="vehicleData:VehicleFactory">
+                            <HorizontalStackLayout HeightRequest="30">
+                                <Label
+                                    Margin="20,0,0,0"
+                                    Text="{Binding Name}"
+                                    VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Column="1">
+                <Grid ColumnDefinitions="*,*">
+                    <HorizontalStackLayout Padding="10" Spacing="15">
+                        <Button Command="{Binding CreateModelCommand}" Text="Crear" />
+                        <Button
+                            Command="{Binding UpdateModelCommand}"
+                            CommandParameter="{Binding SelectedItem, Source={x:Reference ModelCollection}}"
+                            Text="Editar" />
+                        <Button
+                            Command="{Binding DeleteModelCommand}"
+                            CommandParameter="{Binding SelectedItem, Source={x:Reference ModelCollection}}"
+                            Style="{StaticResource WarningButton}"
+                            Text="Eliminar" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout
+                        Grid.Column="1"
+                        Padding="10"
+                        HorizontalOptions="End"
+                        Spacing="15">
+                        <!--<SearchBar
+                            Placeholder="Nombre"
+                            SearchCommand="{Binding SearchCommand}"
+                            Text="{Binding VehicleModelName}"
+                            TextTransform="Uppercase" />-->
+                    </HorizontalStackLayout>
+                </Grid>
+
+                <CollectionView
+                    x:Name="ModelCollection"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgroundLight},
+                                                      Dark={StaticResource TertiaryBackgroundDark}}"
+                    HeightRequest="800"
+                    ItemsSource="{Binding SelecetedVehicleFactory.Models}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="vehicleData:VehicleModel">
+                            <HorizontalStackLayout HeightRequest="30">
+
+                                <Label
+                                    Margin="20,0,0,0"
+                                    Text="{Binding Name}"
+                                    VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </Grid>
+    </pages:BasePage.MainContent>
+</pages:BasePage>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Lubricentro25.Pages.Configuration.MigrationPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cards="clr-namespace:Lubricentro25.Controls.Cards.Migrations"
+    xmlns:data="clr-namespace:Lubricentro25.Models.Migration"
+    xmlns:vm="clr-namespace:Lubricentro25.ViewModels.Configurations"
+    Title="MigrationPage"
+    x:DataType="vm:MigrationsConfigurationViewModel">
+    <Grid>
+        <CollectionView Margin="15" ItemsSource="{Binding MigrationHandlerContainers}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="data:MigrationHandlerContainer">
+                    <cards:MigrationCardContainer />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

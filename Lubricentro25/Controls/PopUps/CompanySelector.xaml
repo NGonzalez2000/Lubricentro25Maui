@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mct:Popup
+    x:Class="Lubricentro25.Controls.PopUps.CompanySelector"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:icons="clr-namespace:Lubricentro25.Icons"
+    xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Size="500,300"
+    Style="{StaticResource BasePopUp}">
+    <Border Style="{StaticResource PopUpBody}">
+
+        <Grid RowDefinitions="auto,*,auto">
+            <Button
+                Grid.Column="0"
+                Clicked="Cancel_Clicked"
+                HorizontalOptions="End"
+                Style="{StaticResource IconButton}"
+                Text="{x:Static icons:IconFont.Close}"
+                VerticalOptions="Start" />
+            <VerticalStackLayout
+                Grid.Row="1"
+                Padding="20"
+                Spacing="25"
+                VerticalOptions="Center">
+                <Label Text="SELECCIONE UNA COMPAÑÍA" />
+                <Picker x:Name="companyPicker" />
+            </VerticalStackLayout>
+
+            <HorizontalStackLayout
+                Grid.Row="2"
+                HorizontalOptions="Center"
+                Spacing="20"
+                VerticalOptions="End">
+                <Button Clicked="Accept_Clicked" Text="Aceptar" />
+                <Button Clicked="Cancel_Clicked" Text="Cancelar" />
+            </HorizontalStackLayout>
+        </Grid>
+    </Border>
+
+</mct:Popup>

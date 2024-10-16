@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Lubricentro25.Pages.Configuration.Migrations.ClientConditionMigrationPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cards="clr-namespace:Lubricentro25.Controls.Cards"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:icons="clr-namespace:Lubricentro25.Icons"
+    xmlns:vm="clr-namespace:Lubricentro25.ViewModels.Configurations.Migrations"
+    Title="ClientConditionMigration"
+    x:DataType="vm:ClientConditionMigrationViewModel">
+    <Grid
+        Padding="50"
+        RowDefinitions="auto,*,*"
+        RowSpacing="10">
+        <HorizontalStackLayout Spacing="25">
+            <Button Command="{Binding ReadOldDbCommand}" Text="Leer" />
+            <Button Command="{Binding MigrateCommand}" Text="Confirmar" />
+        </HorizontalStackLayout>
+
+        <Border Grid.Row="1" Style="{StaticResource CollectionViewContariner}">
+
+            <Grid RowDefinitions="auto,auto,auto,*">
+                <Label FontSize="Title" Text="Nuevos" />
+
+
+                <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,50,50">
+                    <Label
+                        Grid.Column="0"
+                        FontAttributes="Bold"
+                        Text="Error" />
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        Text="Descripción" />
+                    <Label
+                        Grid.Column="2"
+                        FontAttributes="Bold"
+                        Text="Tipo de Factura" />
+                    <Label
+                        Grid.Column="3"
+                        FontAttributes="Bold"
+                        Text="IVA Discriminado" />
+                </Grid>
+                <BoxView Grid.Row="2" Style="{StaticResource HeaderUnderline}" />
+
+                <ScrollView Grid.Row="4" Padding="0,0,30,0">
+
+                    <Grid ColumnDefinitions="*,3*,100">
+
+
+                        <CollectionView ItemsSource="{Binding NewTaxConditionsError}" SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Label
+                                        HeightRequest="40"
+                                        Text="{Binding .}"
+                                        VerticalOptions="Center" />
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+
+                        <ScrollView Grid.Column="1" Orientation="Horizontal">
+                            <CollectionView ItemsSource="{Binding NewTaxConditions}" SelectionMode="None">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="data:TaxCondition">
+
+                                        <cards:TaxConditionCard HeightRequest="40" />
+
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </ScrollView>
+
+                        <CollectionView
+                            Grid.Column="2"
+                            ItemsSource="{Binding NewTaxConditions}"
+                            SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <HorizontalStackLayout HeightRequest="40" Spacing="10">
+
+                                        <Button
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type Page}}, Path=BindingContext.EditTaxConditionCommand}"
+                                            CommandParameter="{Binding .}"
+                                            Style="{StaticResource IconButton}"
+                                            Text="{x:Static icons:IconFont.Edit}" />
+                                        <Button
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type Page}}, Path=BindingContext.RemoveNewCommand}"
+                                            CommandParameter="{Binding .}"
+                                            Style="{StaticResource IconButton}"
+                                            Text="{x:Static icons:IconFont.Delete}"
+                                            TextColor="Red" />
+                                    </HorizontalStackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Grid>
+                </ScrollView>
+            </Grid>
+        </Border>
+
+
+
+
+        <Border Grid.Row="2" Style="{StaticResource CollectionViewContariner}">
+
+            <Grid RowDefinitions="auto,auto,auto,*">
+                <Label FontSize="Title" Text="Existentes" />
+
+                <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,100">
+                    <Label
+                        Grid.Column="0"
+                        FontAttributes="Bold"
+                        Text="Error" />
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        Text="Descripción" />
+                    <Label
+                        Grid.Column="2"
+                        FontAttributes="Bold"
+                        Text="Tipo de Factura" />
+                    <Label
+                        Grid.Column="3"
+                        FontAttributes="Bold"
+                        Text="IVA Discriminado" />
+                </Grid>
+
+                <BoxView Grid.Row="2" Style="{StaticResource HeaderUnderline}" />
+
+                <ScrollView Grid.Row="4" Padding="0,0,30,0">
+
+                    <Grid ColumnDefinitions="*,3*,100">
+
+
+                        <CollectionView ItemsSource="{Binding ExistingTaxConditionsError}" SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Label
+                                        HeightRequest="40"
+                                        Text="{Binding .}"
+                                        VerticalOptions="End" />
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+
+                        <ScrollView Grid.Column="1" Orientation="Horizontal">
+                            <CollectionView ItemsSource="{Binding ExistingTaxConditions}" SelectionMode="None">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="data:TaxCondition">
+
+                                        <cards:TaxConditionCard HeightRequest="40" />
+
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </ScrollView>
+
+                        <CollectionView
+                            Grid.Column="2"
+                            ItemsSource="{Binding ExistingTaxConditions}"
+                            SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <HorizontalStackLayout HeightRequest="40" Spacing="10">
+
+                                        <Button
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type Page}}, Path=BindingContext.EditTaxConditionCommand}"
+                                            CommandParameter="{Binding .}"
+                                            Style="{StaticResource IconButton}"
+                                            Text="{x:Static icons:IconFont.Edit}" />
+                                        <Button
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type Page}}, Path=BindingContext.RemoveExistingCommand}"
+                                            CommandParameter="{Binding .}"
+                                            Style="{StaticResource IconButton}"
+                                            Text="{x:Static icons:IconFont.Delete}"
+                                            TextColor="Red" />
+                                    </HorizontalStackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Grid>
+                </ScrollView>
+
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Lubricentro25.Pages.DedicatedPages.ClientPages.SingleClientPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Lubricentro25.Controls"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:viewmodels="clr-namespace:Lubricentro25.Pages.DedicatedPages.ClientPages"
+    Title="SingleClientPage"
+    x:DataType="viewmodels:SingleClientViewModel">
+
+    <ScrollView>
+
+        <VerticalStackLayout Padding="20">
+            <Frame BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgroundLight}, Dark={StaticResource TertiaryBackgroundDark}}" IsEnabled="{Binding IsEditingEnable}">
+                <VerticalStackLayout>
+                    <Label FontSize="Medium" Text="DATOS" />
+                    <BoxView
+                        HeightRequest="2"
+                        HorizontalOptions="Fill"
+                        Color="Gray" />
+
+                    <FlexLayout
+                        AlignItems="Start"
+                        Direction="Row"
+                        IsClippedToBounds="True"
+                        Wrap="Wrap">
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="NOMBRE:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="NOMBRE"
+                                Text="{Binding Client.ClientName}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*,1.2*"
+                            WidthRequest="400">
+                            <Label Text="CUIL/CUIT:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="CUIL"
+                                Text="{Binding Client.Cuil, Converter={StaticResource CUILConverter}}"
+                                TextTransform="Uppercase" />
+                            <Button Grid.Column="2" Text="CONSULTAR" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="COND. FISCAL:" />
+                            <Picker
+                                Grid.Column="1"
+                                IsVisible="{Binding IsEditingEnable}"
+                                ItemDisplayBinding="{Binding Path=Description}"
+                                ItemsSource="{Binding TaxConditions}"
+                                SelectedItem="{Binding SelectedTaxCondition, Mode=TwoWay}" />
+                            <Entry
+                                Grid.Column="1"
+                                IsVisible="{Binding IsEditingEnable, Converter={StaticResource InverseBooleanConverter}}"
+                                Placeholder="CONDICION FISCAL"
+                                Text="{Binding Client.TaxCondition.Description}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="PAÍS:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="PAÍS"
+                                Text="{Binding Client.Address.Country}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="PROVINCIA:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="PROVINCIA"
+                                Text="{Binding Client.Address.State}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="CIUDAD:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="CIUDAD"
+                                Text="{Binding Client.Address.City}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="CALLE:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="CALLE"
+                                Text="{Binding Client.Address.Street}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="CODIGO POSTAL:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="CODIGO POSTAL"
+                                Text="{Binding Client.Address.PostalCode}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="OBSERVACIÓN:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="OBSERVACIÓN"
+                                Text="{Binding Client.Observation}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="2*,*"
+                            WidthRequest="400">
+                            <Label Text="CUENTA CORRIENTE:" />
+                            <CheckBox Grid.Column="1" IsChecked="{Binding Client.HasCheckingAccount}" />
+                        </Grid>
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="2*,*"
+                            WidthRequest="400">
+                            <Label Text="ES MAYORISTA:" />
+                            <CheckBox Grid.Column="1" IsChecked="{Binding Client.IsWholesaler}" />
+                        </Grid>
+                    </FlexLayout>
+                    <Grid ColumnDefinitions="*,*">
+                        <controls:EmailsListView Margin="30" BindingContext="{Binding Client.EmailCollection}" />
+                        <controls:PhonesListView
+                            Grid.Column="1"
+                            Margin="30"
+                            BindingContext="{Binding Client.PhoneCollection}" />
+                    </Grid>
+                    <HorizontalStackLayout
+                        Margin="0,20,0,0"
+                        HorizontalOptions="End"
+                        IsVisible="{Binding IsEditingEnable}"
+                        Spacing="20">
+                        <Button Command="{Binding AcceptCommand}" Text="ACEPTAR" />
+                        <Button Command="{Binding CancelCommand}" Text="CANCELAR" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame IsEnabled="{Binding IsEditingEnable, Converter={StaticResource InverseBooleanConverter}}" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

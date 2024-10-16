@@ -29,7 +29,7 @@ public partial class RoleEditorViewModel : ObservableObject
     public async Task Load()
     {
         var response = await _roleEndpoint.GetAllPolicies();
-        if(!response.IsSuccess)
+        if(!response.IsSuccessful)
         {
             await Shell.Current.DisplayAlert("Error", "No se pudieron cargar las politicas", "Aceptar");
             Policies = [];

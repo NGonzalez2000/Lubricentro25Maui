@@ -13,6 +13,7 @@
     xmlns:login="clr-namespace:Lubricentro25.Pages.Login"
     xmlns:messages="clr-namespace:Lubricentro25.Pages.Messages"
     xmlns:providers="clr-namespace:Lubricentro25.Pages.Providers"
+    xmlns:vehicle="clr-namespace:Lubricentro25.Pages.Vehicles"
     Title="Lubricentro25"
     Shell.NavBarIsVisible="False">
 
@@ -29,7 +30,7 @@
 
         <Tab Title="Clientes">
             <ShellContent Title="Clientes" ContentTemplate="{DataTemplate customers:CustomersPage}" />
-            <ShellContent Title="Cond. Fiscal" ContentTemplate="{DataTemplate customers:TaxStatusPage}" />
+            <ShellContent Title="Cond. Fiscal" ContentTemplate="{DataTemplate customers:TaxConditionPage}" />
             <ShellContent Title="Desc. Clientes" ContentTemplate="{DataTemplate customers:CustomersDiscounts}" />
             <ShellContent Title="Cheques" ContentTemplate="{DataTemplate customers:CustomersChecks}" />
         </Tab>
@@ -61,8 +62,13 @@
             <ShellContent Title="Listas" ContentTemplate="{DataTemplate items:ItemsListsPage}" />
         </Tab>
 
+        <Tab Title="Vehiculos">
+            <ShellContent Title="Fabricantes" ContentTemplate="{DataTemplate vehicle:VehicleFactoryPage}" />
+        </Tab>
+
         <Tab x:Name="ConfigurationTab" Title="Configuración">
             <ShellContent Title="Configuración" ContentTemplate="{DataTemplate configurations:ConfigurationPage}" />
+            <ShellContent Title="Perfil" ContentTemplate="{DataTemplate configurations:ProfilePage}" />
         </Tab>
 
         <Tab x:Name="ChatTab" Title="Chat">

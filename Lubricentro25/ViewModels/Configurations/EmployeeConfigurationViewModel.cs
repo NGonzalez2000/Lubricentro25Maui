@@ -34,7 +34,7 @@ public partial class EmployeeConfigurationViewModel : ObservableObject
     private async Task Load()
     {
         var apiResponse = await _employeeClient.GetAllEmployees();
-        if(!apiResponse.IsSuccess)
+        if(!apiResponse.IsSuccessful)
         {
             await Shell.Current.DisplayAlert("Error", apiResponse.ErrorMessage, "Ok");
             return;
@@ -52,7 +52,7 @@ public partial class EmployeeConfigurationViewModel : ObservableObject
         if (employee != null)
         {
             var response = await _employeeClient.CreateEmployee(employee);
-            if (!response.IsSuccess)
+            if (!response.IsSuccessful)
             {
                 await Shell.Current.DisplayAlert("Error", response.ErrorMessage, "Ok");
                 return;
@@ -74,7 +74,7 @@ public partial class EmployeeConfigurationViewModel : ObservableObject
         {
             var response = await _employeeClient.UpdateEmployee(employee);
             
-            if(!response.IsSuccess)
+            if(!response.IsSuccessful)
             {
                 await Shell.Current.DisplayAlert("Error", response.ErrorMessage,"Ok");
                 return;
@@ -99,7 +99,7 @@ public partial class EmployeeConfigurationViewModel : ObservableObject
         if (!await Shell.Current.DisplayAlert("Eliminar Empleado", $"Seguro desea eliminar al empleado: {SelectedEmployee!.FullName} ?", "Aceptar", "Cancelar")) return;
         var response = await _employeeClient.DeleteEmployee(SelectedEmployee.Id);
 
-        if(!response.IsSuccess)
+        if(!response.IsSuccessful)
         {
             await Shell.Current.DisplayAlert("Error", response.ErrorMessage, "Ok");
             return;

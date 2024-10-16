@@ -1,13 +1,101 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<pages:BasePage
     x:Class="Lubricentro25.Pages.Providers.ProvidersPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="ProvidersPage">
-    <VerticalStackLayout>
-        <Label
-            HorizontalOptions="Center"
-            Text="Welcome to Providers!"
-            VerticalOptions="Center" />
-    </VerticalStackLayout>
-</ContentPage>
+    xmlns:cards="clr-namespace:Lubricentro25.Controls.Cards"
+    xmlns:controls="clr-namespace:Lubricentro25.Controls"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:pages="clr-namespace:Lubricentro25.Pages"
+    xmlns:views="clr-namespace:Lubricentro25.Views"
+    xmlns:vm="clr-namespace:Lubricentro25.ViewModels.Providers"
+    x:Name="ProviderPage"
+    Title="ProvidersPage"
+    x:DataType="vm:ProvidersViewModel">
+    <pages:BasePage.Buttons>
+        <HorizontalStackLayout Padding="15" Spacing="10">
+            <Button Command="{Binding CreateCommand}" Text="Crear" />
+            <Button
+                Command="{Binding UpdateCommand}"
+                CommandParameter="{Binding SelectedItem, Source={x:Reference ProvidersCollection}}"
+                Text="Editar" />
+            <Button
+                Command="{Binding DeleteCommand}"
+                CommandParameter="{Binding SelectedItem, Source={x:Reference ProvidersCollection}}"
+                Style="{StaticResource WarningButton}"
+                Text="Eliminar" />
+        </HorizontalStackLayout>
+    </pages:BasePage.Buttons>
+    <pages:BasePage.Filter>
+        <HorizontalStackLayout
+            Padding="10"
+            HorizontalOptions="End"
+            Spacing="15">
+
+            <SearchBar
+                Placeholder="Razón Social"
+                SearchCommand="{Binding SearchCommand}"
+                Text="{Binding NameSearchText}"
+                TextTransform="Uppercase" />
+            <SearchBar
+                Placeholder="CUIL/CUIT"
+                SearchCommand="{Binding SearchCommand}"
+                Text="{Binding CuilSearchText}"
+                TextTransform="Uppercase" />
+        </HorizontalStackLayout>
+    </pages:BasePage.Filter>
+
+    <pages:BasePage.MainContent>
+        <controls:PagedCollectionView
+            x:Name="ProvidersCollection"
+            Padding="20,0"
+            FullSource="{Binding Providers}">
+            <controls:PagedCollectionView.Header>
+                <Grid ColumnDefinitions="*,*,*,*,*,*,*">
+                    <Label
+                        Grid.Column="0"
+                        FontSize="Subtitle"
+                        Text="Nombre/Razón Social" />
+                    <Label
+                        Grid.Column="1"
+                        FontSize="Subtitle"
+                        Text="CUIL/CUIT" />
+                    <Label
+                        Grid.Column="2"
+                        FontSize="Subtitle"
+                        Text="E-Mail" />
+                    <Label
+                        Grid.Column="3"
+                        FontSize="Subtitle"
+                        Text="Teléfono" />
+                    <Label
+                        Grid.Column="4"
+                        FontSize="Subtitle"
+                        Text="Fax" />
+                    <Label
+                        Grid.Column="5"
+                        FontSize="Subtitle"
+                        Text="Observación" />
+                    <Label
+                        Grid.Column="6"
+                        FontSize="Subtitle"
+                        Text="Cond. Fiscal" />
+                </Grid>
+            </controls:PagedCollectionView.Header>
+            <controls:PagedCollectionView.ItemTemplate>
+                <DataTemplate x:DataType="data:Provider">
+                    <cards:ProviderCard>
+                        <FlyoutBase.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem
+                                    Command="{Binding Source={x:Reference ProviderPage}, Path=BindingContext.FullDetailsCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Text="Detalles" />
+                            </MenuFlyout>
+                        </FlyoutBase.ContextFlyout>
+                    </cards:ProviderCard>
+                </DataTemplate>
+            </controls:PagedCollectionView.ItemTemplate>
+        </controls:PagedCollectionView>
+    </pages:BasePage.MainContent>
+</pages:BasePage>

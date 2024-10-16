@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Lubricentro25.Pages.DedicatedPages.ProductPages.SingleProductPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Lubricentro25.Controls"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:viewmodels="clr-namespace:Lubricentro25.Pages.DedicatedPages.ProductPages"
+    Title="SingleClientPage"
+    x:DataType="viewmodels:SingleProductViewModel">
+
+    <ScrollView>
+
+        <VerticalStackLayout Padding="20">
+            <Frame BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgroundLight}, Dark={StaticResource TertiaryBackgroundDark}}" IsEnabled="{Binding IsEditingEnable}">
+                <VerticalStackLayout>
+                    <Label FontSize="Medium" Text="DATOS" />
+                    <BoxView
+                        HeightRequest="2"
+                        HorizontalOptions="Fill"
+                        Color="Gray" />
+
+                    <FlexLayout
+                        AlignItems="Start"
+                        Direction="Row"
+                        IsClippedToBounds="True"
+                        Wrap="Wrap">
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="CÓDIGO:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="CÓDIGO"
+                                Text="{Binding Product.Code}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="CÓDIGO BARRA:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="CÓDIGO BARRA"
+                                Text="{Binding Product.Barcode}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="DESCRIPCIÓN:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="DESCRIPCIÓN"
+                                Text="{Binding Product.Description}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="MARCA:" />
+                            <Picker
+                                Grid.Column="1"
+                                IsVisible="{Binding IsEditingEnable}"
+                                ItemDisplayBinding="{Binding Path=Name}"
+                                ItemsSource="{Binding Brands}"
+                                SelectedItem="{Binding SelectedBrand, Mode=TwoWay}" />
+                            <Entry
+                                Grid.Column="1"
+                                IsVisible="{Binding IsEditingEnable, Converter={StaticResource InverseBooleanConverter}}"
+                                Placeholder="MARCA"
+                                Text="{Binding Product.Brand.Name}" />
+                        </Grid>
+
+
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="PRECIO COMPRA:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="$X.XX"
+                                Text="{Binding Product.ListPrice}" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="PRECIO VENTA:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="$X.XX"
+                                Text="{Binding Product.SellPrice}" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="GANANCIA:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="GANANCIA"
+                                Text="{Binding Product.MarkupPercentage}" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="MAYORISTA:" />
+                            <CheckBox Grid.Column="1" IsChecked="{Binding Product.IsWholesaler}" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="EN DOLARES:" />
+                            <CheckBox Grid.Column="1" IsChecked="{Binding Product.IsUsd}" />
+                        </Grid>
+                    </FlexLayout>
+                    <HorizontalStackLayout
+                        Margin="0,20,0,0"
+                        HorizontalOptions="End"
+                        IsVisible="{Binding IsEditingEnable}"
+                        Spacing="20">
+                        <Button Command="{Binding AcceptCommand}" Text="ACEPTAR" />
+                        <Button Command="{Binding CancelCommand}" Text="CANCELAR" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame IsEnabled="{Binding IsEditingEnable, Converter={StaticResource InverseBooleanConverter}}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

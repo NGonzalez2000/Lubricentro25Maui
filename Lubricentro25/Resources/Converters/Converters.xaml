@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary
+    x:Class="Lubricentro25.Resources.Converters.Converters"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:Lubricentro25.Converters">
+    <converters:DNICUIL_StringConverter x:Key="CUILConverter" />
+    <converters:Phone_StringConverter x:Key="PhoneConverter" />
+    <converters:InvertBoolConverter x:Key="InverseBooleanConverter" />
+</ResourceDictionary>

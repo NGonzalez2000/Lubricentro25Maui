@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mct:Popup
+    x:Class="Lubricentro25.Controls.PopUps.TaxConditionPopUp"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:icons="clr-namespace:Lubricentro25.Icons"
+    xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+    x:DataType="data:TaxCondition"
+    CanBeDismissedByTappingOutsideOfPopup="False"
+    Size="400,270"
+    Style="{StaticResource BasePopUp}">
+    <Border Style="{StaticResource PopUpBody}">
+        <Grid RowDefinitions="auto,auto,*">
+            <Button
+                Grid.Column="1"
+                Clicked="Cancel_Clicked"
+                HorizontalOptions="End"
+                Style="{StaticResource IconButton}"
+                Text="{x:Static icons:IconFont.Close}"
+                VerticalOptions="Start" />
+
+            <Grid
+                Grid.Row="1"
+                Padding="10,0"
+                ColumnDefinitions="*,2*"
+                ColumnSpacing="10"
+                RowDefinitions="*,*,*"
+                RowSpacing="10">
+                <Label
+                    Grid.Row="0"
+                    FontAttributes="Bold"
+                    Text="Descripción" />
+                <Entry
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Style="{StaticResource UppercaseEntry}"
+                    Text="{Binding Description}" />
+
+                <Label
+                    Grid.Row="1"
+                    FontAttributes="Bold"
+                    Text="Tipo" />
+                <Entry
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    MaxLength="1"
+                    Style="{StaticResource UppercaseEntry}"
+                    Text="{Binding Type}" />
+
+                <Label
+                    Grid.Row="2"
+                    FontAttributes="Bold"
+                    Text="IVA Discriminado" />
+                <CheckBox
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    HorizontalOptions="End"
+                    IsChecked="{Binding Vat}" />
+            </Grid>
+
+
+
+            <HorizontalStackLayout
+                Grid.Row="2"
+                HorizontalOptions="Center"
+                Spacing="20"
+                VerticalOptions="End">
+                <Button Clicked="Accept_Clicked" Text="Aceptar" />
+                <Button Clicked="Cancel_Clicked" Text="Cancelar" />
+            </HorizontalStackLayout>
+        </Grid>
+    </Border>
+</mct:Popup>

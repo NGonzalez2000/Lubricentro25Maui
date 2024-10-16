@@ -1,13 +1,70 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<pages:BasePage
     x:Class="Lubricentro25.Pages.Items.ItemsBrandsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="ItemsBrandsPage">
-    <VerticalStackLayout>
-        <Label
-            HorizontalOptions="Center"
-            Text="Welcome to Items Brands Page!"
-            VerticalOptions="Center" />
-    </VerticalStackLayout>
-</ContentPage>
+    xmlns:cards="clr-namespace:Lubricentro25.Controls.Cards"
+    xmlns:controls="clr-namespace:Lubricentro25.Controls"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:pages="clr-namespace:Lubricentro25.Pages"
+    xmlns:views="clr-namespace:Lubricentro25.Views"
+    xmlns:vm="clr-namespace:Lubricentro25.ViewModels.Items"
+    x:Name="BrandPage"
+    Title="BrandsPage"
+    x:DataType="vm:BrandViewModel">
+    <pages:BasePage.Buttons>
+        <HorizontalStackLayout Padding="15" Spacing="10">
+            <Button Command="{Binding CreateCommand}" Text="Crear" />
+            <Button
+                Command="{Binding UpdateCommand}"
+                CommandParameter="{Binding SelectedItem, Source={x:Reference BrandsCollection}}"
+                Text="Editar" />
+            <Button
+                Command="{Binding DeleteCommand}"
+                CommandParameter="{Binding SelectedItem, Source={x:Reference BrandsCollection}}"
+                Style="{StaticResource WarningButton}"
+                Text="Eliminar" />
+        </HorizontalStackLayout>
+    </pages:BasePage.Buttons>
+    <pages:BasePage.Filter>
+        <HorizontalStackLayout
+            Padding="10"
+            HorizontalOptions="End"
+            Spacing="15">
+            <SearchBar
+                Placeholder="NOMBRE"
+                SearchCommand="{Binding SearchCommand}"
+                Text="{Binding NameSearchText}"
+                TextTransform="Uppercase" />
+        </HorizontalStackLayout>
+    </pages:BasePage.Filter>
+    <pages:BasePage.MainContent>
+        <controls:PagedCollectionView
+            x:Name="BrandsCollection"
+            Padding="20,0"
+            FullSource="{Binding Brands}">
+            <controls:PagedCollectionView.Header>
+                <Grid ColumnDefinitions="*">
+                    <Label
+                        Grid.Column="0"
+                        FontSize="Subtitle"
+                        Text="Nombre" />
+                </Grid>
+            </controls:PagedCollectionView.Header>
+            <controls:PagedCollectionView.ItemTemplate>
+                <DataTemplate x:DataType="data:Brand">
+                    <cards:BrandCard>
+                        <FlyoutBase.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem
+                                    Command="{Binding Source={x:Reference BrandPage}, Path=BindingContext.FullDetailsCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Text="Detalles" />
+                            </MenuFlyout>
+                        </FlyoutBase.ContextFlyout>
+                    </cards:BrandCard>
+                </DataTemplate>
+            </controls:PagedCollectionView.ItemTemplate>
+        </controls:PagedCollectionView>
+    </pages:BasePage.MainContent>
+</pages:BasePage>

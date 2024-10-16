@@ -25,7 +25,7 @@ namespace Lubricentro25.ViewModels.Chats
             }
             var apiResponse = await _chatEndpoint.GetUsersAsync();
 
-            if (!apiResponse.IsSuccess)
+            if (!apiResponse.IsSuccessful)
             {
                 await Shell.Current.DisplayAlert("Error", apiResponse.ErrorMessage, "Ok");
                 return;
@@ -61,7 +61,6 @@ namespace Lubricentro25.ViewModels.Chats
         [RelayCommand]
         async Task SendMessage(string messageText)
         {
-            await Task.CompletedTask;
             if (SelectedChat is null) return;
             SelectedChat.CanSendMessage = false;
             if(await _chatEndpoint.SendMessageAsync(SelectedChat.ReceptorId, messageText))
@@ -114,7 +113,7 @@ namespace Lubricentro25.ViewModels.Chats
         {
             var response = await _chatEndpoint.GetConversationAsync(receptorId);
 
-            if(!response.IsSuccess)
+            if(!response.IsSuccessful)
             {
                 await Shell.Current.DisplayAlert("Error", "No se pudieron cargar los mensajes.", "Aceptar");
                 return [];

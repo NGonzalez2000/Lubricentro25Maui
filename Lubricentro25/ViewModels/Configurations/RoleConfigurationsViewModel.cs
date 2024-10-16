@@ -33,7 +33,7 @@ public partial class RoleConfigurationsViewModel(IRoleEndpoint rolesClient, Role
     private async Task LoadViewModel()
     {
         var apiResponse = await _rolesClient.GetAllRoles();
-        if(!apiResponse.IsSuccess)
+        if(!apiResponse.IsSuccessful)
         {
             await Shell.Current.DisplayAlert("Error", apiResponse.ErrorMessage, "Ok");
             return;
@@ -56,12 +56,12 @@ public partial class RoleConfigurationsViewModel(IRoleEndpoint rolesClient, Role
 
         var response = await _rolesClient.CreateRole(role);
 
-        if(!response.IsSuccess)
+        if(!response.IsSuccessful)
         {
             await Shell.Current.DisplayAlert("Error", response.ErrorMessage, "Aceptar");
             return;
         }
-        rolesList.Add(role);
+        rolesList.Add(response.ResponseContent.First());
         Search("");
 
     }
@@ -85,7 +85,7 @@ public partial class RoleConfigurationsViewModel(IRoleEndpoint rolesClient, Role
         if (role is null) return;
 
         var response = await _rolesClient.UpdateRole(role);
-        if (!response.IsSuccess)
+        if (!response.IsSuccessful)
         {
             await Shell.Current.DisplayAlert("Error", response.ErrorMessage, "Aceptar");
             return;
@@ -113,7 +113,7 @@ public partial class RoleConfigurationsViewModel(IRoleEndpoint rolesClient, Role
 
         var response = await _rolesClient.DeleteRole(SelectedRole.Id);
 
-        if (!response.IsSuccess)
+        if (!response.IsSuccessful)
         {
             await Shell.Current.DisplayAlert("Error", response.ErrorMessage, "Aceptar");
             return;

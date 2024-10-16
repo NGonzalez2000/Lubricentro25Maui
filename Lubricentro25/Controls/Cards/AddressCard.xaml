@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Lubricentro25.Controls.Cards.AddressCard"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    x:DataType="data:Address">
+    <Grid ColumnDefinitions="*,*,*,*,*">
+        <Label
+            Grid.Column="0"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding Country}" />
+
+        <Label
+            Grid.Column="1"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding State}" />
+
+        <Label
+            Grid.Column="2"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding City}" />
+        <Label
+            Grid.Column="3"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding Street}" />
+        <Label
+            Grid.Column="4"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding PostalCode}" />
+
+    </Grid>
+</ContentView>

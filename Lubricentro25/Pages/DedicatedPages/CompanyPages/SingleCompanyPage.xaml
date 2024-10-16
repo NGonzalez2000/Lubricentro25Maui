@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Lubricentro25.Pages.DedicatedPages.CompanyPages.SingleCompanyPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Lubricentro25.Controls"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:icons="clr-namespace:Lubricentro25.Icons"
+    xmlns:pages="clr-namespace:Lubricentro25.Pages"
+    xmlns:viewmodels="clr-namespace:Lubricentro25.Pages.DedicatedPages.CompanyPages"
+    x:Name="CompanyEditionPage"
+    Title="SingleCompanyPage"
+    x:DataType="viewmodels:SingleCompanyViewModel">
+    <ScrollView>
+
+        <VerticalStackLayout Padding="20">
+            <Frame BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgroundLight}, Dark={StaticResource TertiaryBackgroundDark}}" IsEnabled="{Binding IsEditingEnable}">
+                <VerticalStackLayout>
+                    <Label FontSize="Medium" Text="DATOS" />
+                    <BoxView
+                        HeightRequest="2"
+                        HorizontalOptions="Fill"
+                        Color="Gray" />
+
+                    <FlexLayout
+                        AlignItems="Start"
+                        Direction="Row"
+                        IsClippedToBounds="True"
+                        Wrap="Wrap">
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="NOMBRE:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="NOMBRE"
+                                Text="{Binding Company.Name}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="CUIT:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="CUIL"
+                                Text="{Binding Company.Cuil, Converter={StaticResource CUILConverter}}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="E-MAIL:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="E-MAIL"
+                                Text="{Binding Company.Email}" />
+                        </Grid>
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="ClientId:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="ClientId"
+                                Text="{Binding Company.ClientId}" />
+                        </Grid>
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="ClientSecret:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="ClientSecret"
+                                Text="{Binding Company.ClientSecret}" />
+                        </Grid>
+                    </FlexLayout>
+                    <VerticalStackLayout Margin="0,100,0,0">
+                        <Grid ColumnDefinitions="*,auto">
+                            <Label FontSize="Medium" Text="SUCURSALES" />
+                            <Button
+                                Grid.Column="1"
+                                Command="{Binding AddBranchCommand}"
+                                Style="{StaticResource IconButton}"
+                                Text="{x:Static icons:IconFont.Add}"
+                                TextColor="LightGreen" />
+                        </Grid>
+                        <BoxView
+                            HeightRequest="2"
+                            HorizontalOptions="Fill"
+                            Color="Gray" />
+                        <CollectionView
+                            HeightRequest="300"
+                            ItemsSource="{Binding Company.Branches}"
+                            SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="data:Branch">
+                                    <HorizontalStackLayout>
+                                        <Grid
+                                            Margin="10,10,10,0"
+                                            ColumnDefinitions="*,2*"
+                                            WidthRequest="250">
+                                            <Label Text="NOMBRE:" />
+                                            <Entry
+                                                Grid.Column="1"
+                                                Text="{Binding Name}"
+                                                TextTransform="Uppercase" />
+                                        </Grid>
+                                        <Grid
+                                            Margin="10,10,10,0"
+                                            ColumnDefinitions="*,2*"
+                                            WidthRequest="150">
+                                            <Label Text="PUNTO VENTA:" />
+                                            <Entry
+                                                Grid.Column="1"
+                                                Text="{Binding PointOfSale}"
+                                                TextTransform="Uppercase" />
+                                        </Grid>
+                                        <Grid
+                                            Margin="10,10,10,0"
+                                            ColumnDefinitions="*,2*"
+                                            WidthRequest="250">
+                                            <Label Text="PAIS:" />
+                                            <Entry
+                                                Grid.Column="1"
+                                                Text="{Binding Address.Country}"
+                                                TextTransform="Uppercase" />
+                                        </Grid>
+                                        <Grid
+                                            Margin="10,10,10,0"
+                                            ColumnDefinitions="*,2*"
+                                            WidthRequest="250">
+                                            <Label Text="PROVINCIA:" />
+                                            <Entry
+                                                Grid.Column="1"
+                                                Text="{Binding Address.State}"
+                                                TextTransform="Uppercase" />
+                                        </Grid>
+                                        <Grid
+                                            Margin="10,10,10,0"
+                                            ColumnDefinitions="*,2*"
+                                            WidthRequest="250">
+                                            <Label Text="CIUDAD:" />
+                                            <Entry
+                                                Grid.Column="1"
+                                                Text="{Binding Address.City}"
+                                                TextTransform="Uppercase" />
+                                        </Grid>
+                                        <Grid
+                                            Margin="10,10,10,0"
+                                            ColumnDefinitions="*,2*"
+                                            WidthRequest="250">
+                                            <Label Text="CALLE:" />
+                                            <Entry
+                                                Grid.Column="1"
+                                                Text="{Binding Address.Street}"
+                                                TextTransform="Uppercase" />
+                                        </Grid>
+                                        <Grid
+                                            Margin="10,10,10,0"
+                                            ColumnDefinitions="*,2*"
+                                            WidthRequest="200">
+                                            <Label Text="COD. POSTAL:" />
+                                            <Entry
+                                                Grid.Column="1"
+                                                Text="{Binding Address.PostalCode}"
+                                                TextTransform="Uppercase" />
+                                        </Grid>
+                                        <Button
+                                            Grid.Column="2"
+                                            Margin="0"
+                                            Padding="0"
+                                            Command="{Binding Source={x:Reference CompanyEditionPage}, Path=BindingContext.DeleteBranchCommand}"
+                                            CommandParameter="{Binding .}"
+                                            Style="{StaticResource IconButton}"
+                                            Text="{x:Static icons:IconFont.Delete}"
+                                            TextColor="Red"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                    <HorizontalStackLayout
+                        Margin="0,20,0,0"
+                        HorizontalOptions="End"
+                        IsVisible="{Binding IsEditingEnable}"
+                        Spacing="20">
+                        <Button Command="{Binding AcceptCommand}" Text="ACEPTAR" />
+                        <Button Command="{Binding CancelCommand}" Text="CANCELAR" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
+            </Frame>
+            <!--<Frame IsEnabled="{Binding IsEditingEnable, Converter={StaticResource InverseBooleanConverter}}" />-->
+        </VerticalStackLayout>
+
+    </ScrollView>
+</ContentPage>

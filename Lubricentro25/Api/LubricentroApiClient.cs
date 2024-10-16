@@ -1,5 +1,9 @@
-﻿using Lubricentro25.Api.Contracts.Error;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Lubricentro25.Api.Contracts.Error;
 using Lubricentro25.Api.Contracts.Login;
+using Lubricentro25.Models.Helpers;
+using Lubricentro25.Models.Helpers.Interface;
+using Lubricentro25.Models.Messages;
 using MapsterMapper;
 using System.Text;
 using System.Text.Json;
@@ -8,14 +12,28 @@ namespace Lubricentro25.Api;
 
 public class LubricentroApiClient : ILubricentroApiClient
 {
-    private HttpClient _httpClient;
+    private string? uri;
+    private HttpClient? httpClient;
+    private HttpClient HttpClient
+    {
+        get 
+        {
+            if(httpClient is null)
+            {
+                uri = Preferences.Get("ApiAddress", "");
+                httpClient = new HttpClient() { BaseAddress = new Uri(uri) };
+            }
+            return httpClient;
+        } 
+    }
     private readonly JsonSerializerOptions _jsonOptions;
+    private readonly IChatConnectionHelper _connectionHelper ;
     private AuthenticationResponse? _authenticationResponse;
     private readonly IMapper _mapper;
-    public LubricentroApiClient(IMapper mapper)
+    public LubricentroApiClient(IMapper mapper, IChatConnectionHelper connectionHelper)
     {
         _mapper = mapper;
-        _httpClient = new();
+        _connectionHelper = connectionHelper;
         _jsonOptions = new()
         {
             PropertyNameCaseInsensitive = true
@@ -42,7 +60,7 @@ public class LubricentroApiClient : ILubricentroApiClient
         {
             Content = CreateContent(request)
         };
-        return await _httpClient.SendAsync(requestMessage);
+        return await HttpClient.SendAsync(requestMessage);
     }
 
     public async Task<ApiResponse> Delete(string endPoint, object request)
@@ -93,7 +111,7 @@ public class LubricentroApiClient : ILubricentroApiClient
             var content = CreateContent(request);
             var cancellationTokenSource = new CancellationTokenSource();
             cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(30));
-            response = await _httpClient.PostAsync(endPoint, content,cancellationTokenSource.Token);
+            response = await HttpClient.PostAsync(endPoint, content,cancellationTokenSource.Token);
         }
         catch (Exception)
         {
@@ -120,8 +138,8 @@ public class LubricentroApiClient : ILubricentroApiClient
 
         if (error is not null)
         {
-            var key = error.Errors.Keys.First();
-            return new(error.Errors[key].First());
+            string responseError = (error.Errors is null) ? error.Title : error.Errors[error.Errors.Keys.First()].First(); 
+            return new(responseError);
         }
         return new("Error al conectarse con el servidor\nCompruebe su coneccion a internet");
     }
@@ -130,7 +148,7 @@ public class LubricentroApiClient : ILubricentroApiClient
         HttpResponseMessage response;
         try
         {
-            response = await _httpClient.GetAsync(endPoint);
+            response = await HttpClient.GetAsync(endPoint);
         }
         catch (Exception)
         {
@@ -144,7 +162,8 @@ public class LubricentroApiClient : ILubricentroApiClient
         }
         if (response.IsSuccessStatusCode)
         {
-            IEnumerable<U>? list = Deserialize<IEnumerable<U>>(await response.Content.ReadAsStringAsync());
+            var content = await response.Content.ReadAsStringAsync();
+            IEnumerable<U>? list = Deserialize<IEnumerable<U>>(content);
             if (list is null)
             {
                 return new("Error al descomprimir la respuesta del servidor");
@@ -163,24 +182,13 @@ public class LubricentroApiClient : ILubricentroApiClient
     }
     public async Task<ApiResponse> Login(LoginRequest request)
     {
-        string uri = Preferences.Get("ApiAddress", "");
-
-        if (string.IsNullOrEmpty(uri))
-        {
-            return new("Compruebe el string de conexión.");
-        }
-
-        _httpClient = new()
-        {
-            BaseAddress = new Uri(uri)
-        };
         var response = await Post<AuthenticationResponse, AuthenticationResponse>("auth/login", request);
         if(response is null)
         {
             return new("Error al conectarse con el servidor\nCompruebe su coneccion a internet");
         }
 
-        if (response.IsSuccess)
+        if (response.IsSuccessful)
         {
             _authenticationResponse = response.ResponseContent.First();
 
@@ -189,14 +197,86 @@ public class LubricentroApiClient : ILubricentroApiClient
                 return new ("Comuniquese con el desarrollador, Error de login");
             }
             
-            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authenticationResponse.Token}");
+            HttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_authenticationResponse.Token}");
+
+            ValidatePermissions(_authenticationResponse);
+            Preferences.Set("CurrentUserEmail", _authenticationResponse.Email);
             return new();
         }
         return new(response.ErrorMessage);
     }
 
-    public AuthenticationResponse? GetAuthentication()
+    private async void ValidatePermissions(AuthenticationResponse authResp)
     {
-        return _authenticationResponse;
+        List<string> policiesToValidate =
+        [
+            "EmployeeModificationsPolicy",
+            "MigrationPolicy",
+            "CompanyPolicy",
+            "ChatPolicy"
+        ];
+
+        ApiResponse<AuthenticationHelper> response;
+
+        foreach (string policy in policiesToValidate)
+        {
+            response = await ValidatePolicy(policy);
+
+            if (response.IsSuccessful)
+            {
+                SendMessage(policy, response.ResponseContent.FirstOrDefault(defaultValue: new() { IsAllowed = false }).IsAllowed);
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Error", response.ErrorMessage, "Aceptar");
+            }
+        }
+
+        response = await ValidatePolicy("ChatPolicy");
+
+
+        if (response.IsSuccessful)
+        {
+            AuthenticationHelper authHelper = response.ResponseContent.FirstOrDefault(defaultValue: new() { IsAllowed = false });
+
+            if(authHelper.IsAllowed)
+            {
+
+                Preferences.Set("UserId", authResp.Id);
+                await _connectionHelper.Connect(authResp.Token);
+
+                SendMessage("ChatPolicy", authHelper.IsAllowed);
+            }
+
+        }
+        else
+        {
+            await Shell.Current.DisplayAlert("Error", response.ErrorMessage, "Aceptar");
+        }
+
+    }
+
+    private async Task<ApiResponse<AuthenticationHelper>> ValidatePolicy(string policyName)
+    {
+        return await Post<AuthenticationHelper, PolicyValidationResponse>("/auth/policyVerification", new PolicyValidationRequest(policyName));
+    }
+
+    private static void SendMessage(string policyName, bool isValid)
+    {
+        WeakReferenceMessenger.Default.Send(new AddConfigurationPagesMessage(isValid, policyName));
+    }
+
+    public async Task<ApiResponse> PasswordRecovery(PasswordRecoveryRequest request)
+    {
+        string endPoint = uri + "/auth/passwordrecovery";
+        var content = CreateContent(request);
+        var response = await HttpClient.PostAsync(endPoint, content);
+        
+        if (response is null)
+        {
+            return new("Error al conectarse con el servidor\nCompruebe su coneccion a internet");
+        }
+
+        return new();
     }
 }

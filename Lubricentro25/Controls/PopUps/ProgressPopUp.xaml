@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mct:Popup
+    x:Class="Lubricentro25.Controls.PopUps.ProgressPopUp"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+    CanBeDismissedByTappingOutsideOfPopup="False"
+    Size="500,200"
+    Style="{StaticResource BasePopUp}">
+    <Border Style="{StaticResource PopUpBody}">
+
+        <Grid RowDefinitions="5*,auto,2*,auto">
+            <Label
+                x:Name="Operation"
+                HorizontalOptions="Center"
+                VerticalOptions="Center" />
+            <Label
+                x:Name="ProgressCount"
+                Grid.Row="1"
+                HorizontalOptions="End"
+                VerticalOptions="Center" />
+            <ProgressBar
+                x:Name="ProgressBar"
+                Grid.Row="2"
+                VerticalOptions="Start" />
+            <Button
+                Grid.Row="3"
+                Clicked="Button_Clicked"
+                HorizontalOptions="End"
+                Text="Cancelar" />
+        </Grid>
+    </Border>
+</mct:Popup>

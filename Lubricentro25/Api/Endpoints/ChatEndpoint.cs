@@ -11,7 +11,7 @@ internal class ChatEndpoint(ILubricentroApiClient apiClient, IChatConnectionHelp
     private readonly IChatConnectionHelper _connectionHelper = connectionHelper;
     public async Task<ApiResponse<List<ChatMessage>>> GetConversationAsync( string receptorId)
     {
-        var request = new GetConversationRequest(_connectionHelper.GetUserId(), receptorId);
+        var request = new GetConversationRequest(Preferences.Get("UserId", ""), receptorId);
         return await _apiClient.Post<List<ChatMessage>, List<ChatMessageResponse>>("/chat/getconversation", request);
     }
 

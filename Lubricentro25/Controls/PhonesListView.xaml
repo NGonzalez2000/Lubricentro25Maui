@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Lubricentro25.Controls.PhonesListView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:collections="clr-namespace:Lubricentro25.Models.Collections"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:icons="clr-namespace:Lubricentro25.Icons"
+    xmlns:local="clr-namespace:Lubricentro25.Controls"
+    x:Name="PhoneView"
+    x:DataType="collections:PhoneCollection">
+
+    <VerticalStackLayout IsClippedToBounds="True">
+        <Grid ColumnDefinitions="*,*">
+            <Label FontSize="Medium" Text="TELÉFONOS" />
+            <Button
+                Grid.Column="1"
+                Command="{Binding Path=NewPhoneCommand}"
+                HorizontalOptions="End"
+                Style="{StaticResource IconButton}"
+                Text="{x:Static icons:IconFont.Add}"
+                TextColor="LightGreen" />
+        </Grid>
+        <BoxView
+            Margin="0,0,0,20"
+            HeightRequest="2"
+            HorizontalOptions="Fill"
+            Color="Gray" />
+
+        <HorizontalStackLayout>
+            <Label Text="NOTIFICAR" />
+            <CheckBox IsChecked="{Binding HasPhoneNotificationEnable}" />
+        </HorizontalStackLayout>
+
+        <CollectionView
+            x:Name="listView"
+            HeightRequest="220"
+            ItemsSource="{Binding Phones}"
+            SelectionMode="None">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="5" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate x:DataType="data:Phone">
+                <DataTemplate x:DataType="data:Phone">
+                    <Grid x:DataType="data:Phone" ColumnDefinitions="50,*,50,50">
+                        <Label Text="{Binding NationalId, StringFormat='+{0}'}" />
+                        <Entry Grid.Column="1" Text="{Binding Value, Converter={StaticResource PhoneConverter}}" />
+                        <CheckBox
+                            Grid.Column="2"
+                            HorizontalOptions="Center"
+                            IsChecked="{Binding IsActive}" />
+                        <Button
+                            Grid.Column="3"
+                            Clicked="Button_Clicked"
+                            CommandParameter="{Binding .}"
+                            Style="{StaticResource IconButton}"
+                            Text="{x:Static icons:IconFont.Delete}"
+                            TextColor="Red" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentView>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:BasePage
+    x:Class="Lubricentro25.Pages.Configuration.ProfilePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Lubricentro25.Pages"
+    xmlns:vm="clr-namespace:Lubricentro25.ViewModels.Configurations"
+    Title="ProfilePage"
+    x:DataType="vm:ProfileViewModel">
+    <Grid Margin="0,10" ColumnDefinitions="*,*,*">
+        <Border Grid.Column="1" Style="{StaticResource CollectionViewContariner}">
+            <Grid RowDefinitions="2*,70,6*,auto,auto,*" RowSpacing="20">
+                <Image Source="{Binding Employee.ImageSource}" VerticalOptions="Center" />
+                <Button
+                    Grid.Row="1"
+                    Command="{Binding ChangeImageCommand}"
+                    HorizontalOptions="Center"
+                    Text="SELECCIONAR IMAGEN"
+                    VerticalOptions="Center" />
+                <Grid
+                    Grid.Row="2"
+                    ColumnDefinitions="*,*,*,*"
+                    RowDefinitions="auto,auto,auto,auto,*"
+                    RowSpacing="20">
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Text="Nombre:" />
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Text="{Binding Employee.FirstName}" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Text="Apellido:" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Text="{Binding Employee.LastName}" />
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Text="CUIL:" />
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Text="{Binding Employee.Cuil}" />
+                    <Label
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Text="Rol:" />
+                    <Label
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        Text="{Binding Employee.Role.Name}" />
+                </Grid>
+                <Button
+                    Grid.Row="3"
+                    Command="{Binding UpdateUserCommand}"
+                    HorizontalOptions="Center"
+                    Text="MODIFICAR"
+                    VerticalOptions="Center" />
+                <Button
+                    Grid.Row="4"
+                    Command="{Binding ChangePasswordCommand}"
+                    HorizontalOptions="Center"
+                    Text="CAMBIAR CONTRASEÑA"
+                    VerticalOptions="Center" />
+            </Grid>
+        </Border>
+    </Grid>
+</pages:BasePage>

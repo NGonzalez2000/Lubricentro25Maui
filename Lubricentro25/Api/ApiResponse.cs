@@ -3,18 +3,18 @@
 
 public class ApiResponse<T>
 {
-    public bool IsSuccess { get; set; } 
+    public bool IsSuccessful { get; set; } 
     public string ErrorMessage { get; set; }
     public IEnumerable<T> ResponseContent { get; set; }
     public ApiResponse(IEnumerable<T> responseContent)
     {
-        IsSuccess = true;
+        IsSuccessful = true;
         ErrorMessage = string.Empty;
         ResponseContent = responseContent;
     }
     public ApiResponse(string errorMessage)
     {
-        IsSuccess = false;
+        IsSuccessful = false;
         ErrorMessage = errorMessage;
         ResponseContent = Enumerable.Empty<T>();
     }

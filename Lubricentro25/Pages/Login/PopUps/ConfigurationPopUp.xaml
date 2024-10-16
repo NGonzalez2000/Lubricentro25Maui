@@ -4,18 +4,20 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
-    xmlns:popup="clr-namespace:Lubricentro25.Pages.Login.PopUps">
+    xmlns:popup="clr-namespace:Lubricentro25.Pages.Login.PopUps"
+    Size="400,200"
+    Style="{StaticResource BasePopUp}">
 
-    <mct:Popup.Resources>
+    <!--<mct:Popup.Resources>
         <Style TargetType="{x:Type popup:ConfigurationPopUp}">
-            <Setter Property="Size" Value="400,200" />
             <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}" />
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="VerticalOptions" Value="Start" />
             <Setter Property="CanBeDismissedByTappingOutsideOfPopup" Value="True" />
         </Style>
 
-    </mct:Popup.Resources>
+    </mct:Popup.Resources>-->
+
 
     <VerticalStackLayout Padding="20" Spacing="15">
         <Label

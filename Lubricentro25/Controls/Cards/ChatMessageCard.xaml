@@ -11,7 +11,8 @@
         <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
     </ContentView.Resources>
     <Border
-        BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}}"
+        BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight},
+                                          Dark={StaticResource SecondaryBackgroundDark}}"
         HorizontalOptions="{Binding IsMine, Converter={StaticResource BoolToAlignmentConverter}}"
         MaximumWidthRequest="400"
         MinimumHeightRequest="40"

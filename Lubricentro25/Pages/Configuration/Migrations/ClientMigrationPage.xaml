@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Lubricentro25.Pages.Configuration.Migrations.ClientMigrationPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cards="clr-namespace:Lubricentro25.Controls.Cards.Migrations"
+    xmlns:controls="clr-namespace:Lubricentro25.Controls"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:icons="clr-namespace:Lubricentro25.Icons"
+    xmlns:vm="clr-namespace:Lubricentro25.ViewModels.Configurations.Migrations"
+    Title="ClientMigration"
+    x:DataType="vm:ClientMigrationViewModel">
+    <Grid
+        Padding="50"
+        RowDefinitions="auto,*,*"
+        RowSpacing="10">
+        <Grid Padding="20,0" ColumnDefinitions="*,*">
+            <HorizontalStackLayout HorizontalOptions="FillAndExpand" Spacing="25">
+                <Button Command="{Binding ReadOldDbCommand}" Text="Leer" />
+                <Button Command="{Binding MigrateCommand}" Text="Confirmar" />
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout
+                Grid.Column="1"
+                HorizontalOptions="End"
+                Spacing="25">
+                <SearchBar
+                    Placeholder="Razón Social"
+                    SearchCommand="{Binding SearchCommand}"
+                    Text="{Binding ClientName}"
+                    TextTransform="Uppercase" />
+                <SearchBar
+                    Placeholder="CUIL/CUIT"
+                    SearchCommand="{Binding SearchCommand}"
+                    Text="{Binding Cuil}"
+                    TextTransform="Uppercase" />
+                <Button Command="{Binding SearchCommand}" Text="Buscar" />
+            </HorizontalStackLayout>
+        </Grid>
+
+
+        <Border Grid.Row="1" Style="{StaticResource CollectionViewContariner}">
+            <Grid ColumnDefinitions="auto,*" RowDefinitions="auto,auto,*">
+                <Label FontSize="Title" Text="Nuevos" />
+
+                <Grid
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    ColumnDefinitions="*,*,*,*,*,*,150"
+                    RowDefinitions="auto,auto">
+                    <Label
+                        Grid.Column="0"
+                        FontSize="Subtitle"
+                        Text="Error" />
+                    <Label
+                        Grid.Column="1"
+                        FontSize="Subtitle"
+                        Text="Razón Social" />
+                    <Label
+                        Grid.Column="2"
+                        FontSize="Subtitle"
+                        Text="CUIL/CUIT" />
+                    <Label
+                        Grid.Column="3"
+                        FontSize="Subtitle"
+                        Text="Ciudad" />
+                    <Label
+                        Grid.Column="4"
+                        FontSize="Subtitle"
+                        Text="Calle" />
+                    <Label
+                        Grid.Column="5"
+                        FontSize="Subtitle"
+                        Text="Condicion Cliente" />
+                    <Label
+                        Grid.Column="6"
+                        FontSize="Subtitle"
+                        Text="Acciones" />
+                    <BoxView
+                        Grid.Row="1"
+                        Grid.ColumnSpan="7"
+                        Style="{StaticResource HeaderUnderline}" />
+                </Grid>
+                <CollectionView
+                    Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    ItemSizingStrategy="MeasureFirstItem"
+                    ItemsSource="{Binding NewClients}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="*,5*,150">
+                                <Label x:DataType="data:Client" Text="{Binding Error}" />
+                                <cards:ClientMigrationCard Grid.Column="1" x:DataType="data:Client" />
+                                <HorizontalStackLayout Grid.Column="2">
+                                    <Button
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type Page}}, Path=BindingContext.EditClientCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Style="{StaticResource IconButton}"
+                                        Text="{x:Static icons:IconFont.Edit}" />
+                                    <Button
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type Page}}, Path=BindingContext.RemoveNewCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Style="{StaticResource IconButton}"
+                                        Text="{x:Static icons:IconFont.Delete}"
+                                        TextColor="Red" />
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Border>
+
+
+
+
+        <Border Grid.Row="2" Style="{StaticResource CollectionViewContariner}">
+            <Grid RowDefinitions="auto,auto,*">
+                <Label FontSize="Title" Text="Existentes" />
+                <Grid
+                    Grid.Row="1"
+                    ColumnDefinitions="*,*,*,*,*,*,150"
+                    RowDefinitions="auto,auto">
+                    <Label
+                        Grid.Column="0"
+                        FontSize="Subtitle"
+                        Text="Error" />
+                    <Label
+                        Grid.Column="1"
+                        FontSize="Subtitle"
+                        Text="Razón Social" />
+                    <Label
+                        Grid.Column="2"
+                        FontSize="Subtitle"
+                        Text="CUIL/CUIT" />
+                    <Label
+                        Grid.Column="3"
+                        FontSize="Subtitle"
+                        Text="Ciudad" />
+                    <Label
+                        Grid.Column="4"
+                        FontSize="Subtitle"
+                        Text="Calle" />
+                    <Label
+                        Grid.Column="5"
+                        FontSize="Subtitle"
+                        Text="Condicion Cliente" />
+                    <Label
+                        Grid.Column="6"
+                        FontSize="Subtitle"
+                        Text="Acciones" />
+                    <BoxView
+                        Grid.Row="1"
+                        Grid.ColumnSpan="7"
+                        Style="{StaticResource HeaderUnderline}" />
+                </Grid>
+                <CollectionView
+                    Grid.Row="2"
+                    ItemSizingStrategy="MeasureFirstItem"
+                    ItemsSource="{Binding ExistingClients}"
+                    SelectionMode="Single">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="data:Client">
+                            <Grid ColumnDefinitions="*,5*,150">
+                                <Label x:DataType="data:Client" Text="{Binding Error}" />
+                                <cards:ClientMigrationCard Grid.Column="1" x:DataType="data:Client" />
+                                <HorizontalStackLayout Grid.Column="2">
+                                    <Button
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type Page}}, Path=BindingContext.EditClientCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Style="{StaticResource IconButton}"
+                                        Text="{x:Static icons:IconFont.Edit}" />
+                                    <Button
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type Page}}, Path=BindingContext.RemoveExistingCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Style="{StaticResource IconButton}"
+                                        Text="{x:Static icons:IconFont.Delete}"
+                                        TextColor="Red" />
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Border>
+
+
+    </Grid>
+</ContentPage>

@@ -45,7 +45,8 @@
         </Border>
         <Border
             Grid.Column="1"
-            Stroke="{AppThemeBinding Light={StaticResource TertiaryBackgoundLight}}"
+            Stroke="{AppThemeBinding Light={StaticResource TertiaryBackgroundLight},
+                                     Dark={StaticResource TertiaryBackgroundDark}}"
             StrokeThickness="1" />
         <views:ChatView Grid.Column="2" BindingContext="{Binding SelectedChat}" />
     </Grid>

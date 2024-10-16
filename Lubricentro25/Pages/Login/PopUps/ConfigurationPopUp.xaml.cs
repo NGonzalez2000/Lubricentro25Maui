@@ -1,6 +1,7 @@
 using CommunityToolkit.Maui.Views;
 using Lubricentro25.Models.Helpers;
 using Newtonsoft.Json.Linq;
+using System.Reflection;
 
 namespace Lubricentro25.Pages.Login.PopUps;
 
@@ -17,19 +18,33 @@ public partial class ConfigurationPopUp : Popup
         apiAddressEntry.Text = Preferences.Get(nameof(AddressConfigurationHelper.ApiAddress), "");
     }
 
-    private void Button_Clicked(object sender, EventArgs e)
+    private async void Button_Clicked(object sender, EventArgs e)
     {
 		
 		Preferences.Set(nameof(AddressConfigurationHelper.ApiAddress), apiAddressEntry.Text);
-        string filePath = Path.Combine(AppContext.BaseDirectory, "Resources/Data/appsettings.json");
+        //string filePath = Path.Combine(AppContext.BaseDirectory, "Resources/Data/appsettings.json");
+        try
+        {
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-        string jsonContent = File.ReadAllText(filePath);
+            string customFolderPath = Path.Combine(appDataPath, "Lubricentro25/Resources/Data");
 
-        JObject jsonObject = JObject.Parse(jsonContent);
+            string filePath = customFolderPath + "/appsettings.json";
 
-        jsonObject[AddressConfigurationHelper.SectionName][nameof(AddressConfigurationHelper.ApiAddress)] = apiAddressEntry.Text;
+            string jsonContent = File.ReadAllText(filePath);
 
-        File.WriteAllText(filePath, jsonObject.ToString());
+            JObject jsonObject = JObject.Parse(jsonContent);
+
+            jsonObject[AddressConfigurationHelper.SectionName]![nameof(AddressConfigurationHelper.ApiAddress)] = apiAddressEntry.Text;
+
+            File.WriteAllText(filePath, jsonObject.ToString());
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("FATAL ERROR", ex.GetBaseException().Message, "OK");
+            throw;
+        }
+        
 
 
     }

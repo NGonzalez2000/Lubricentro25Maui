@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Lubricentro25.Controls.Cards.TaxConditionCard"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    x:DataType="data:TaxCondition">
+    <Grid ColumnDefinitions="*,*,*">
+        <Label
+            Grid.Column="0"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding Description}" />
+
+        <Label
+            Grid.Column="1"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding Type}" />
+
+        <CheckBox
+            Grid.Column="2"
+            Margin="10,0,0,0"
+            IsChecked="{Binding Vat}"
+            IsEnabled="False" />
+    </Grid>
+</ContentView>

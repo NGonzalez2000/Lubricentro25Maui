@@ -17,6 +17,14 @@ namespace Lubricentro25.WinUI
         public App()
         {
             this.InitializeComponent();
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
+        {
+            Exception ex = (Exception)e.ExceptionObject;
+
+            Shell.Current.DisplayAlert("Exceptions Unhandle.", ex.GetBaseException().Message, "Cagamos.");
         }
 
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();

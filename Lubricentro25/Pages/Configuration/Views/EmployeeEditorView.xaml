@@ -61,8 +61,8 @@
         </VerticalStackLayout>
         <Border
             Grid.Row="3"
-            BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgoundLight},
-                                              Dark={StaticResource TertiaryBackgoundDark}}"
+            BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgroundLight},
+                                              Dark={StaticResource TertiaryBackgroundDark}}"
             StrokeThickness="0">
             <HorizontalStackLayout
                 HorizontalOptions="Center"

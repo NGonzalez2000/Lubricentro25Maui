@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mct:Popup
+    x:Class="Lubricentro25.Controls.PopUps.CustomerPopUp"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Lubricentro25.Controls"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:icons="clr-namespace:Lubricentro25.Icons"
+    xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+    x:DataType="data:Client"
+    CanBeDismissedByTappingOutsideOfPopup="False"
+    Size="500,600"
+    Style="{StaticResource BasePopUp}">
+    <Border Style="{StaticResource PopUpBody}">
+
+        <Grid RowDefinitions="auto,auto,*">
+            <Button
+                Grid.Column="1"
+                Clicked="Cancel_Clicked"
+                HorizontalOptions="End"
+                Style="{StaticResource IconButton}"
+                Text="{x:Static icons:IconFont.Close}"
+                VerticalOptions="Start" />
+            <ScrollView
+                Grid.Row="1"
+                Padding="10,0"
+                MaximumHeightRequest="400">
+
+                <Grid
+                    ColumnDefinitions="*,2*"
+                    ColumnSpacing="10"
+                    RowDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto,auto,auto"
+                    RowSpacing="10">
+                    <Label
+                        Grid.Row="0"
+                        FontAttributes="Bold"
+                        Text="Nombre o Razón Social" />
+                    <Entry
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Style="{StaticResource UppercaseEntry}"
+                        Text="{Binding ClientName}" />
+
+                    <Label
+                        Grid.Row="1"
+                        FontAttributes="Bold"
+                        Text="CUIL/CUIT" />
+                    <Entry
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Style="{StaticResource UppercaseEntry}"
+                        Text="{Binding Cuil, Converter={StaticResource CUILConverter}}" />
+
+                    <Label
+                        Grid.Row="2"
+                        FontAttributes="Bold"
+                        Text="Condición de Cliente" />
+                    <Picker
+                        x:Name="TaxConditionsPicker"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        x:DataType="data:TaxCondition"
+                        ItemDisplayBinding="{Binding Description}" />
+
+                    <Label
+                        Grid.Row="3"
+                        FontAttributes="Bold"
+                        Text="País" />
+                    <Entry
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Style="{StaticResource UppercaseEntry}"
+                        Text="{Binding Address.Country}" />
+
+                    <Label
+                        Grid.Row="4"
+                        FontAttributes="Bold"
+                        Text="Provincia" />
+                    <Entry
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Style="{StaticResource UppercaseEntry}"
+                        Text="{Binding Address.State}" />
+
+                    <Label
+                        Grid.Row="5"
+                        FontAttributes="Bold"
+                        Text="Ciudad" />
+                    <Entry
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Style="{StaticResource UppercaseEntry}"
+                        Text="{Binding Address.City}" />
+
+                    <Label
+                        Grid.Row="6"
+                        FontAttributes="Bold"
+                        Text="Calle" />
+                    <Entry
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Style="{StaticResource UppercaseEntry}"
+                        Text="{Binding Address.Street}" />
+
+                    <Label
+                        Grid.Row="7"
+                        FontAttributes="Bold"
+                        Text="Código Postal" />
+                    <Entry
+                        Grid.Row="7"
+                        Grid.Column="1"
+                        Style="{StaticResource UppercaseEntry}"
+                        Text="{Binding Address.PostalCode}" />
+
+                    <controls:EmailsListView
+                        Grid.Row="8"
+                        Grid.ColumnSpan="2"
+                        BindingContext="{Binding EmailCollection}" />
+
+                    <controls:PhonesListView
+                        Grid.Row="9"
+                        Grid.ColumnSpan="2"
+                        BindingContext="{Binding PhoneCollection}" />
+
+                    <Label
+                        Grid.Row="10"
+                        FontAttributes="Bold"
+                        Text="Observación" />
+
+                    <Entry
+                        Grid.Row="10"
+                        Grid.Column="1"
+                        Style="{StaticResource UppercaseEntry}"
+                        Text="{Binding Observation}" />
+
+                    <Label
+                        Grid.Row="11"
+                        FontAttributes="Bold"
+                        Text="Cta. Cte." />
+                    <CheckBox
+                        Grid.Row="11"
+                        Grid.Column="1"
+                        HorizontalOptions="End"
+                        IsChecked="{Binding HasCheckingAccount}" />
+
+                    <Label
+                        Grid.Row="12"
+                        FontAttributes="Bold"
+                        Text="Mayorista" />
+                    <CheckBox
+                        Grid.Row="12"
+                        Grid.Column="1"
+                        HorizontalOptions="End"
+                        IsChecked="{Binding IsWholesaler}" />
+
+                </Grid>
+            </ScrollView>
+
+
+
+            <HorizontalStackLayout
+                Grid.Row="2"
+                HorizontalOptions="Center"
+                Spacing="20"
+                VerticalOptions="End">
+                <Button Clicked="Accept_Clicked" Text="Aceptar" />
+                <Button Clicked="Cancel_Clicked" Text="Cancelar" />
+            </HorizontalStackLayout>
+        </Grid>
+
+    </Border>
+</mct:Popup>

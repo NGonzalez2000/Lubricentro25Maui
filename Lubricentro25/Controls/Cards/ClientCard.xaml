@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Lubricentro25.Controls.Cards.ClientCard"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cards="clr-namespace:Lubricentro25.Controls.Cards"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    x:DataType="data:Client"
+    MinimumHeightRequest="30">
+
+    <Grid ColumnDefinitions="*,*,*,*,*,*">
+        <Label
+            Grid.Column="0"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding ClientName}" />
+
+        <Label
+            Grid.Column="1"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding Cuil}" />
+
+        <Label
+            Grid.Column="2"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding EmailCollection}" />
+
+        <Label
+            Grid.Column="3"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding PhoneCollection}" />
+
+
+        <Label
+            Grid.Column="4"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding Observation}" />
+
+
+        <Label
+            Grid.Column="5"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding TaxCondition.Description}" />
+
+
+    </Grid>
+</ContentView>

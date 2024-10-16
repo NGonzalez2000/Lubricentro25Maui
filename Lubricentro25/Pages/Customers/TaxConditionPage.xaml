@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Lubricentro25.Pages.Customers.TaxConditionPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cards="clr-namespace:Lubricentro25.Controls.Cards"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:vm="clr-namespace:Lubricentro25.ViewModels.Customers"
+    Title="TaxConditionPage"
+    x:DataType="vm:TaxConditionViewModel">
+
+    <Grid Padding="20" RowDefinitions="auto,*">
+
+        <Grid ColumnDefinitions="auto,*">
+            <HorizontalStackLayout Padding="15" Spacing="10">
+                <Button Command="{Binding CreateCommand}" Text="Crear" />
+                <Button
+                    Command="{Binding UpdateCommand}"
+                    CommandParameter="{Binding SelectedItem, Source={x:Reference taxConditionCollection}}"
+                    Text="Editar" />
+                <Button
+                    Command="{Binding DeleteCommand}"
+                    CommandParameter="{Binding SelectedItem, Source={x:Reference taxConditionCollection}}"
+                    Style="{StaticResource WarningButton}"
+                    Text="Eliminar" />
+            </HorizontalStackLayout>
+
+            <Border
+                Grid.Column="1"
+                Padding="10"
+                HorizontalOptions="End"
+                WidthRequest="230">
+                <SearchBar
+                    x:Name="searchBar"
+                    Placeholder="Descripción"
+                    SearchCommand="{Binding SearchCommand}"
+                    SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}" />
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="1" Style="{StaticResource CollectionViewContariner}">
+            <CollectionView x:Name="taxConditionCollection" ItemsSource="{Binding TaxConditions}">
+                <CollectionView.Header>
+                    <Grid ColumnDefinitions="*,*,*" RowDefinitions="auto,auto">
+                        <Label FontSize="Subtitle" Text="Descripción" />
+                        <Label
+                            Grid.Column="1"
+                            FontSize="Subtitle"
+                            Text="Tipo de Factura" />
+                        <Label
+                            Grid.Column="2"
+                            FontSize="Subtitle"
+                            Text="Iva Discriminado" />
+                        <BoxView
+                            Grid.Row="1"
+                            Grid.ColumnSpan="3"
+                            Style="{StaticResource HeaderUnderline}" />
+                    </Grid>
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="data:TaxCondition">
+                        <cards:TaxConditionCard Margin="5,0,0,0" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Border>
+    </Grid>
+</ContentPage>

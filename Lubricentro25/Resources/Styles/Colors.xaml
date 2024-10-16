@@ -10,21 +10,20 @@
     <!--  LIGHT MODE  -->
     <Color x:Key="BackgroundLight">#fff</Color>
     <Color x:Key="SecondaryBackgroundLight">#f3f7ff</Color>
-    <Color x:Key="TertiaryBackgoundLight">#c3cde4</Color>
+    <Color x:Key="TertiaryBackgroundLight">#c3cde4</Color>
     <Color x:Key="PrimaryHueLight">#604be8</Color>
     <Color x:Key="SecondaryHueLight">#06D7A0</Color>
     <Color x:Key="TertiaryHueLight">#FF9A01</Color>
     <Color x:Key="MarkerLight">#4295E3</Color>
-
     <Color x:Key="ForegroundLight">#323232</Color>
     <Color x:Key="SecondaryForegroundLight">#eaeef7</Color>
 
     <!--  DARK MODE  -->
 
     <Color x:Key="ForegroundDark">#F8F8F6</Color>
-    <Color x:Key="BackgroundDark">#111214</Color>
+    <Color x:Key="BackgroundDark">#161616</Color>
     <Color x:Key="SecondaryBackgroundDark">#24252A</Color>
-    <Color x:Key="TertiaryBackgoundDark">#383C44</Color>
+    <Color x:Key="TertiaryBackgroundDark">#383C44</Color>
     <Color x:Key="PrimaryHueDark">#F2890B</Color>
     <Color x:Key="SecondaryHueDark">#10D9F1</Color>
     <Color x:Key="TertiaryHueDark">#1B2728</Color>

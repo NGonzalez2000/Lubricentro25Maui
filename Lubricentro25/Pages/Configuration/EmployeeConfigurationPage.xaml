@@ -102,8 +102,8 @@
                                 Grid.Row="1"
                                 Grid.ColumnSpan="2"
                                 Margin="0,5"
-                                BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgoundLight},
-                                                                  Dark={StaticResource TertiaryBackgoundDark}}"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgroundLight},
+                                                                  Dark={StaticResource TertiaryBackgroundDark}}"
                                 HeightRequest="2" />
                             <Label
                                 FontAttributes="Bold"

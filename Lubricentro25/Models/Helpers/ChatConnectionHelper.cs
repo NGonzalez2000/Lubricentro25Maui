@@ -8,15 +8,12 @@ namespace Lubricentro25.Models.Helpers;
 
 public class ChatConnectionHelper() : IChatConnectionHelper
 {
-    private string _userId = string.Empty;
     private HubConnection? connection;
 
     public async Task Connect(string token)
     {
-        
-
         connection = new HubConnectionBuilder()
-         .WithUrl(new Uri("https://www.lubricentroapi.com/chat"), options => { options.AccessTokenProvider = () => Task.FromResult(token)!; })
+         .WithUrl(new Uri(Preferences.Get("ApiAddress", "") + "/chat"), options => { options.AccessTokenProvider = () => Task.FromResult(token)!; })
          .WithAutomaticReconnect()
          .Build();
         connection.On<string, string>("ReciveMessageAsync", ReciveMessage);
@@ -27,7 +24,10 @@ public class ChatConnectionHelper() : IChatConnectionHelper
     public async Task<bool> SendMessageAsync(string receptorId, string message)
     {
         if (connection == null)
+        {
+            await Shell.Current.DisplayAlert("Error", "Se perdio la conexión con el servidor de chat, por favor reinicie el programa", "Aceptar");
             return false;
+        }
         try
         {
             await connection.InvokeAsync("SendMessageAsync", receptorId, message);
@@ -40,11 +40,6 @@ public class ChatConnectionHelper() : IChatConnectionHelper
         return true;
     }
 
-    public void SetUserId(string userId)
-    {
-        _userId = userId;
-    }
-    public string GetUserId() => _userId;
     private void ReciveMessage(string senderId, string message)
     {
         WeakReferenceMessenger.Default.Send(new ReciveChatMessageMessage(message, senderId));

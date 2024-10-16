@@ -71,7 +71,7 @@ public partial class EmployeeEditorViewModel : ObservableObject
     private async Task LoadRoles()
     {
         var response = await _rolesApi.GetAllRoles();
-        if (!response.IsSuccess)
+        if (!response.IsSuccessful)
         {
             Roles = [];
             await Shell.Current.DisplayAlert("Error", response.ErrorMessage, "Ok");

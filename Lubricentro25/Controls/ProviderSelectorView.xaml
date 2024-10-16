@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Lubricentro25.Controls.ProviderSelectorView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:collections="clr-namespace:Lubricentro25.Models.Collections"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:icons="clr-namespace:Lubricentro25.Icons"
+    xmlns:local="clr-namespace:Lubricentro25.Controls"
+    x:Name="ProviderView"
+    x:DataType="collections:ProviderSelector">
+    <ContentView.Content>
+        <VerticalStackLayout>
+            <CollectionView ItemsSource="{Binding Providers}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="collections:ProviderSelectorItem">
+                        <Grid ColumnDefinitions="3*,*" WidthRequest="400">
+                            <Label Text="{Binding Provider.Name}" />
+                            <CheckBox Grid.Column="1" IsChecked="{Binding IsSelected}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ContentView.Content>
+</ContentView>

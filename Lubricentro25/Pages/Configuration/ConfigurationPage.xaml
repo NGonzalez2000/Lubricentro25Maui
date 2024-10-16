@@ -4,10 +4,28 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="ConfigurationPage">
-    <VerticalStackLayout>
-        <Label
-            HorizontalOptions="Center"
-            Text="Welcome to Configurations!"
-            VerticalOptions="Center" />
+    <VerticalStackLayout
+        HorizontalOptions="Center"
+        MinimumWidthRequest="500"
+        VerticalOptions="Center">
+        <Entry
+            x:Name="PhoneEntry"
+            Margin="0,15"
+            Placeholder="Teléfono" />
+        <Entry x:Name="MessageEntry" Placeholder="Mensaje" />
+        <Button
+            Margin="0,15"
+            Clicked="Button_Clicked"
+            Text="Método 1" />
+        <Entry x:Name="FileEntry" Placeholder="Pdf" />
+        <Button
+            Margin="0,15"
+            Clicked="Button_Clicked_1"
+            Text="Método 2" />
+
+        <Entry
+            x:Name="ErrorEntry"
+            IsReadOnly="True"
+            Placeholder="ERROR" />
     </VerticalStackLayout>
 </ContentPage>

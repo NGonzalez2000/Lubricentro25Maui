@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:BasePage
+    x:Class="Lubricentro25.Pages.Configuration.CompaniesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cards="clr-namespace:Lubricentro25.Controls.Cards"
+    xmlns:controls="clr-namespace:Lubricentro25.Controls"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:pages="clr-namespace:Lubricentro25.Pages"
+    xmlns:viewmodel="clr-namespace:Lubricentro25.ViewModels.Configurations"
+    x:Name="CompanyPage"
+    Title="CompaniesPage"
+    x:DataType="viewmodel:CompaniesViewModel">
+    <pages:BasePage.Buttons>
+
+        <HorizontalStackLayout Padding="15" Spacing="20">
+            <Button
+                Grid.Column="0"
+                Command="{Binding CreateCommand}"
+                Text="CREAR" />
+            <Button
+                Grid.Column="1"
+                Command="{Binding UpdateCommand}"
+                CommandParameter="{Binding Source={x:Reference companyCollectionView}, Path=SelectedItem}"
+                Text="EDITAR" />
+            <Button
+                Grid.Column="2"
+                Command="{Binding DeleteCommand}"
+                CommandParameter="{Binding Source={x:Reference companyCollectionView}, Path=SelectedItem}"
+                Style="{StaticResource WarningButton}"
+                Text="ELIMINAR" />
+        </HorizontalStackLayout>
+    </pages:BasePage.Buttons>
+    <pages:BasePage.MainContent>
+
+        <controls:PagedCollectionView
+            x:Name="companyCollectionView"
+            Padding="20,0"
+            FullSource="{Binding Companies}">
+            <controls:PagedCollectionView.Header>
+                <Grid ColumnDefinitions="*,*,*">
+                    <Label
+                        Grid.Column="0"
+                        FontSize="Subtitle"
+                        Text="Razón Social" />
+                    <Label
+                        Grid.Column="1"
+                        FontSize="Subtitle"
+                        Text="CUIT" />
+                    <Label
+                        Grid.Column="2"
+                        FontSize="Subtitle"
+                        Text="E-Mail" />
+                </Grid>
+            </controls:PagedCollectionView.Header>
+            <controls:PagedCollectionView.ItemTemplate>
+                <DataTemplate x:DataType="data:Company">
+                    <cards:CompanyCard Padding="20,0,0,0">
+                        <FlyoutBase.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem
+                                    Command="{Binding Source={x:Reference CompanyPage}, Path=BindingContext.FullDetailsCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Text="Detalles" />
+                            </MenuFlyout>
+                        </FlyoutBase.ContextFlyout>
+                    </cards:CompanyCard>
+                </DataTemplate>
+            </controls:PagedCollectionView.ItemTemplate>
+        </controls:PagedCollectionView>
+    </pages:BasePage.MainContent>
+</pages:BasePage>

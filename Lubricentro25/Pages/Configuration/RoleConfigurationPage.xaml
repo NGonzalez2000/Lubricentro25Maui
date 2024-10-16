@@ -52,15 +52,15 @@
                         Text="Eliminar"
                         TextColor="White" />
                 </HorizontalStackLayout>
-                <SearchBar
-                    x:Name="searchBar"
-                    Margin="5"
-                    HorizontalOptions="End"
-                    IsEnabled="{Binding IsEnable}"
-                    Placeholder="Nombre"
-                    SearchCommand="{Binding SearchCommand}"
-                    SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
-                    WidthRequest="200" />
+                <Border Style="{StaticResource SearchBarContainer}">
+
+                    <SearchBar
+                        x:Name="searchBar"
+                        IsEnabled="{Binding IsEnable}"
+                        Placeholder="Nombre"
+                        SearchCommand="{Binding SearchCommand}"
+                        SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}" />
+                </Border>
             </Grid>
         </Border>
         <Border

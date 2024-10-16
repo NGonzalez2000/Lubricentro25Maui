@@ -9,7 +9,7 @@
     x:DataType="chatmodel:Chat">
     <Grid RowDefinitions="auto,*,auto">
         <VerticalStackLayout>
-            <HorizontalStackLayout Background="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}}" HeightRequest="80">
+            <HorizontalStackLayout Background="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}, Dark={StaticResource SecondaryBackgroundDark}}" HeightRequest="80">
                 <Border
                     Margin="20,0"
                     HeightRequest="70"
@@ -24,13 +24,14 @@
                     Text="{Binding To, TargetNullValue='Nombre de usuario'}"
                     VerticalOptions="Center" />
             </HorizontalStackLayout>
-            <Border Stroke="{AppThemeBinding Light={StaticResource TertiaryBackgoundLight}}" StrokeThickness="1" />
+            <Border Stroke="{AppThemeBinding Light={StaticResource TertiaryBackgroundLight}, Dark={StaticResource TertiaryBackgroundDark}}" StrokeThickness="1" />
         </VerticalStackLayout>
 
         <CollectionView
             x:Name="messagesCollection"
             Grid.Row="1"
-            ItemsSource="{Binding Messages}">
+            ItemsSource="{Binding Messages}"
+            SelectionMode="None">
             <CollectionView.EmptyView>
                 <v:EmptyChatView />
             </CollectionView.EmptyView>
@@ -41,11 +42,12 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
         <VerticalStackLayout Grid.Row="2">
-            <Border Stroke="{AppThemeBinding Light={StaticResource TertiaryBackgoundLight}}" StrokeThickness="1" />
+            <Border Stroke="{AppThemeBinding Light={StaticResource TertiaryBackgroundLight}, Dark={StaticResource TertiaryBackgroundDark}}" StrokeThickness="1" />
 
             <Border
                 Padding="5"
-                BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight}}"
+                BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundLight},
+                                                  Dark={StaticResource SecondaryBackgroundDark}}"
                 HeightRequest="60"
                 StrokeThickness="0">
                 <Entry

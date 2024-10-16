@@ -1,67 +1,112 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using Lubricentro25.Api;
 using Lubricentro25.Api.Interface;
-using Lubricentro25.Models.Helpers.Interface;
-using Lubricentro25.Models.Messages;
+using Lubricentro25.Models.Helpers;
+using Lubricentro25.Services.Interfaces;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
+using System.Collections.ObjectModel;
 
-namespace Lubricentro25.ViewModels.Login; 
+namespace Lubricentro25.ViewModels.Login;
 
-public partial class LoginViewModel(ILubricentroApiClient clientApi, IAuthenticationEndpoint authenticationEndpoint, IChatConnectionHelper chatConnectionHelper) : ObservableObject
+public partial class LoginViewModel(ILubricentroApiClient clientApi, IPopUpService popUpService, IBranchEndpoint branchRepository, IConfiguration config) : ObservableObject
 {
-    private readonly ILubricentroApiClient _client = clientApi;
-    private readonly IAuthenticationEndpoint _authenticationEndpoint = authenticationEndpoint;
-    private readonly IChatConnectionHelper _chatConnectionHelper = chatConnectionHelper;
+
+    [ObservableProperty]
+    List<string> emails = [];
     [ObservableProperty]
     private string _userName = string.Empty;
     [ObservableProperty]
     private string _password = string.Empty;
     [ObservableProperty]
     private string _error = string.Empty;
+    [ObservableProperty]
+    ObservableCollection<Branch> branches = [];
+
+    [ObservableProperty]
+    Branch? selectedBranch;
+
 
     [RelayCommand]
     public async Task Login()
     {
-        var loginResponse = await _client.Login(new(UserName,Password));
+        if(SelectedBranch is null)
+        {
+            await popUpService.ShowErrorMessage("DEBE SELECCIONAR UNA SUCURSAL");
+            return;
+        }
+        var loginResponse = await clientApi.Login(new(UserName, Password, SelectedBranch.Id));
 
-        if (!loginResponse.IsSuccess)
+        if (!loginResponse.IsSuccessful)
         {
             Error = loginResponse.ErrorMessage;
             return;
         }
 
-        var authRepsone = await _authenticationEndpoint.PolicyValidation("EmployeeModificationsPolicy");
-        if(!authRepsone.IsSuccess)
+        await Task.Delay(250);
+
+        try
         {
-            Error = authRepsone.ErrorMessage;
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            string customFolderPath = Path.Combine(appDataPath, "Lubricentro25/Resources/Data");
+
+            string filePath = customFolderPath + "/appsettings.json";
+
+            string jsonContent = File.ReadAllText(filePath);
+
+            JObject jsonObject = JObject.Parse(jsonContent);
+
+            jsonObject[LoginConfigurationHelper.SectionName]![nameof(LoginConfigurationHelper.LastUsedEmail)] = UserName;
+            jsonObject[LoginConfigurationHelper.SectionName]![nameof(LoginConfigurationHelper.SelectedBranch)] = SelectedBranch.Id;
+
+            File.WriteAllText(filePath, jsonObject.ToString());
+        }
+        catch
+        {
+        }
+        await Shell.Current.GoToAsync("//main");
+    }
+
+    [RelayCommand]
+    public async Task PasswordRecovery()
+    {
+        string? user = await Shell.Current.DisplayPromptAsync("Recuperar Contraseña", "Ingrese su usuario", "ACEPTAR", "CANCELAR", initialValue: UserName);
+
+        if (user == null) return;
+
+        if(SelectedBranch is null)
+        {
+            await Shell.Current.DisplayAlert("", "Debe seleccionar una sucursal", "OK");
             return;
         }
-
-        WeakReferenceMessenger.Default.Send(new AddConfigurationPagesMessage(authRepsone.ResponseContent.FirstOrDefault(defaultValue: new() { IsAllowed = false }).IsAllowed));
-
-        await Shell.Current.GoToAsync("//main");
-
-        var response = await _authenticationEndpoint.PolicyValidation("ChatPolicy");
-        if (!response.IsSuccess)
+        var response = await clientApi.PasswordRecovery(new(SelectedBranch.Id, user));
+        if(!response.IsSuccessful)
         {
-            await Shell.Current.DisplayAlert("Error", response.ErrorMessage, "Aceptar");
-        }
-        if (response.ResponseContent.First().IsAllowed)
-        {
-            var auth = _client.GetAuthentication();
-            if (auth != null)
-            {
-                await _chatConnectionHelper.Connect(auth.Token);
-                _chatConnectionHelper.SetUserId(auth.Id);
-            }
+            await popUpService.ShowErrorMessage(response.ErrorMessage);
         }
 
-        
-
+        await popUpService.ShowMessage("Su nueva contraseña debe llegar al mail de usuario en cualquier momento.");
     }
-    [RelayCommand]
-    public static async Task PasswordRecovery()
+
+    internal async Task LoadBranches()
     {
-        await Shell.Current.DisplayAlert("Nueva Contraseña", "123456", "xd");
+        var loginSettings = new LoginConfigurationHelper();
+        config.Bind(LoginConfigurationHelper.SectionName, loginSettings);
+
+        UserName = loginSettings.LastUsedEmail;
+
+        var response = await branchRepository.GetBranchesAsync();
+
+        if (!response.IsSuccessful)
+        {
+            Error = response.ErrorMessage;
+        }
+        Branches = new(response.ResponseContent);
+
+        if (Branches.Any())
+        {
+            SelectedBranch = Branches.SingleOrDefault(b => b.Id == loginSettings.SelectedBranch, Branches[0]);
+        }
     }
 }

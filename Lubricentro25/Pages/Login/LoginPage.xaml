@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:c="clr-namespace:Lubricentro25.Controls"
     xmlns:login="clr-namespace:Lubricentro25.ViewModels.Login"
+    x:Name="Login"
     Title="LoginPage"
     x:DataType="login:LoginViewModel">
     <Border
@@ -23,11 +24,13 @@
                 TextColor="{AppThemeBinding Light={StaticResource PrimaryHueLight},
                                             Dark={StaticResource PrimaryHueDark}}" />
             <VerticalStackLayout Grid.Row="1" Spacing="30">
+                <Picker ItemsSource="{Binding Branches}" SelectedItem="{Binding SelectedBranch}" />
                 <Entry
-                    Placeholder="Usuario"
-                    ReturnType="Next"
+                    x:Name="accountEntry"
+                    Placeholder="Enter your email"
                     Text="{Binding UserName}" />
                 <Entry
+                    x:Name="passwordEntry"
                     IsPassword="True"
                     Placeholder="Contraseña"
                     ReturnCommand="{Binding LoginCommand}"
