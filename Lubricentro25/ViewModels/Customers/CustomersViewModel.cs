@@ -64,7 +64,10 @@ public partial class CustomersViewModel(ICustomerEndpoint _customerEndpoint, ITa
 
         await Shell.Current.GoToAsync($"{nameof(SingleClientPage)}?Editing=true", 
             new Dictionary<string, object>
-            { ["Client"] = new Client(), ["TaxConditions"] = response.ResponseContent.ToList() });
+            { 
+                ["Client"] = new Client(), 
+                ["TaxConditions"] = response.ResponseContent.ToList()
+            });
         return;
     }
 

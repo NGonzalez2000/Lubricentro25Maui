@@ -6,6 +6,7 @@ using Lubricentro25.Pages;
 using Lubricentro25.Models.Helpers;
 using Microsoft.Extensions.Configuration;
 using Lubricentro25.Services;
+using Lubricentro25.Controls.Filters;
 
 namespace Lubricentro25
 {
@@ -43,6 +44,8 @@ namespace Lubricentro25
             builder.Services.AddPages();
 
             builder.Services.AddServices();
+
+            builder.Services.AddFilterViewModels();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
@@ -53,7 +56,9 @@ namespace Lubricentro25
         {
             var apiAddressSetting = new AddressConfigurationHelper();
             config.Bind(AddressConfigurationHelper.SectionName, apiAddressSetting);
-            Preferences.Set("ApiAddress", apiAddressSetting!.ApiAddress);
+            Preferences.Set(PreferenceTypes.ApiAddress.ToString(), apiAddressSetting!.ApiAddress);
+            Preferences.Set(PreferenceTypes.AfipState.ToString(), true);
+            Preferences.Set(PreferenceTypes.DolarPrice.ToString(), 0d);
         }
 
     }

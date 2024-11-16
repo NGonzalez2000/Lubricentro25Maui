@@ -17,7 +17,7 @@ public class ProductEndpoint(ILubricentroApiClient apiClient) : IProductEndpoint
         return await apiClient.Delete("Product/Delete", request);
     }
 
-    public async Task<ApiResponse<Product>> GetALlAsync()
+    public async Task<ApiResponse<Product>> GetAllAsync()
     {
         return await apiClient.Get<Product, ProductResponse>("Product/GetAll");
     }

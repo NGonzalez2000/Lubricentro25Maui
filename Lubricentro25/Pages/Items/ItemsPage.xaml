@@ -16,15 +16,6 @@
     <pages:BasePage.Buttons>
         <HorizontalStackLayout Padding="15" Spacing="10">
             <Button Command="{Binding CreateCommand}" Text="Crear" />
-            <Button
-                Command="{Binding UpdateCommand}"
-                CommandParameter="{Binding SelectedItem, Source={x:Reference ProductsCollection}}"
-                Text="Editar" />
-            <Button
-                Command="{Binding DeleteCommand}"
-                CommandParameter="{Binding SelectedItem, Source={x:Reference ProductsCollection}}"
-                Style="{StaticResource WarningButton}"
-                Text="Eliminar" />
         </HorizontalStackLayout>
     </pages:BasePage.Buttons>
 
@@ -54,13 +45,12 @@
     </pages:BasePage.Filter>
 
     <pages:BasePage.MainContent>
-
         <controls:PagedCollectionView
             x:Name="ProductsCollection"
             Padding="20,0"
             FullSource="{Binding Products}">
             <controls:PagedCollectionView.Header>
-                <Grid ColumnDefinitions="*,*,*,*,*,*,*,*,*">
+                <Grid ColumnDefinitions="*,*,*,*,*,*,*,*,*,*">
                     <Label
                         Grid.Column="0"
                         FontSize="Subtitle"
@@ -97,6 +87,10 @@
                         Grid.Column="8"
                         FontSize="Subtitle"
                         Text="En Dolares" />
+                    <Label
+                        Grid.Column="9"
+                        FontSize="Subtitle"
+                        Text="Fecha" />
                 </Grid>
             </controls:PagedCollectionView.Header>
             <controls:PagedCollectionView.ItemTemplate>
@@ -105,9 +99,24 @@
                         <FlyoutBase.ContextFlyout>
                             <MenuFlyout>
                                 <MenuFlyoutItem
-                                    Command="{Binding Source={x:Reference ProductPage}, Path=BindingContext.FullDetailsCommand}"
+                                    Command="{Binding Source={x:Reference ProductPage}, Path=BindingContext.SeeStockCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Text="Ver Stock" />
+                                <MenuFlyoutItem
+                                    Command="{Binding Source={x:Reference ProductPage}, Path=BindingContext.UpdateCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Text="Modificar" />
+                                <MenuFlyoutItem
+                                    Command="{Binding Source={x:Reference ProductPage}, Path=BindingContext.DetailsCommand}"
                                     CommandParameter="{Binding .}"
                                     Text="Detalles" />
+                                <MenuFlyoutSeparator />
+                                <MenuFlyoutItem
+                                    Command="{Binding Source={x:Reference ProductPage}, Path=BindingContext.DeleteCommand}"
+                                    CommandParameter="{Binding .}"
+                                    IsDestructive="True"
+                                    Text="Eliminar" />
+
                             </MenuFlyout>
                         </FlyoutBase.ContextFlyout>
                     </cards:ProductCard>

@@ -120,4 +120,19 @@ public partial class PagedCollectionView : Grid
         _currentPage++;
         LoadPage();
     }
+
+    public void ScrollTo(object item)
+    {
+        var temp = FullSource.Cast<object>().ToList();
+
+        var destiny = temp.FirstOrDefault(o => o.Equals(item));
+        if (destiny is null) return;
+
+        int indx = temp.IndexOf(destiny);
+        _currentPage = indx / _itemsPerPage + 1;
+        LoadPage();
+
+        contentCollectionView.ScrollTo(destiny);
+        contentCollectionView.SelectedItem = destiny;
+    }
 }

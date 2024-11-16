@@ -14,7 +14,7 @@
     xmlns:messages="clr-namespace:Lubricentro25.Pages.Messages"
     xmlns:providers="clr-namespace:Lubricentro25.Pages.Providers"
     xmlns:vehicle="clr-namespace:Lubricentro25.Pages.Vehicles"
-    Title="Lubricentro25"
+    Title="Lubricentro 25"
     Shell.NavBarIsVisible="False">
 
     <!--  Login Page  -->
@@ -28,14 +28,14 @@
             <ShellContent ContentTemplate="{DataTemplate home:HomePage}" />
         </Tab>
 
-        <Tab Title="Clientes">
+        <Tab Title="Clientes" Route="Clients">
             <ShellContent Title="Clientes" ContentTemplate="{DataTemplate customers:CustomersPage}" />
             <ShellContent Title="Cond. Fiscal" ContentTemplate="{DataTemplate customers:TaxConditionPage}" />
-            <ShellContent Title="Desc. Clientes" ContentTemplate="{DataTemplate customers:CustomersDiscounts}" />
+            <ShellContent Title="Desc. Clientes" ContentTemplate="{DataTemplate customers:ClientTypesPage}" />
             <ShellContent Title="Cheques" ContentTemplate="{DataTemplate customers:CustomersChecks}" />
         </Tab>
 
-        <Tab Title="Facturación">
+        <Tab Title="Facturación" Route="Bills">
             <ShellContent Title="Facturación" ContentTemplate="{DataTemplate billing:BillingPage}" />
             <ShellContent Title="Cta. Cte." ContentTemplate="{DataTemplate billing:BillingCurrentAccountPage}" />
             <ShellContent Title="Consignacion" ContentTemplate="{DataTemplate billing:BillingConsignmentPage}" />
@@ -45,7 +45,7 @@
             <ShellContent Title="Libro de Iva" ContentTemplate="{DataTemplate billing:BillingVATBookPage}" />
         </Tab>
 
-        <Tab Title="Proveedores">
+        <Tab Title="Proveedores" Route="Providers">
             <ShellContent Title="Proveedores" ContentTemplate="{DataTemplate providers:ProvidersPage}" />
             <ShellContent Title="Facturas" ContentTemplate="{DataTemplate providers:ProvidersBillingsPage}" />
             <ShellContent Title="Pagos" ContentTemplate="{DataTemplate providers:ProvidersPaymentsPage}" />
@@ -54,8 +54,15 @@
             <ShellContent Title="Libro de IVA" ContentTemplate="{DataTemplate providers:ProvidersVatBookPage}" />
         </Tab>
 
-        <Tab Title="Articulos">
-            <ShellContent Title="Articulos" ContentTemplate="{DataTemplate items:ItemsPage}" />
+        <Tab Title="Articulos" Route="Products">
+            <ShellContent
+                Title="Articulos"
+                ContentTemplate="{DataTemplate items:ItemsPage}"
+                Route="Prices" />
+            <ShellContent
+                Title="Stock"
+                ContentTemplate="{DataTemplate items:StockPage}"
+                Route="Stock" />
             <ShellContent Title="Descuentos" ContentTemplate="{DataTemplate items:ItemsDiscountsPage}" />
             <ShellContent Title="Marcas" ContentTemplate="{DataTemplate items:ItemsBrandsPage}" />
             <ShellContent Title="Precios" ContentTemplate="{DataTemplate items:ItemsPricingPage}" />

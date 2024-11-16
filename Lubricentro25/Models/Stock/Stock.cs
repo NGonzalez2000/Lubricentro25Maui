@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace Lubricentro25.Models.Stock
 {
-    class Stock
+    public partial class Stock : ObservableObject
     {
+        public string Id { get; set; }
+
+        [ObservableProperty]
+        ObservableCollection<StockItem> items;
+
+        public Stock()
+        {
+            Id = string.Empty;
+            Items = [];
+        }
     }
 }

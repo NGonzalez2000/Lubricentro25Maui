@@ -15,6 +15,9 @@ public partial class Client : ObservableObject
     private TaxCondition taxCondition;
 
     [ObservableProperty]
+    private ClientType clientType;
+
+    [ObservableProperty]
     private string clientName;
 
     [ObservableProperty]
@@ -46,6 +49,7 @@ public partial class Client : ObservableObject
         Id = string.Empty;
         Address = new();
         TaxCondition = new();
+        ClientType = new();
         ClientName = string.Empty;
         Cuil = string.Empty;
         emailCollection = new();

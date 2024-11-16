@@ -7,4 +7,7 @@
     <converters:DNICUIL_StringConverter x:Key="CUILConverter" />
     <converters:Phone_StringConverter x:Key="PhoneConverter" />
     <converters:InvertBoolConverter x:Key="InverseBooleanConverter" />
+    <converters:StringToNumberConverter x:Key="IntConverter" />
+    <converters:MoneyToDecimalConverter x:Key="MoneyConverter" />
+    <converters:StringToDecimalConverter x:Key="StringToDecimalConverter" />
 </ResourceDictionary>

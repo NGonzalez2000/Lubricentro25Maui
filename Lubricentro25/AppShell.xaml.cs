@@ -4,8 +4,10 @@ using Lubricentro25.Pages.Configuration;
 using Lubricentro25.Pages.DedicatedPages.BrandPages;
 using Lubricentro25.Pages.DedicatedPages.ClientPages;
 using Lubricentro25.Pages.DedicatedPages.CompanyPages;
+using Lubricentro25.Pages.DedicatedPages.ConfigurationPages;
 using Lubricentro25.Pages.DedicatedPages.ProductPages;
 using Lubricentro25.Pages.DedicatedPages.ProviderPages;
+using System.Reflection;
 
 namespace Lubricentro25;
 
@@ -18,15 +20,20 @@ public partial class AppShell : Shell
         WeakReferenceMessenger.Default.Register<AddConfigurationPagesMessage>(this, AddEmployeeConfigurationPages);
 
         RegisterRoutes();
+        // Hook into the window's key event
     }
-
+    
     private void RegisterRoutes()
     {
-        Routing.RegisterRoute(nameof(SingleClientPage), typeof(SingleClientPage));
-        Routing.RegisterRoute(nameof(SingleCompanyPage), typeof(SingleCompanyPage));
-        Routing.RegisterRoute(nameof(SingleProviderPage), typeof(SingleProviderPage));
-        Routing.RegisterRoute(nameof(SingleBrandPage), typeof(SingleBrandPage));
-        Routing.RegisterRoute(nameof(SingleProductPage), typeof(SingleProductPage));
+        var assembly = Assembly.GetAssembly(typeof(SingleClientPage));
+        var singlePagesType = assembly!.GetTypes()
+            .Where(t => t.Namespace != null && t.Namespace.StartsWith("Lubricentro25.Pages.DedicatedPages") && !t.IsAbstract && t.IsClass && t.Name.EndsWith("Page"));
+
+        // Register each page dynamically
+        foreach (var singlePageType in singlePagesType)
+        {
+            Routing.RegisterRoute(singlePageType.Name, singlePageType);
+        }
     }
 
     private void AddEmployeeConfigurationPages(object recipient, AddConfigurationPagesMessage message)

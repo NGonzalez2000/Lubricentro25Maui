@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace Lubricentro25.ViewModels.Items;
 
+[QueryProperty(nameof(SearchCode), "ProductCode")]
 public partial class ProductViewModel(IProductEndpoint productEndpoint, IPopUpService popUpService) : BaseViewModel
 {
     private List<Product> productsList = null!;
@@ -19,9 +20,31 @@ public partial class ProductViewModel(IProductEndpoint productEndpoint, IPopUpSe
     [ObservableProperty]
     ObservableCollection<Product> products = null!;
 
+    [ObservableProperty]
+    string? searchCode;
+    [ObservableProperty]
+    Product? scrollToProduct;
+
+    private bool loaded = false;
+    async partial void OnSearchCodeChanged(string? value)
+    {
+        if (value is null) return;
+        if(!loaded)
+        {
+            await LoadDataAsync();
+            loaded = true;
+        }
+        ScrollToProduct = Products.FirstOrDefault(p => p.Code == SearchCode);
+    }
+
     protected override async Task LoadDataAsync()
     {
-        var response = await productEndpoint.GetALlAsync();
+        if(loaded)
+        {
+            loaded = false;
+            return;
+        }
+        var response = await productEndpoint.GetAllAsync();
         if(!response.IsSuccessful)
         {
             await popUpService.ShowErrorMessage(response.ErrorMessage);
@@ -29,6 +52,8 @@ public partial class ProductViewModel(IProductEndpoint productEndpoint, IPopUpSe
         }
         productsList = new(response.ResponseContent);
         Products = new(response.ResponseContent);
+
+        loaded = true;
     }
 
     [RelayCommand]
@@ -85,6 +110,33 @@ public partial class ProductViewModel(IProductEndpoint productEndpoint, IPopUpSe
             && p.Barcode.Contains(ProductBarcode, StringComparison.CurrentCultureIgnoreCase)
             && p.Description.Contains(ProductDescription, StringComparison.CurrentCultureIgnoreCase);
         }));
+    }
+
+    [RelayCommand]
+    async Task SeeStock(Product? product)
+    {
+        if (product is null)
+        {
+            await popUpService.ShowErrorMessage("Se perdió la referencia al Articulo.");
+            return;
+        }
+
+        await Shell.Current.GoToAsync($"//Products/Stock?StockItemCode={product.Code}");
+    }
+
+    [RelayCommand]
+    async Task Details(Product? product)
+    {
+        if (product is null)
+        {
+            await popUpService.ShowWarning("Se perdió la referencia del producto");
+            return;
+        }
+        await Shell.Current.GoToAsync($"{nameof(SingleProductPage)}?Editing=false", new Dictionary<string, object>
+        {
+            ["Product"] = product
+        });
+
     }
 
 }

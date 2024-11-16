@@ -8,4 +8,20 @@ public partial class ItemsPage : BasePage
 	{
 		InitializeComponent();
 	}
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+        FocusItem();
+    }
+
+    void FocusItem()
+    {
+        if(BindingContext is ProductViewModel vm)
+        {
+            if (vm.ScrollToProduct is not Product product) return;
+
+            ProductsCollection.ScrollTo(product);
+        }
+    }
 }

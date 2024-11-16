@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Lubricentro25.Controls.Cards.StockItemCard"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cards="clr-namespace:Lubricentro25.Controls.Cards"
+    xmlns:data="clr-namespace:Lubricentro25.Models.Stock"
+    x:DataType="data:StockItem"
+    MinimumHeightRequest="30">
+    <Grid ColumnDefinitions="*,*,*,*,*,*,*,*,*,*">
+        <Label
+            Grid.Column="0"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding Code}" />
+        <Label
+            Grid.Column="1"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding Barcode}" />
+        <Label
+            Grid.Column="2"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding Description}" />
+        <Label
+            Grid.Column="3"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding Provider}" />
+        <Label
+            Grid.Column="4"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding Brand}" />
+        <Label
+            Grid.Column="5"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding Quantity}" />
+        <Label
+            Grid.Column="6"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding Location}" />
+        <Label
+            Grid.Column="7"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding Deposit}" />
+
+        <Label
+            Grid.Column="8"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding MinStock}" />
+
+        <Label
+            Grid.Column="9"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding MaxStock}" />
+    </Grid>
+</ContentView>

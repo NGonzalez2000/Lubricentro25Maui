@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Lubricentro25.Pages.DedicatedPages.ClientPages.SingleClientTypePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Lubricentro25.Controls"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodels="clr-namespace:Lubricentro25.Pages.DedicatedPages.ClientPages"
+    Title="SingleClientTypePage"
+    x:DataType="viewmodels:SingleClientTypeViewModel">
+
+    <ScrollView>
+
+        <VerticalStackLayout Padding="20">
+            <Frame BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgroundLight}, Dark={StaticResource TertiaryBackgroundDark}}" IsEnabled="{Binding IsEditingEnable}">
+                <VerticalStackLayout>
+                    <Label FontSize="Medium" Text="DATOS" />
+                    <BoxView
+                        HeightRequest="2"
+                        HorizontalOptions="Fill"
+                        Color="Gray" />
+
+                    <FlexLayout
+                        AlignItems="Start"
+                        Direction="Row"
+                        IsClippedToBounds="True"
+                        Wrap="Wrap">
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="DESCRIPCION:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="DESCRIPCION"
+                                Text="{Binding ClientType.Description}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="ORDEN:" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="ORDEN"
+                                Text="{Binding ClientType.Order}">
+                                <Entry.Behaviors>
+                                    <toolkit:NumericValidationBehavior Flags="ValidateOnValueChanged" InvalidStyle="{StaticResource InvalidEntry}" />
+                                </Entry.Behaviors>
+                            </Entry>
+                        </Grid>
+                    </FlexLayout>
+
+                    <HorizontalStackLayout
+                        Margin="0,20,0,0"
+                        HorizontalOptions="End"
+                        IsVisible="{Binding IsEditingEnable}"
+                        Spacing="20">
+                        <Button Command="{Binding AcceptCommand}" Text="ACEPTAR" />
+                        <Button Command="{Binding CancelCommand}" Text="CANCELAR" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame IsEnabled="{Binding IsEditingEnable, Converter={StaticResource InverseBooleanConverter}}" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

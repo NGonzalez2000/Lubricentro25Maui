@@ -91,7 +91,7 @@ public partial class BrandViewModel(IBrandEndpoint brandEndpoint, IPopUpService 
             return;
         }
 
-        _brands.Remove(selectedBrand);
+        _brands.Remove(_brands.First(b => b.Id == selectedBrand.Id));
         Search();
     }
 

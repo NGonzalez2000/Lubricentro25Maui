@@ -13,11 +13,15 @@ public partial class Brand : ObservableObject
     [ObservableProperty]
     ObservableCollection<Provider> providers;
 
+    [ObservableProperty]
+    ObservableCollection<Discount> discounts;
+
     public Brand()
     {
         Id = "";
         Name = "";
         Providers = [];
+        Discounts = [];
     }
 
     public Brand Clone()

@@ -20,6 +20,7 @@ class CustomerEndpoint(ILubricentroApiClient _apiClient) : ICustomerEndpoint
                                           client.Address.Street,
                                           client.Address.PostalCode,
                                           client.ClientName,
+                                          client.ClientType.Id,
                                           client.TaxCondition.Id,
                                           client.Cuil,
                                           client.EmailCollection.HasEmailNotificationEnable,
@@ -44,6 +45,11 @@ class CustomerEndpoint(ILubricentroApiClient _apiClient) : ICustomerEndpoint
         return await _apiClient.Get<Client, ClientResponse>("Client/GetAll");
     }
 
+    public async Task<ApiResponse<Client>> GetFinalConsumer()
+    {
+        return await _apiClient.Get<Client, ClientResponse>("Client/FinalConsumer");
+    }
+
     public async Task<ApiResponse<Client>> Update(Client client)
     {
         List<EmailRequest> emails = [];
@@ -56,6 +62,7 @@ class CustomerEndpoint(ILubricentroApiClient _apiClient) : ICustomerEndpoint
                                           client.Address.City,
                                           client.Address.Street,
                                           client.Address.PostalCode,
+                                          client.ClientType.Id,
                                           client.TaxCondition.Id,
                                           client.ClientName,
                                           client.Cuil,

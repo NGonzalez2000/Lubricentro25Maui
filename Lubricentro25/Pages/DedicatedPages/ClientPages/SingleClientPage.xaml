@@ -73,6 +73,24 @@
                             Margin="10,10,10,0"
                             ColumnDefinitions="*,2*"
                             WidthRequest="400">
+                            <Label Text="DESC. CLIENTE:" />
+                            <Picker
+                                Grid.Column="1"
+                                IsVisible="{Binding IsEditingEnable}"
+                                ItemDisplayBinding="{Binding Path=Description}"
+                                ItemsSource="{Binding ClientTypes}"
+                                SelectedItem="{Binding SelectedClientType, Mode=TwoWay}" />
+                            <Entry
+                                Grid.Column="1"
+                                IsVisible="{Binding IsEditingEnable, Converter={StaticResource InverseBooleanConverter}}"
+                                Placeholder="CONDICION FISCAL"
+                                Text="{Binding Client.TaxCondition.Description}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
                             <Label Text="PAÍS:" />
                             <Entry
                                 Grid.Column="1"

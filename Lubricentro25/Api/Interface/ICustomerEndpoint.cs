@@ -3,6 +3,7 @@
 public interface ICustomerEndpoint
 {
     Task<ApiResponse<Client>> GetAll();
+    Task<ApiResponse<Client>> GetFinalConsumer();
     Task<ApiResponse<Client>> Create(Client client);
     Task<ApiResponse<Client>> Update(Client client);
     Task<ApiResponse> Delete(Client client);

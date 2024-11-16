@@ -15,15 +15,6 @@
     <pages:BasePage.Buttons>
         <HorizontalStackLayout Padding="15" Spacing="10">
             <Button Command="{Binding CreateCommand}" Text="Crear" />
-            <Button
-                Command="{Binding UpdateCommand}"
-                CommandParameter="{Binding SelectedItem, Source={x:Reference BrandsCollection}}"
-                Text="Editar" />
-            <Button
-                Command="{Binding DeleteCommand}"
-                CommandParameter="{Binding SelectedItem, Source={x:Reference BrandsCollection}}"
-                Style="{StaticResource WarningButton}"
-                Text="Eliminar" />
         </HorizontalStackLayout>
     </pages:BasePage.Buttons>
     <pages:BasePage.Filter>
@@ -57,9 +48,18 @@
                         <FlyoutBase.ContextFlyout>
                             <MenuFlyout>
                                 <MenuFlyoutItem
+                                    Command="{Binding Source={x:Reference BrandPage}, Path=BindingContext.UpdateCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Text="Editar" />
+                                <MenuFlyoutItem
                                     Command="{Binding Source={x:Reference BrandPage}, Path=BindingContext.FullDetailsCommand}"
                                     CommandParameter="{Binding .}"
                                     Text="Detalles" />
+                                <MenuFlyoutSeparator />
+                                <MenuFlyoutItem
+                                    Command="{Binding Source={x:Reference BrandPage}, Path=BindingContext.DeleteCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Text="Eliminar" />
                             </MenuFlyout>
                         </FlyoutBase.ContextFlyout>
                     </cards:BrandCard>

@@ -1,4 +1,5 @@
-﻿using Lubricentro25.Api.Contracts.Email;
+﻿using Lubricentro25.Api.Contracts.ClientTypes;
+using Lubricentro25.Api.Contracts.Email;
 using Lubricentro25.Api.Contracts.Phone;
 using Lubricentro25.Api.Contracts.TaxCondition;
 
@@ -11,6 +12,7 @@ namespace Lubricentro25.Api.Contracts.Customers
                                  string City,
                                  string Street,
                                  string PostalCode,
+                                 ClientTypeResponse ClientType,
                                  TaxConditionResponse TaxCondition,
                                  string ClientName,
                                  string Cuil,

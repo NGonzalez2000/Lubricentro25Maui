@@ -3,10 +3,13 @@
     x:Class="Lubricentro25.Pages.DedicatedPages.BrandPages.SingleBrandPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cards="clr-namespace:Lubricentro25.Controls.Cards"
     xmlns:controls="clr-namespace:Lubricentro25.Controls"
     xmlns:data="clr-namespace:Lubricentro25.Models"
     xmlns:icons="clr-namespace:Lubricentro25.Icons"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodels="clr-namespace:Lubricentro25.Pages.DedicatedPages.BrandPages"
+    x:Name="SingleBrand_Page"
     Title="SingleBrandPage"
     x:DataType="viewmodels:SingleBrandViewModel">
     <ScrollView>
@@ -35,11 +38,55 @@
                                 Text="{Binding Brand.Name}"
                                 TextTransform="Uppercase" />
                         </Grid>
-
-
                     </FlexLayout>
 
-                    <Label FontSize="Medium" Text="PROVEEDORES" />
+                    <Grid
+                        Margin="0,30,0,0"
+                        ColumnDefinitions="*,*"
+                        HorizontalOptions="Start"
+                        WidthRequest="600">
+                        <Label
+                            FontSize="Medium"
+                            HorizontalOptions="Start"
+                            Text="DESCUENTOS" />
+                        <Button
+                            Grid.Column="1"
+                            Command="{Binding Path=AddDiscountCommand}"
+                            HorizontalOptions="End"
+                            Style="{StaticResource IconButton}"
+                            Text="{x:Static icons:IconFont.Add}"
+                            TextColor="LightGreen" />
+                    </Grid>
+                    <BoxView
+                        HeightRequest="2"
+                        HorizontalOptions="Fill"
+                        Color="Gray" />
+                    <CollectionView
+                        Margin="20"
+                        HorizontalOptions="Start"
+                        ItemSizingStrategy="MeasureFirstItem"
+                        ItemsSource="{Binding Brand.Discounts}"
+                        SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="data:Discount">
+                                <HorizontalStackLayout>
+                                    <cards:DiscountCard />
+                                    <Button
+                                        Grid.Column="1"
+                                        Command="{Binding Source={x:Reference SingleBrand_Page}, Path=BindingContext.DeleteCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Style="{StaticResource IconButton}"
+                                        Text="{x:Static icons:IconFont.Delete}"
+                                        TextColor="Red" />
+                                </HorizontalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <Label
+                        Margin="0,30,0,0"
+                        FontSize="Medium"
+                        Text="PROVEEDORES" />
                     <BoxView
                         HeightRequest="2"
                         HorizontalOptions="Fill"
@@ -58,7 +105,6 @@
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Frame>
-            <Frame IsEnabled="{Binding IsEditingEnable, Converter={StaticResource InverseBooleanConverter}}" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

@@ -11,7 +11,7 @@
 
     <ScrollView>
 
-        <VerticalStackLayout Padding="20">
+        <VerticalStackLayout Padding="20" Spacing="20">
             <Frame BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgroundLight}, Dark={StaticResource TertiaryBackgroundDark}}" IsEnabled="{Binding IsEditingEnable}">
                 <VerticalStackLayout>
                     <Label FontSize="Medium" Text="DATOS" />
@@ -65,6 +65,24 @@
                             Margin="10,10,10,0"
                             ColumnDefinitions="*,2*"
                             WidthRequest="400">
+                            <Label Text="IVA:" />
+                            <Picker
+                                Grid.Column="1"
+                                IsVisible="{Binding IsEditingEnable}"
+                                ItemDisplayBinding="{Binding Description}"
+                                ItemsSource="{Binding VatTypes}"
+                                SelectedItem="{Binding SelectedVatType, Mode=TwoWay}" />
+                            <Entry
+                                Grid.Column="1"
+                                IsVisible="{Binding IsEditingEnable, Converter={StaticResource InverseBooleanConverter}}"
+                                Placeholder="TIPO DE IVA"
+                                Text="{Binding Product.VatType}" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
                             <Label Text="MARCA:" />
                             <Picker
                                 Grid.Column="1"
@@ -78,29 +96,39 @@
                                 Placeholder="MARCA"
                                 Text="{Binding Product.Brand.Name}" />
                         </Grid>
-
-
-
                         <Grid
                             Margin="10,10,10,0"
                             ColumnDefinitions="*,2*"
                             WidthRequest="400">
-                            <Label Text="PRECIO COMPRA:" />
+                            <Label Text="PRECIO LISTA:" />
                             <Entry
                                 Grid.Column="1"
                                 Placeholder="$X.XX"
-                                Text="{Binding Product.ListPrice}" />
+                                Text="{Binding Product.ListPrice, Converter={StaticResource MoneyConverter}}" />
+                        </Grid>
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="DESCUENTO:" />
+                            <Picker
+                                Grid.Column="1"
+                                IsVisible="{Binding IsEditingEnable}"
+                                ItemsSource="{Binding Discounts}"
+                                SelectedItem="{Binding SelectedDiscount, Mode=TwoWay}" />
+                            <Entry
+                                Grid.Column="1"
+                                IsVisible="{Binding IsEditingEnable, Converter={StaticResource InverseBooleanConverter}}"
+                                Placeholder="DESCUENTO"
+                                Text="{Binding Product.Discount}" />
                         </Grid>
 
                         <Grid
                             Margin="10,10,10,0"
                             ColumnDefinitions="*,2*"
                             WidthRequest="400">
-                            <Label Text="PRECIO VENTA:" />
-                            <Entry
-                                Grid.Column="1"
-                                Placeholder="$X.XX"
-                                Text="{Binding Product.SellPrice}" />
+                            <Label Text="PRECIO COMPRA:" />
+                            <Label Grid.Column="1" Text="{Binding Product.BuyPrice, Converter={StaticResource MoneyConverter}}" />
                         </Grid>
 
                         <Grid
@@ -111,9 +139,24 @@
                             <Entry
                                 Grid.Column="1"
                                 Placeholder="GANANCIA"
-                                Text="{Binding Product.MarkupPercentage}" />
+                                Text="{Binding Product.MarkupPercentage, Converter={StaticResource StringToDecimalConverter}}" />
                         </Grid>
 
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="CANT. ENVASE:" />
+                            <Entry Grid.Column="1" Text="{Binding Product.ItemsPerPackage, Converter={StaticResource StringToDecimalConverter}}" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="CANT. MIN. VENTA:" />
+                            <Entry Grid.Column="1" Text="{Binding Product.MinSellUnit, Converter={StaticResource StringToDecimalConverter}}" />
+                        </Grid>
                         <Grid
                             Margin="10,10,10,0"
                             ColumnDefinitions="*,2*"
@@ -140,7 +183,34 @@
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Frame>
-            <Frame IsEnabled="{Binding IsEditingEnable, Converter={StaticResource InverseBooleanConverter}}" />
+            <Frame BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgroundLight}, Dark={StaticResource TertiaryBackgroundDark}}">
+                <VerticalStackLayout>
+                    <Label FontSize="Medium" Text="PRECIOS DE VENTA" />
+                    <BoxView
+                        HeightRequest="2"
+                        HorizontalOptions="Fill"
+                        Color="Gray" />
+
+                    <CollectionView
+                        Margin="20"
+                        HorizontalOptions="Start"
+                        ItemsSource="{Binding Product.PriceList}"
+                        SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="data:ClientTypePrice">
+                                <HorizontalStackLayout Margin="0,0,0,20">
+                                    <Label Text="{Binding Description, StringFormat='{0} :'}" WidthRequest="100" />
+                                    <Label Margin="20,0,0,0" Text="{Binding Price, StringFormat='{0:C2} *'}" />
+                                    <Label Text="{Binding Discount, StringFormat=' {0}% = '}" />
+                                    <Label Text="{Binding DiscountedPrice, StringFormat=' {0:C2}'}" />
+                                    <Label Text="{Binding VatAliquota, StringFormat=' => {0}% ='}" />
+                                    <Label Text="{Binding FinalPrice, StringFormat=' {0:C2}'}" />
+                                </HorizontalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

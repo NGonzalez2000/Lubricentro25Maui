@@ -42,7 +42,7 @@
     </Style>
 
     <Style TargetType="Frame">
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource TertiaryBackgroundLight}, Dark={StaticResource TertiaryBackgroundDark}}" />
     </Style>
     <Style x:Key="SearchBarContainer" TargetType="Border">
         <Setter Property="WidthRequest" Value="230" />
@@ -126,6 +126,7 @@
     </Style>
 
     <Style x:Key="IconButton" TargetType="Button">
+        <Setter Property="Padding" Value="0" />
         <Setter Property="FontFamily" Value="GoogleFont" />
         <Setter Property="FontSize" Value="Subtitle" />
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource ForegroundLight}, Dark={StaticResource ForegroundDark}}" />
@@ -145,5 +146,11 @@
     <Style TargetType="c:HyperLink">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryHueLight}, Dark={StaticResource PrimaryHueDark}}" />
         <Setter Property="TextDecorations" Value="Underline" />
+    </Style>
+
+    <!--  VALIDATIONS  -->
+
+    <Style x:Key="InvalidEntry" TargetType="Entry">
+        <Setter Property="TextColor" Value="Red" />
     </Style>
 </ResourceDictionary>

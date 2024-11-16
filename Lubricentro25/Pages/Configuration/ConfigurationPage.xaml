@@ -1,31 +1,117 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<pages:BasePage
     x:Class="Lubricentro25.Pages.Configuration.ConfigurationPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="ConfigurationPage">
-    <VerticalStackLayout
-        HorizontalOptions="Center"
-        MinimumWidthRequest="500"
-        VerticalOptions="Center">
-        <Entry
-            x:Name="PhoneEntry"
-            Margin="0,15"
-            Placeholder="Teléfono" />
-        <Entry x:Name="MessageEntry" Placeholder="Mensaje" />
-        <Button
-            Margin="0,15"
-            Clicked="Button_Clicked"
-            Text="Método 1" />
-        <Entry x:Name="FileEntry" Placeholder="Pdf" />
-        <Button
-            Margin="0,15"
-            Clicked="Button_Clicked_1"
-            Text="Método 2" />
+    xmlns:cards="clr-namespace:Lubricentro25.Controls.Cards"
+    xmlns:controls="clr-namespace:Lubricentro25.Controls"
+    xmlns:data="clr-namespace:Lubricentro25.ViewModels.Configurations"
+    xmlns:pages="clr-namespace:Lubricentro25.Pages"
+    x:Name="ConfigPage"
+    Title="ConfigurationPage"
+    x:DataType="data:ConfigurationsViewModel">
 
-        <Entry
-            x:Name="ErrorEntry"
-            IsReadOnly="True"
-            Placeholder="ERROR" />
-    </VerticalStackLayout>
-</ContentPage>
+    <Grid ColumnDefinitions="auto, *">
+
+        <VerticalStackLayout>
+            <ListView x:Name="ul_ListView" />
+        </VerticalStackLayout>
+
+        <ScrollView Grid.Column="1">
+
+            <VerticalStackLayout x:Name="OuterContainer">
+
+                <Frame x:Name="accountant_Frame">
+                    <VerticalStackLayout>
+                        <Label Text="CONTABLE" />
+                        <Frame>
+                            <VerticalStackLayout>
+                                <Label Text="COTIZACIONES" />
+                                <BoxView
+                                    HeightRequest="2"
+                                    HorizontalOptions="Fill"
+                                    Color="Gray" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <controls:ConfigurationFrame Title="TIPOS IVA">
+                            <controls:ConfigurationFrame.Collection>
+                                <CollectionView ItemsSource="{Binding VatTypes}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <cards:VatTypeCard>
+                                                <FlyoutBase.ContextFlyout>
+                                                    <MenuFlyout>
+                                                        <MenuFlyoutItem
+                                                            Command="{Binding Source={x:Reference ConfigPage}, Path=BindingContext.EditVatTypeCommand}"
+                                                            CommandParameter="{Binding .}"
+                                                            Text="Modificar" />
+                                                    </MenuFlyout>
+                                                </FlyoutBase.ContextFlyout>
+                                            </cards:VatTypeCard>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </controls:ConfigurationFrame.Collection>
+                        </controls:ConfigurationFrame>
+
+                        <controls:ConfigurationFrame Title="TIPO FACTURAS">
+                            <controls:ConfigurationFrame.Collection>
+                                <CollectionView ItemsSource="{Binding BillTypes}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <cards:BillTypeCard>
+                                                <FlyoutBase.ContextFlyout>
+                                                    <MenuFlyout>
+                                                        <MenuFlyoutItem
+                                                            Command="{Binding Source={x:Reference ConfigPage}, Path=BindingContext.EditBillTypeCommand}"
+                                                            CommandParameter="{Binding .}"
+                                                            Text="Modificar" />
+                                                    </MenuFlyout>
+                                                </FlyoutBase.ContextFlyout>
+                                            </cards:BillTypeCard>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </controls:ConfigurationFrame.Collection>
+                        </controls:ConfigurationFrame>
+
+                        <controls:ConfigurationFrame Title="MEDIOS DE PAGO">
+                            <controls:ConfigurationFrame.Collection>
+                                <CollectionView ItemsSource="{Binding PaymentMethods}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <cards:PaymentMethodCard>
+                                                <FlyoutBase.ContextFlyout>
+                                                    <MenuFlyout>
+                                                        <MenuFlyoutItem
+                                                            Command="{Binding Source={x:Reference ConfigPage}, Path=BindingContext.EditPaymentMethodCommand}"
+                                                            CommandParameter="{Binding .}"
+                                                            Text="Modificar" />
+                                                    </MenuFlyout>
+                                                </FlyoutBase.ContextFlyout>
+                                            </cards:PaymentMethodCard>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </controls:ConfigurationFrame.Collection>
+                        </controls:ConfigurationFrame>
+
+                        <Frame>
+                            <VerticalStackLayout>
+                                <Label Text="RETENCIONES" />
+                                <BoxView
+                                    HeightRequest="2"
+                                    HorizontalOptions="Fill"
+                                    Color="Gray" />
+                                <CollectionView ItemsSource="{Binding BillTypes}" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+
+                    </VerticalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</pages:BasePage>

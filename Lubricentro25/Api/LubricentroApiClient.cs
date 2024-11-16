@@ -5,6 +5,7 @@ using Lubricentro25.Models.Helpers;
 using Lubricentro25.Models.Helpers.Interface;
 using Lubricentro25.Models.Messages;
 using MapsterMapper;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 
@@ -134,6 +135,10 @@ public class LubricentroApiClient : ILubricentroApiClient
             T temp = _mapper.Map<T>(item);
             return new([temp]);
         }
+        else if (response.StatusCode == HttpStatusCode.InternalServerError)
+        {
+            return new("Error en el servidor, revisar log!!!");
+        }
         var error = Deserialize<ErrorResponse>(await response.Content.ReadAsStringAsync());
 
         if (error is not null)
@@ -170,6 +175,10 @@ public class LubricentroApiClient : ILubricentroApiClient
             }
 
             return new(_mapper.Map<IEnumerable<T>>(list));
+        }
+        else if(response.StatusCode == HttpStatusCode.InternalServerError)
+        {
+            return new("Error en el servidor, revisar log!!!");
         }
         var error = Deserialize<ErrorResponse>(await response.Content.ReadAsStringAsync());
 

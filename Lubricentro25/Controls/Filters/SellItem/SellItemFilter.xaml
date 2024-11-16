@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:FilterView
+    x:Class="Lubricentro25.Controls.Filters.SellItems.SellItemFilter"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Lubricentro25.Controls.Filters"
+    xmlns:viewmodel="clr-namespace:Lubricentro25.Controls.Filters.SellItems"
+    x:DataType="viewmodel:SellItemFilterViewModel">
+    <local:FilterView.MainContent>
+        <FlexLayout
+            Margin="0,-15,0,0"
+            Padding="0,0,0,15"
+            HorizontalOptions="Start"
+            Wrap="Wrap">
+            <Entry
+                Margin="10,10,10,0"
+                Placeholder="Código"
+                Text="{Binding Code}"
+                WidthRequest="150" />
+            <Entry
+                Margin="10,10,10,0"
+                Placeholder="Código Barra"
+                Text="{Binding Barcode}"
+                WidthRequest="150" />
+            <Entry
+                Margin="10,10,10,0"
+                Placeholder="Descripción"
+                Text="{Binding Description}"
+                WidthRequest="150" />
+            <Picker
+                Margin="10,10,10,0"
+                ItemDisplayBinding="{Binding Name}"
+                ItemsSource="{Binding Brands}"
+                SelectedItem="{Binding SelectedBrand}"
+                WidthRequest="200" />
+        </FlexLayout>
+    </local:FilterView.MainContent>
+</local:FilterView>

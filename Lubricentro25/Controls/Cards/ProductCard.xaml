@@ -7,7 +7,7 @@
     xmlns:data="clr-namespace:Lubricentro25.Models"
     x:DataType="data:Product"
     MinimumHeightRequest="30">
-    <Grid ColumnDefinitions="*,*,*,*,*,*,*,*,*">
+    <Grid ColumnDefinitions="*,*,*,*,*,*,*,*,*,*">
         <Label
             Grid.Column="0"
             Style="{StaticResource CardLabel}"
@@ -51,5 +51,9 @@
             Grid.Column="8"
             Style="{StaticResource CardLabel}"
             Text="{Binding IsUsd}" />
+        <Label
+            Grid.Column="9"
+            Style="{StaticResource CardLabel}"
+            Text="{Binding LastUpdate}" />
     </Grid>
 </ContentView>

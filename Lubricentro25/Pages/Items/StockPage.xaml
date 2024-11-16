@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:BasePage
+    x:Class="Lubricentro25.Pages.Items.StockPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cards="clr-namespace:Lubricentro25.Controls.Cards"
+    xmlns:controls="clr-namespace:Lubricentro25.Controls"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:pages="clr-namespace:Lubricentro25.Pages"
+    xmlns:views="clr-namespace:Lubricentro25.Views"
+    xmlns:vm="clr-namespace:Lubricentro25.ViewModels.Items"
+    x:Name="Stock_Page"
+    Title="StockPage"
+    x:DataType="vm:StockViewModel">
+
+    <pages:BasePage.Buttons>
+        <HorizontalStackLayout Padding="15" Spacing="10" />
+    </pages:BasePage.Buttons>
+
+    <pages:BasePage.Filter>
+        <Border
+            Grid.Column="1"
+            Padding="10"
+            HorizontalOptions="End">
+            <HorizontalStackLayout Spacing="15">
+                <SearchBar
+                    Placeholder="Código"
+                    SearchCommand="{Binding SearchCommand}"
+                    Text="{Binding ProductCode}"
+                    TextTransform="Uppercase" />
+                <SearchBar
+                    Placeholder="Código Barra"
+                    SearchCommand="{Binding SearchCommand}"
+                    Text="{Binding ProductBarcode}"
+                    TextTransform="Uppercase" />
+                <SearchBar
+                    Placeholder="Descripción"
+                    SearchCommand="{Binding SearchCommand}"
+                    Text="{Binding ProductDescription}"
+                    TextTransform="Uppercase" />
+            </HorizontalStackLayout>
+        </Border>
+    </pages:BasePage.Filter>
+
+    <pages:BasePage.MainContent>
+
+        <controls:PagedCollectionView
+            x:Name="ProductsCollection"
+            Padding="20,0"
+            FullSource="{Binding Stock.Items}">
+            <controls:PagedCollectionView.Header>
+                <Grid ColumnDefinitions="*,*,*,*,*,*,*,*,*,*">
+                    <Label
+                        Grid.Column="0"
+                        FontSize="Subtitle"
+                        Text="Código" />
+                    <Label
+                        Grid.Column="1"
+                        FontSize="Subtitle"
+                        Text="Código Barra" />
+                    <Label
+                        Grid.Column="2"
+                        FontSize="Subtitle"
+                        Text="Descripción" />
+                    <Label
+                        Grid.Column="3"
+                        FontSize="Subtitle"
+                        Text="Proveedor" />
+                    <Label
+                        Grid.Column="4"
+                        FontSize="Subtitle"
+                        Text="Marca" />
+                    <Label
+                        Grid.Column="5"
+                        FontSize="Subtitle"
+                        Text="Stock" />
+                    <Label
+                        Grid.Column="6"
+                        FontSize="Subtitle"
+                        Text="Ubicación" />
+                    <Label
+                        Grid.Column="7"
+                        FontSize="Subtitle"
+                        Text="Depósito" />
+                    <Label
+                        Grid.Column="8"
+                        FontSize="Subtitle"
+                        Text="Min. Stock" />
+                    <Label
+                        Grid.Column="9"
+                        FontSize="Subtitle"
+                        Text="Max. Stock" />
+                </Grid>
+            </controls:PagedCollectionView.Header>
+            <controls:PagedCollectionView.ItemTemplate>
+                <DataTemplate x:DataType="data:Product">
+                    <cards:StockItemCard>
+                        <FlyoutBase.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem
+                                    Command="{Binding Source={x:Reference Stock_Page}, Path=BindingContext.GoToProductCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Text="Ver Precios" />
+                                <MenuFlyoutItem
+                                    Command="{Binding Source={x:Reference Stock_Page}, Path=BindingContext.UpdateStockItemCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Text="Modificar" />
+
+                            </MenuFlyout>
+                        </FlyoutBase.ContextFlyout>
+                    </cards:StockItemCard>
+                </DataTemplate>
+            </controls:PagedCollectionView.ItemTemplate>
+        </controls:PagedCollectionView>
+    </pages:BasePage.MainContent>
+</pages:BasePage>

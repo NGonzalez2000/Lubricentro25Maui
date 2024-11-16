@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Lubricentro25.Controls.Cards.DiscountCard"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:DataType="data:Discount">
+    <Grid ColumnDefinitions="*,*">
+
+        <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+            <Entry
+                Margin="0,0,20,0"
+                Text="{Binding Description}"
+                TextTransform="Uppercase"
+                WidthRequest="175" />
+            <Entry Text="{Binding FirstDiscount}">
+                <Entry.Behaviors>
+                    <toolkit:NumericValidationBehavior
+                        Flags="ValidateOnValueChanged"
+                        InvalidStyle="{StaticResource InvalidEntry}"
+                        MaximumValue="100.00"
+                        MinimumValue="0.00" />
+                </Entry.Behaviors>
+            </Entry>
+            <Label Text="+" />
+            <Entry Text="{Binding SecondDiscount}">
+                <Entry.Behaviors>
+                    <toolkit:NumericValidationBehavior
+                        Flags="ValidateOnValueChanged"
+                        InvalidStyle="{StaticResource InvalidEntry}"
+                        MaximumValue="100.00"
+                        MinimumValue="0.00" />
+                </Entry.Behaviors>
+            </Entry>
+            <Label Text="+" />
+            <Entry Text="{Binding ThirdDiscount}">
+                <Entry.Behaviors>
+                    <toolkit:NumericValidationBehavior
+                        Flags="ValidateOnValueChanged"
+                        InvalidStyle="{StaticResource InvalidEntry}"
+                        MaximumValue="100.00"
+                        MinimumValue="0.00" />
+                </Entry.Behaviors>
+            </Entry>
+            <Label Text="+" />
+            <Entry Text="{Binding FourthDiscount}">
+                <Entry.Behaviors>
+                    <toolkit:NumericValidationBehavior
+                        Flags="ValidateOnValueChanged"
+                        InvalidStyle="{StaticResource InvalidEntry}"
+                        MaximumValue="100.00"
+                        MinimumValue="0.00" />
+                </Entry.Behaviors>
+            </Entry>
+        </HorizontalStackLayout>
+
+
+        <CollectionView
+            Grid.Column="1"
+            Margin="30,0,0,0"
+            ItemsSource="{Binding ClientTypeDiscounts}"
+            SelectionMode="None"
+            VerticalOptions="Center"
+            WidthRequest="500">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="3" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="data:ClientTypeDiscount">
+                    <HorizontalStackLayout>
+                        <Label Margin="0,0,10,0" Text="{Binding Description, StringFormat='{0}:'}" />
+                        <Entry Text="{Binding Discount}" VerticalOptions="Center">
+                            <Entry.Behaviors>
+                                <toolkit:NumericValidationBehavior
+                                    Flags="ValidateOnValueChanged"
+                                    InvalidStyle="{StaticResource InvalidEntry}"
+                                    MaximumValue="100.00"
+                                    MinimumValue="0.00" />
+                            </Entry.Behaviors>
+                        </Entry>
+                    </HorizontalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentView>

@@ -10,4 +10,6 @@ public partial class CustomersPage : BasePage
 		InitializeComponent();
 		BindingContext = vm;
     }
+
+    
 }

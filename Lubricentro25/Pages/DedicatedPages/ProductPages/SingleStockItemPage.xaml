@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Lubricentro25.Pages.DedicatedPages.ProductPages.SingleStockItemPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Lubricentro25.Controls"
+    xmlns:data="clr-namespace:Lubricentro25.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodels="clr-namespace:Lubricentro25.Pages.DedicatedPages.ProductPages"
+    Title="SingleClientPage"
+    x:DataType="viewmodels:SingleStockItemViewModel">
+
+    <ScrollView>
+
+        <VerticalStackLayout Padding="20">
+            <Frame BackgroundColor="{AppThemeBinding Light={StaticResource TertiaryBackgroundLight}, Dark={StaticResource TertiaryBackgroundDark}}">
+                <VerticalStackLayout>
+                    <Label FontSize="Medium" Text="DATOS" />
+                    <BoxView
+                        HeightRequest="2"
+                        HorizontalOptions="Fill"
+                        Color="Gray" />
+
+                    <FlexLayout
+                        AlignItems="Start"
+                        Direction="Row"
+                        IsClippedToBounds="True"
+                        Wrap="Wrap">
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="CÓDIGO:" />
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding Item.Code}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="CÓDIGO BARRA:" />
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding Item.Barcode}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="DESCRIPCIÓN:" />
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding Item.Description}"
+                                TextTransform="Uppercase" />
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="MARCA:" />
+                            <Label Grid.Column="1" Text="{Binding Item.Brand}" />
+                        </Grid>
+
+
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="STOCK:" />
+                            <Entry
+                                x:Name="stockEntry"
+                                Grid.Column="1"
+                                Text="{Binding Item.Quantity, Converter={StaticResource StringToDecimalConverter}}">
+                                <Entry.Behaviors>
+                                    <toolkit:NumericValidationBehavior
+                                        Flags="ValidateOnValueChanged"
+                                        InvalidStyle="{StaticResource InvalidEntry}"
+                                        IsValid="{Binding IsStockEntryValid}" />
+                                </Entry.Behaviors>
+                            </Entry>
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="UBICACIÓN:" />
+                            <HorizontalStackLayout Grid.Column="1">
+                                <Entry Text="{Binding Item.Location.X}" />
+                                <Entry Margin="20,0" Text="{Binding Item.Location.Y}" />
+                                <Entry Text="{Binding Item.Location.Z}" />
+                            </HorizontalStackLayout>
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="DEPÓSITO:" />
+                            <HorizontalStackLayout Grid.Column="1">
+                                <Entry Text="{Binding Item.Deposit.X}" />
+                                <Entry Margin="20,0" Text="{Binding Item.Deposit.Y}" />
+                                <Entry Text="{Binding Item.Deposit.Z}" />
+                            </HorizontalStackLayout>
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="STOCK MÍNIMO:" />
+                            <Entry
+                                x:Name="minStockEntry"
+                                Grid.Column="1"
+                                Text="{Binding Item.MinStock, Converter={StaticResource IntConverter}}">
+                                <Entry.Behaviors>
+                                    <toolkit:NumericValidationBehavior
+                                        Flags="ValidateOnValueChanged"
+                                        InvalidStyle="{StaticResource InvalidEntry}"
+                                        IsValid="{Binding IsMinStockEntryValid}"
+                                        MinimumValue="0" />
+                                </Entry.Behaviors>
+                            </Entry>
+                        </Grid>
+
+                        <Grid
+                            Margin="10,10,10,0"
+                            ColumnDefinitions="*,2*"
+                            WidthRequest="400">
+                            <Label Text="STOCK MÁXIMO:" />
+                            <Entry
+                                x:Name="maxStockEntry"
+                                Grid.Column="1"
+                                Text="{Binding Item.MaxStock, Converter={StaticResource IntConverter}}">
+                                <Entry.Behaviors>
+                                    <toolkit:NumericValidationBehavior
+                                        Flags="ValidateOnValueChanged"
+                                        InvalidStyle="{StaticResource InvalidEntry}"
+                                        IsValid="{Binding IsMaxStockEntryValid}"
+                                        MinimumValue="0" />
+                                </Entry.Behaviors>
+                            </Entry>
+                        </Grid>
+                    </FlexLayout>
+                    <HorizontalStackLayout
+                        Margin="0,20,0,0"
+                        HorizontalOptions="End"
+                        Spacing="20">
+                        <Button
+                            Command="{Binding AcceptCommand}"
+                            IsEnabled="{Binding IsFormValid}"
+                            Text="ACEPTAR" />
+                        <Button Command="{Binding CancelCommand}" Text="CANCELAR" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
